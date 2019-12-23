@@ -9,5 +9,10 @@ namespace TestApp.Tests
         public void TestMethod1()
         {
         }
+
+        [TestMethod]
+        public void TestMethod2()
+        {
+        }
     }
 }
