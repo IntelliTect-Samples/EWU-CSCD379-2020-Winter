@@ -1,0 +1,5 @@
+<Project>
+    <ItemGroup>
+        <PackageReference Include="IntelliTect.Analyzers" Version="0.1.4" />
+    </ItemGroup>
+</Project>
