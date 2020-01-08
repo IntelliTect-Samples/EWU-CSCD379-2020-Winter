@@ -19,10 +19,9 @@
 4. Add non-default constructors for `Gift` and `User`. ❌✔
 5. Add unit tests to all projects except **SecretSanta.Web** and fully unit test the new classes in **SecretSanta.Business**(pending Thursday lecture). ❌✔
 6. Refactor nullability setting into solution level **props** and **targets** files (pending Thursday lecture). ❌✔
-7. Add the following list of code analysis assemblies and appropriately handle all warnings: `IntelliTectAnalyzer.dll`,`Microsoft.NetCore.Analyzers.dll`,`Microsoft.CodeQuality.Analyzers.dll`, and `Microsoft.NetCore.Analyzers.dll`. (Adding the IntelliTect one will automatically add the others since they are dependencies on the IntelliTect one.)
-8. Refactor out a solution level global suppression file for disabling code analysis warnings across all projects (to do this add a reference to the same suppression file(s) from all projects). ❌✔
-9. Configure Azure DevOps build for continuous integration to compile and run all unit tests ❌✔
-10. If any updates occur in **Assignment1** prior to your PR, rebase onto **Assignment1**.  Finally, and just prior to submitting your PR, rebase from master (which has additional commits added after **Assessment1** was created such as the addition of the cSpell.json in commit #7b106a6). ❌✔
+7. Add the following list of code analysis assemblies and appropriately handle all warnings: `IntelliTectAnalyzer.dll`,`Microsoft.NetCore.Analyzers.dll`,`Microsoft.CodeQuality.Analyzers.dll`,`Microsoft.NetCore.Analyzers.dll`,`Microsoft.NetFramework.Analyzers.dll`.  Refactor out a solution level global suppression file for disabling code analysis warnings across all projects. ❌✔
+8. Configure Azure DevOps build for continuous integration to compile and run all unit tests ❌✔
+9. If any updates occur in **Assignment1** prior to your PR, rebase onto **Assignment1**.  Finally, and just prior to submitting your PR, rebase from master (which has additional commits added after **Assessment1** was created such as the addition of the cSpell.json in commit #7b106a6). ❌✔
 
 ## Extra Credit
 
