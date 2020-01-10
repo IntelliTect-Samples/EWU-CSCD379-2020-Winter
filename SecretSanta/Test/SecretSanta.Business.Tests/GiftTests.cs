@@ -29,5 +29,18 @@ namespace SecretSanta.Business.Tests
             // Assert
             Assert.AreEqual<string>(title, gift.Title);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Create_NullData_ThrowsException()
+        {
+            // Arrange
+
+            // Act
+            Gift gift = new Gift(0, null!, null!, null!, null!);
+
+            // Assert
+
+        }
     }
 }
