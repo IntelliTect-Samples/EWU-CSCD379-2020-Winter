@@ -13,7 +13,7 @@ namespace SecretSanta.Business.Tests
         {
             // Arrange
             int giftId = 1;
-            string title = "";
+            string title = "title";
             string description = "";
             string url = "";
 
