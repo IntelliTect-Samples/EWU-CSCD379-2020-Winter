@@ -11,6 +11,7 @@ namespace SecretSanta.Business
         private User _User = new User(1, "invalid", "invalid", new List<Gift>());
 
         public int Id { get; }
+
         public string Title
         {
             get => _Title;
@@ -22,11 +23,13 @@ namespace SecretSanta.Business
             get => _Description;
             set => _Description = value ?? throw new ArgumentNullException(nameof(value));
         }
+
         public string Url
         {
             get => _Url;
             set => _Url = value ?? throw new ArgumentNullException(nameof(value));
         }
+
         public User User
         {
             get => _User;

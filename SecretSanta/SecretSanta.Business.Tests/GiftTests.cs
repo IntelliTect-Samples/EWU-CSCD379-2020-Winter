@@ -8,6 +8,7 @@ namespace SecretSanta.Business.Tests
     public class GiftTests
     {
         private readonly User _TestUser = new User(1, "TestFirstName", "TestLastName", new List<Gift>());
+
         [TestMethod]
         public void Constructor_ValidParameters_Success()
         {
