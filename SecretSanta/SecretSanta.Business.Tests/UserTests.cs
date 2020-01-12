@@ -11,18 +11,42 @@ namespace SecretSanta.Business.Tests
     public class UserTests
     {
         [TestMethod]
-        public void Create_User_Success()
+        public void Create_User_Success_4args()
         {
-            User user = new User(
-                id:0,
-                firstName:"John",
-                lastName:"Smith",
-                gifts:new List<Gift>());
+            //arrange
+            int id = 0;
+            string firstName = "John";
+            string lastName = "Smith";
+            List<Gift> gifts = new List<Gift>();
 
-            user = new User(
-                id: 0,
-                firstName: "John",
-                lastName: "Smith");
+            User user = new User(id, firstName, lastName, gifts);
+
+            //act
+
+            //assert
+            Assert.AreEqual<int>(id, user.Id);
+            Assert.AreEqual<string>(firstName, user.FirstName);
+            Assert.AreEqual<string>(lastName, user.LastName);
+            Assert.AreEqual<List<Gift>>(gifts, user.Gifts);
+        }
+
+        [TestMethod]
+        public void Create_User_Success_3args()
+        {
+            //arrange
+            int id = 0;
+            string firstName = "John";
+            string lastName = "Smith";
+
+            User user = new User(id, firstName, lastName);
+
+            //act
+
+            //assert
+            Assert.AreEqual<int>(id, user.Id);
+            Assert.AreEqual<string>(firstName, user.FirstName);
+            Assert.AreEqual<string>(lastName, user.LastName);
+            Assert.IsInstanceOfType(user.Gifts, typeof(List<Gift>));
         }
 
         [TestMethod]

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -12,12 +13,23 @@ namespace SecretSanta.Business.Tests
         [TestMethod]
         public void Create_Gift_Success()
         {
-            Gift gift = new Gift(
-                id:0,
-                title:"gift",
-                description:"is a gift!",
-                url:"http://127.0.0.1:7",
-                user:new User(0, "John", "Smith"));
+            //arrange
+            int id = 0;
+            string title = "gift";
+            string description = "is a gift!";
+            string url = "http://127.0.0.1:7";
+            User user = new User(0, "John", "Smith");
+
+            Gift gift = new Gift(id, title, description, url, user);
+
+            //act
+
+            //assert
+            Assert.AreEqual<int>(id, gift.Id);
+            Assert.AreEqual<string>(title, gift.Title);
+            Assert.AreEqual<string>(description, gift.Description);
+            Assert.AreEqual<string>(url, gift.Url);
+            Assert.AreSame(user, gift.User);
         }
 
         [TestMethod]
