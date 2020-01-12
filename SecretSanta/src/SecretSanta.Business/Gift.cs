@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SecretSanta.Business
 {
     public class Gift
     {
-        private string _Title;
-        private string _Description;
-        private string _Url;
-        private User _User;
+        private string _Title = "invalid";
+        private string _Description = "invalid";
+        private string _Url = "invalid";
+        private User _User = new User(1, "invalid", "invalid", new List<Gift>());
 
         public int Id { get; }
         public string Title
@@ -28,9 +27,9 @@ namespace SecretSanta.Business
             get => _Url;
             set => _Url = value ?? throw new ArgumentNullException(nameof(value));
         }
-        public User User 
+        public User User
         {
-            get => _User; 
+            get => _User;
             set => _User = value ?? throw new ArgumentNullException(nameof(value));
         }
 

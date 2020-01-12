@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace SecretSanta.Business.Tests
 {
@@ -26,7 +26,7 @@ namespace SecretSanta.Business.Tests
         public void Constructor_NullFirstName_ThrowsException()
         {
             //Arrange
-            _ = new User(1, null, "test", _TestGifts);
+            _ = new User(1, null!, "test", _TestGifts);
             //Act
             //Assert
         }
@@ -36,7 +36,7 @@ namespace SecretSanta.Business.Tests
         public void Constructor_NullLastName_ThrowsException()
         {
             //Arrange
-            _ = new User(1, "test", null, _TestGifts);
+            _ = new User(1, "test", null!, _TestGifts);
             //Act
             //Assert
         }
@@ -46,7 +46,7 @@ namespace SecretSanta.Business.Tests
         public void Constructor_NullGifts_ThrowsException()
         {
             //Arrange
-            _ = new User(1, "test", "test", null);
+            _ = new User(1, "test", "test", null!);
             //Act
             //Assert
         }
@@ -54,8 +54,6 @@ namespace SecretSanta.Business.Tests
         [TestMethod]
         public void AddGifts_ReadOnly_Success()
         {
-            String nulltest = null;
-            string res = nulltest + "h";
             //Arrange
             User user = new User(1, "test", "test", _TestGifts);
             //Act

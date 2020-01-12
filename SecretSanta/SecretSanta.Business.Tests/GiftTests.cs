@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
 namespace SecretSanta.Business.Tests
 {
@@ -12,7 +12,7 @@ namespace SecretSanta.Business.Tests
         public void Constructor_ValidParameters_Success()
         {
             //Arrange
-            Gift gift = new Gift(1,"TestTitle","TestDescription","TestUrl",_TestUser);
+            Gift gift = new Gift(1, "TestTitle", "TestDescription", "TestUrl", _TestUser);
             //Act
             //Assert
             Assert.AreEqual<int>(1, gift.Id);
@@ -27,7 +27,7 @@ namespace SecretSanta.Business.Tests
         public void Constructor_NullTitle_ThrowsException()
         {
             //Arrange
-            _ = new Gift(1, null, "test", "test", _TestUser);
+            _ = new Gift(1, null!, "test", "test", _TestUser);
             //Act
             //Assert
         }
@@ -37,7 +37,7 @@ namespace SecretSanta.Business.Tests
         public void Constructor_NullDescription_ThrowsException()
         {
             //Arrange
-            _ = new Gift(1, "test", null, "test", _TestUser);
+            _ = new Gift(1, "test", null!, "test", _TestUser);
             //Act
             //Assert
         }
@@ -47,7 +47,7 @@ namespace SecretSanta.Business.Tests
         public void Constructor_NullUrl_ThrowsException()
         {
             //Arrange
-            _ = new Gift(1, "test", "test", null, _TestUser);
+            _ = new Gift(1, "test", "test", null!, _TestUser);
             //Act
             //Assert
         }
@@ -57,7 +57,7 @@ namespace SecretSanta.Business.Tests
         public void Constructor_NullUser_ThrowsException()
         {
             //Arrange
-            _ = new Gift(1, "test", "test", "test", null);
+            _ = new Gift(1, "test", "test", "test", null!);
             //Act
             //Assert
         }

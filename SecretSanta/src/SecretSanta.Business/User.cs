@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System;
+﻿using System;
+using System.Collections.Generic;
 namespace SecretSanta.Business
 {
     public class User
     {
-        private string _FirstName;
-        private string _LastName;
-        //private List<Gift> _Gifts;
+        private string _FirstName = "invalid";
+        private string _LastName = "invalid";
 
         public int Id { get; }
         public string FirstName
@@ -19,7 +18,7 @@ namespace SecretSanta.Business
             get => _LastName;
             set => _LastName = value ?? throw new ArgumentNullException(nameof(value));
         }
-        public List<Gift> Gifts {get;}
+        public List<Gift> Gifts { get; }
 
         public User(int id, string firstName, string lastName, List<Gift> gifts)
         {
