@@ -7,12 +7,12 @@ namespace SecretSanta.Business.Tests
     [TestClass]
     public class UserTests
     {
-        public List<Gift> TestGifts = new List<Gift> { new Gift(1, "TestTitle", "TestDescription", "TestUrl", new User(2, "Eugene", "Krabs", new List<Gift>())) };
+        private readonly List<Gift> _TestGifts = new List<Gift> { new Gift(1, "TestTitle", "TestDescription", "TestUrl", new User(2, "Eugene", "Krabs", new List<Gift>())) };
         [TestMethod]
         public void Constructor_ValidParameters_Success()
         {
             //Arrange
-            User user = new User(1, "TestFirstName", "TestLastName", TestGifts);
+            User user = new User(1, "TestFirstName", "TestLastName", _TestGifts);
             //Act
             //Assert
             Assert.AreEqual<int>(1, user.Id);
@@ -26,7 +26,7 @@ namespace SecretSanta.Business.Tests
         public void Constructor_NullFirstName_ThrowsException()
         {
             //Arrange
-            User user = new User(1, null, "test", TestGifts);
+            _ = new User(1, null, "test", _TestGifts);
             //Act
             //Assert
         }
@@ -36,7 +36,7 @@ namespace SecretSanta.Business.Tests
         public void Constructor_NullLastName_ThrowsException()
         {
             //Arrange
-            User user = new User(1, "test", null, TestGifts);
+            _ = new User(1, "test", null, _TestGifts);
             //Act
             //Assert
         }
@@ -46,9 +46,20 @@ namespace SecretSanta.Business.Tests
         public void Constructor_NullGifts_ThrowsException()
         {
             //Arrange
-            User user = new User(1, "test", "test", null);
+            _ = new User(1, "test", "test", null);
             //Act
             //Assert
+        }
+
+        [TestMethod]
+        public void AddGifts_ReadOnly_Success()
+        {
+            //Arrange
+            User user = new User(1, "test", "test", _TestGifts);
+            //Act
+            user.Gifts.Add(new Gift(2, "testgift2", "testDesc2", "testUrl2", new User(2, "Spongebob", "Squarepants", new List<Gift>())));
+            //Assert
+            Assert.AreEqual<int>(2, user.Gifts.Count);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace SecretSanta.Business
     {
         private string _FirstName;
         private string _LastName;
-        private List<Gift> _Gifts;
+        //private List<Gift> _Gifts;
 
         public int Id { get; }
         public string FirstName
@@ -19,11 +19,7 @@ namespace SecretSanta.Business
             get => _LastName;
             set => _LastName = value ?? throw new ArgumentNullException(nameof(value));
         }
-        public List<Gift> Gifts 
-        {
-            get => _Gifts; 
-            set => _Gifts = value ?? throw new ArgumentNullException(nameof(value));
-        }
+        public List<Gift> Gifts {get;}
 
         public User(int id, string firstName, string lastName, List<Gift> gifts)
         {
