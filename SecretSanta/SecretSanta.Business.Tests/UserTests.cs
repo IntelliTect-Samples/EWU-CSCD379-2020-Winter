@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace SecretSanta.Business.Tests
 {
@@ -18,6 +19,36 @@ namespace SecretSanta.Business.Tests
             Assert.AreEqual<string>("TestFirstName", user.FirstName);
             Assert.AreEqual<string>("TestLastName", user.LastName);
             Assert.AreEqual<int>(1, user.Gifts[0].Id);//No need to test more than gift id, not testing gift constructor here
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_NullFirstName_ThrowsException()
+        {
+            //Arrange
+            User user = new User(1, null, "test", TestGifts);
+            //Act
+            //Assert
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_NullLastName_ThrowsException()
+        {
+            //Arrange
+            User user = new User(1, "test", null, TestGifts);
+            //Act
+            //Assert
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_NullGifts_ThrowsException()
+        {
+            //Arrange
+            User user = new User(1, "test", "test", null);
+            //Act
+            //Assert
         }
     }
 }
