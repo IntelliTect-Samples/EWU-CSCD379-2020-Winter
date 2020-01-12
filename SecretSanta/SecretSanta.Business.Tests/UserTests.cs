@@ -54,6 +54,8 @@ namespace SecretSanta.Business.Tests
         [TestMethod]
         public void AddGifts_ReadOnly_Success()
         {
+            String nulltest = null;
+            string res = nulltest + "h";
             //Arrange
             User user = new User(1, "test", "test", _TestGifts);
             //Act
