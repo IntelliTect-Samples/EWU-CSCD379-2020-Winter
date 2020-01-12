@@ -29,7 +29,7 @@ namespace SecretSanta.Business
             Id = id;
             FirstName = firstName;
             LastName = lastName;
-            Gifts = gifts;
+            Gifts = gifts ?? throw new ArgumentNullException(nameof(gifts));
         }
     }
 }
