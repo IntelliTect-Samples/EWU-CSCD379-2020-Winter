@@ -4,19 +4,19 @@ using System.Text;
 
 namespace SecretSanta.Business
 {
-    class User
+    public class User
     {
         public int Id { get; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public List<Gift> Gifts { get; set; }
 
-        public User(int id, string firstName, string lastName, List<Gift> gifts)
+        public User(int id, string firstName, string lastName)
         {
             Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            Gifts = gifts;
+            FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
+            LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
+            Gifts = new List<Gift>();
         }
     }
 }

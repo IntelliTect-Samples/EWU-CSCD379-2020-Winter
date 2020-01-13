@@ -4,9 +4,9 @@ using System.Text;
 
 namespace SecretSanta.Business
 {
-    class Gift
+    public class Gift
     {
-        public int Id { get; }
+        public int Id { get; } 
         public string Title { get; set; }
         public string Description { get; set; }
         public string Url { get; set; }
@@ -15,10 +15,10 @@ namespace SecretSanta.Business
         public Gift(int id, string title, string description, string url, User user)
         {
             Id = id;
-            Title = title;
-            Description = description;
-            Url = url;
-            User = user;
+            Title = title ?? throw new ArgumentNullException(nameof(title));
+            Description = description ?? throw new ArgumentNullException(nameof(description));
+            Url = url ?? throw new ArgumentNullException(nameof(url));
+            User = user ?? throw new ArgumentNullException(nameof(user));
         }
     }
 }
