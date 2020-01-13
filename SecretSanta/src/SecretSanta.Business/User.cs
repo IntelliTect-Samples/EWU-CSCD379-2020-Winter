@@ -7,7 +7,7 @@ namespace SecretSanta.Business
         public int Id { get; private set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public List<Gift> Gifts { get; set; }
+        public List<Gift> Gifts { get; private set; }
 
         public User(int id, string firstName, string lastName, List<Gift> gifts)
         {
