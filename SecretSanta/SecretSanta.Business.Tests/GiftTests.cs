@@ -51,7 +51,7 @@ namespace SecretSanta.Business.Tests
             string url = "test.com";
 
             // Act
-            Gift sut = new Gift(id, title, description, url, null);
+            Gift sut = new Gift(id, title, description, url, null!);
 
             // Assert
         }
