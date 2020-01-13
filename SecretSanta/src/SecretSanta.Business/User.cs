@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SecretSanta.Business
@@ -5,16 +6,17 @@ namespace SecretSanta.Business
     class User
     {
         int Id {get;}
-        string FirstName;
-        string LastName;
+        string FirstName {get; set;}
+        string LastName {get; set;}
 
-        IList<Gift> GiftList = new List<Gift>();
+        IList<Gift> GiftList {get;}
 
-        public User(int id, string firstName, string lastName)
+        public User(int id, string firstName, string lastName, List<Gift> giftList)
         {
             Id = id;
-            FirstName = firstName;
-            LastName = lastName;
+            FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
+            LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
+            GiftList = giftList ?? new List<Gift>();
         }
     }
 }
