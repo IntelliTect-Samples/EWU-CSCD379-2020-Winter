@@ -11,7 +11,6 @@ namespace SecretSanta.Business.Tests
         [TestMethod]
         public void GiftHasCorrectValues()
         {
-            // arrange
             int testId = 0;
             string testTitle = "My New Webpage";
 
@@ -19,7 +18,6 @@ namespace SecretSanta.Business.Tests
             string testUrl = "www.WhoKnows.com";
             Gift newGift = new Gift(testId, testTitle, testDescription, testUrl, _TestUser);
 
-            // assert
             Assert.AreEqual<string>(testTitle, newGift.Title, "Title value is unexpected");
             Assert.AreEqual<string>(testDescription, newGift.Description, "Description value is unexpected");
             Assert.AreEqual<string>(_TestUser.ToString(), newGift.User.ToString(), "toString() value is unexpected");
@@ -49,13 +47,11 @@ namespace SecretSanta.Business.Tests
         [TestMethod]
         public void UserHasCorrectValues()
         {
-            // arrange
             int testId = 0;
             string testLast = "James";
             string testFirst = "Jesse";
             User tempUser = new User(testId, testFirst, testLast);
 
-            // assert
             Assert.AreEqual<string>(testFirst, tempUser.FirstName, "FirstName value is unexpected");
             Assert.AreEqual<string>(testLast, tempUser.LastName, "LastName value is unexpected");
             Assert.AreEqual<int>(testId, tempUser.Id, "Id value is unexpected");
@@ -74,7 +70,5 @@ namespace SecretSanta.Business.Tests
         {
             User newUser = new User(12, "James", null!);
         }
-
-
     }
 }
