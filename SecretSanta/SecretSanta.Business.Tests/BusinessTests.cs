@@ -45,6 +45,13 @@ namespace SecretSanta.Business.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GiftNullExceptionUser()
+        {
+            Gift theGift = new Gift(1, "HomeSlice", "Blank", ".com", null!);
+        }
+
+        [TestMethod]
         public void UserHasCorrectValues()
         {
             int testId = 0;
