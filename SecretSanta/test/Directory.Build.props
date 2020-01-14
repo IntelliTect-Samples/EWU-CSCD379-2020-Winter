@@ -1,0 +1,7 @@
+<Project>
+
+  <ItemGroup>
+    <Compile Include="..\GlobalSuppresions.cs" Link="GlobalSuppresions.cs" />
+  </ItemGroup>
+
+</Project>
