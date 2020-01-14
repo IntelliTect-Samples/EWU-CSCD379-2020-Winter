@@ -1,25 +1,26 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace SecretSanta.Business
 {
     public class User
     {
-        private readonly int _Id;
-        private string _FirstName;
-        private string _LastName;
+        public int Id { get; }
+        public string FirstName { get; }
+        public string LastName { get; }
         public Collection<Gift> Gifts { get; }
 
         public User(int id, string firstName, string lastName)
         {
-            _Id = id;
-            _FirstName = firstName;
-            _LastName = lastName;
+            Id = id;
+            FirstName = firstName ?? throw new ArgumentNullException(nameof(firstName));
+            LastName = lastName ?? throw new ArgumentNullException(nameof(lastName));
             Gifts = new Collection<Gift>();
         }
 
         public override string ToString()
         {
-            return $"{nameof(_FirstName)}: {_FirstName}, {nameof(_LastName)}: {_LastName}";
+            return $"{nameof(FirstName)}: {FirstName}, {nameof(LastName)}: {LastName}";
         }
     }
 }

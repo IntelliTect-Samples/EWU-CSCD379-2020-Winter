@@ -9,7 +9,7 @@ namespace SecretSanta.Business.Tests
     {
         private readonly User _TestUser = new User(2, "Dave", "Smith");
         [TestMethod]
-        public void CompareBasics()
+        public void GiftHasCorrectValues()
         {
             // arrange
             int testId = 0;
@@ -21,14 +21,60 @@ namespace SecretSanta.Business.Tests
 
             // assert
             Assert.AreEqual<string>(testTitle, newGift.Title, "Title value is unexpected");
-            Assert.AreEqual<string>(testDescription, newGift.Description, "Content value is unexpected");
-            Assert.AreEqual<string>(_TestUser.ToString(), newGift.User.ToString(), "Author value is unexpected");
+            Assert.AreEqual<string>(testDescription, newGift.Description, "Description value is unexpected");
+            Assert.AreEqual<string>(_TestUser.ToString(), newGift.User.ToString(), "toString() value is unexpected");
         }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void GiftNullException()
+        public void GiftNullExceptionTitle()
         {
             Gift theGift = new Gift(1, null!, "Blank", ".com", _TestUser);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GiftNullExceptionDescription()
+        {
+            Gift theGift = new Gift(1, "HomeSlice", null!, ".com", _TestUser);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void GiftNullExceptionUrl()
+        {
+            Gift theGift = new Gift(1, "HomeSlice", "Blank", null!, _TestUser);
+        }
+
+        [TestMethod]
+        public void UserHasCorrectValues()
+        {
+            // arrange
+            int testId = 0;
+            string testLast = "James";
+            string testFirst = "Jesse";
+            User tempUser = new User(testId, testFirst, testLast); 
+
+            // assert
+            Assert.AreEqual<string>(testFirst, tempUser.FirstName, "FirstName value is unexpected");
+            Assert.AreEqual<string>(testLast, tempUser.LastName, "LastName value is unexpected");
+            Assert.AreEqual<int>(testId, tempUser.Id, "Id value is unexpected");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UserNullExceptionFirstName()
+        {
+            User newUser = new User(12, null!, "Mark");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void UserNullExceptionLastName()
+        {
+            User newUser = new User(12, "James", null!);
+        }
+
+
     }
 }
