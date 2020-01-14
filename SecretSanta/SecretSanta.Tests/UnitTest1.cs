@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SecretSanta.Business.Tests
+namespace SecretSanta.Tests
 {
     [TestClass]
     public class UnitTest1
