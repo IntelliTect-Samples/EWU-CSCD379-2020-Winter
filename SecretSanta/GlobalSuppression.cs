@@ -1,1 +1,2 @@
 ﻿[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>", Scope = "member", Target = "~M:SecretSanta.Business.Tests.UserTests.Verify_LastNamePropertyNotNull_NotNull")]
