@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace SecretSanta.Business
 {
-    class Gift
+    public class Gift
     {
-        int Id {get;}
-        string Title {get; set;}
-        string Description {get; set;}
-        string Url {get; set;}
-        User User {get; set;}
+        public int Id {get;}
+        public string Title {get; set;}
+        public string Description {get; set;}
+        public string Url {get; set;}
+        public User User {get; set;}
 
         public Gift(int id, string title, string description, string url, User user)
         {

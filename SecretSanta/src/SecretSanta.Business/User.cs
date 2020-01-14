@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace SecretSanta.Business
 {
-    class User
+    public class User
     {
-        int Id {get;}
-        string FirstName {get; set;}
-        string LastName {get; set;}
+        public int Id {get;}
+        public string FirstName {get; set;}
+        public string LastName {get; set;}
 
-        IList<Gift> GiftList {get;}
+        public IList<Gift> GiftList {get;}
 
         public User(int id, string firstName, string lastName, List<Gift> giftList)
         {
