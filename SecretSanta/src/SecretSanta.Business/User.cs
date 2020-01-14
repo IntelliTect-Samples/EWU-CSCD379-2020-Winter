@@ -7,14 +7,19 @@ namespace SecretSanta.Business
         private readonly int _Id;
         private string _FirstName;
         private string _LastName;
-        private Collection<Gift> _Gifts;
+        public Collection<Gift> Gifts { get; }
 
-        public User(int id, string firstName, string lastName, Collection<Gift> gifts)
+        public User(int id, string firstName, string lastName)
         {
             _Id = id;
             _FirstName = firstName;
             _LastName = lastName;
-            _Gifts = gifts;
+            Gifts = new Collection<Gift>();
+        }
+
+        public override string ToString()
+        {
+            return $"{nameof(_FirstName)}: {_FirstName}, {nameof(_LastName)}: {_LastName}";
         }
     }
 }

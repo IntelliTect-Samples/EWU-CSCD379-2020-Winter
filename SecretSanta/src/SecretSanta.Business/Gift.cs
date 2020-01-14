@@ -3,18 +3,20 @@
     public class Gift
     {
         private readonly int _Id;
-        private string _Title;
-        private string _Description;
-        private string _Url;
-        private string _User;
+        public string Title { get; }
+        public string Description { get; }
+        public string Url { get; }
+        public User User { get; }
 
-        public Gift(int id, string title, string description, string url, string user)
+        public Gift(int id, string title, string description, string url, User user)
         {
             _Id = id;
-            _Title = title;
-            _Description = description;
-            _Url = url;
-            _User = user;
+            Title = title;
+            Description = description;
+            Url = url;
+            User = user;
+            User?.Gifts.Add(this);
         }
+
     }
 }
