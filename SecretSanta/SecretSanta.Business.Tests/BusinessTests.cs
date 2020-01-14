@@ -9,7 +9,7 @@ namespace SecretSanta.Business.Tests
     {
         private readonly User _TestUser = new User(2, "Dave", "Smith");
         [TestMethod]
-        public void Compare_Basics()
+        public void CompareBasics()
         {
             // arrange
             int testId = 0;
