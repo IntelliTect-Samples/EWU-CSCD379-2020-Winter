@@ -53,7 +53,7 @@ namespace SecretSanta.Business.Tests
             int testId = 0;
             string testLast = "James";
             string testFirst = "Jesse";
-            User tempUser = new User(testId, testFirst, testLast); 
+            User tempUser = new User(testId, testFirst, testLast);
 
             // assert
             Assert.AreEqual<string>(testFirst, tempUser.FirstName, "FirstName value is unexpected");

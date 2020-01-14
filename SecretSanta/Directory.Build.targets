@@ -1,6 +1,6 @@
 <Project>
- <PropertyGroup>
+  <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-   <nullable>enable</nullable>
- </PropertyGroup>
-</Project> 
+    <nullable>enable</nullable>
+  </PropertyGroup>
+</Project>
