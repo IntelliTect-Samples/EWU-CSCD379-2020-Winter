@@ -25,4 +25,8 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
+<<<<<<< master
     projects: '**/test/**/*.csproj'
+=======
+    projects: '**/test/**/*.csproj'
+>>>>>>> Configured a starting point for Assignment2
