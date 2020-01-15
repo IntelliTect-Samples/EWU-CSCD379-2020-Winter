@@ -27,6 +27,7 @@ The purpose of this assignment is to learn the following:
      - Remove the Id property and inherit from FingerPrintEntityBase
    - **`User`**
      - Remove the Id property and inherit from FingerPrintEntityBase
+     - Make `Gifts` read/write
      - Create a nullable Santa property that contains a User as someone's Santa
 3. Remove non-default constructors for `Gift` and `User`.
 4. In the **SecretSanta.Data** project
