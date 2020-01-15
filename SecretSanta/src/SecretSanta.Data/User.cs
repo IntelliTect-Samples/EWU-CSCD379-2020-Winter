@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BlogEngine.Data
+namespace SecretSanta.Data
 {
-    public class Author : FingerPrintEntityBase
+    public class User : FingerPrintEntityBase
     {
         private string _FirstName = null!;
         public string FirstName
@@ -26,24 +26,6 @@ namespace BlogEngine.Data
                 _LastName = value;
             }
         }
-        private string _Email = null!;
-        public string Email
-        {
-            get { return _Email; }
-            set
-            {
-                AssertIsNotNullOrWhitespace(value);
-                _Email = value;
-            }
-        }
-
-        public List<Post> Posts { get; } = new List<Post>();
-
-        public Author(string firstName, string lastName, string email)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-        }
+        public ICollection<Gift> Gifts { get; set; }
     }
 }
