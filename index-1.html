@@ -1,0 +1,42 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Unknown </title></head><body>
+<h1 id="assignment">Assignment</h1>
+<ol>
+<li>Turn on nullability in the <strong>SecretSanta.API</strong> project ❌✔</li>
+<li>Configure nullability in <strong>SecretSanta.API</strong> project to be conditional based Nullability not already being set (pending Thursday lecture). ❌✔</li>
+<li>Add the following classes to the <strong>SecretSanta.Business</strong> project with the following the associated properties:</li>
+<li>
+<p><strong><code>Gift</code></strong> ❌✔</p>
+<ul>
+<li><code>int Id</code> as read-only ❌✔</li>
+<li><code>string Title</code> ❌✔</li>
+<li><code>string Description</code> ❌✔</li>
+<li><code>string Url</code> ❌✔</li>
+<li><code>User User</code> ❌✔</li>
+</ul>
+</li>
+<li>
+<p><strong><code>User</code></strong> ❌✔</p>
+<ul>
+<li><code>int Id</code> as read-only ❌✔</li>
+<li><code>string FirstName</code> ❌✔</li>
+<li><code>string LastName</code> ❌✔</li>
+<li>&lt;<em>a collection of</em>&gt; <code>Gifts</code> ❌✔</li>
+</ul>
+</li>
+<li>
+<p>Add non-default constructors for <code>Gift</code> and <code>User</code>. ❌✔</p>
+</li>
+<li>Add unit tests to all projects except <strong>SecretSanta.Web</strong> and fully unit test the new classes in <strong>SecretSanta.Business</strong>(pending Thursday lecture). ❌✔</li>
+<li>Refactor nullability setting into solution level <strong>props</strong> and <strong>targets</strong> files (pending Thursday lecture). ❌✔</li>
+<li>Add the following list of code analysis assemblies and appropriately handle all warnings: <code>IntelliTectAnalyzer.dll</code>,<code>Microsoft.NetCore.Analyzers.dll</code>,<code>Microsoft.CodeQuality.Analyzers.dll</code>, and <code>Microsoft.NetCore.Analyzers.dll</code>. (Adding the IntelliTect one will automatically add the others since they are dependencies on the IntelliTect one.)</li>
+<li>Refactor out a solution level global suppression file for disabling code analysis warnings across all projects (to do this add a reference to the same suppression file(s) from all projects). ❌✔</li>
+<li>Configure Azure DevOps build for continuous integration to compile and run all unit tests ❌✔</li>
+<li>If any updates occur in <strong>Assignment1</strong> prior to your PR, rebase onto <strong>Assignment1</strong>.  Finally, and just prior to submitting your PR, rebase from master (which has additional commits added after <strong>Assessment1</strong> was created such as the addition of the cSpell.json in commit #7b106a6). ❌✔</li>
+</ol>
+<h2 id="extra-credit">Extra Credit</h2>
+<p>The following are options for extra credit (you don't need to do them all):</p>
+<ul>
+<li>Use reflection to test all properties on all classes in <strong>SecretSanta.Business</strong>. ❌✔</li>
+<li>Configure tests to run in parallel both locally and in Azure DevOps and be sure the both the test and SUT code is appropriately thread safe for the tests to pass reliably. ❌✔</li>
+</ul>
+</body></html>
