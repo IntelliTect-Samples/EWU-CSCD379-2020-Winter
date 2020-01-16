@@ -6,10 +6,25 @@ namespace SecretSanta.Business
 {
     public class Gift
     {
+        private string _Title = "Invalid";
+        private string _Description = "Invalid";
+        private string _Url = "Invalid";
+
         public int Id { get; } 
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Url { get; set; }
+        public string Title 
+        { get => _Title; 
+          set => _Title = value ?? throw new ArgumentNullException(nameof(value)); 
+        }
+        public string Description 
+        { 
+            get => _Description; 
+            set => _Description = value ?? throw new ArgumentNullException(nameof(value));
+        }
+        public string Url 
+        { 
+            get => _Url; 
+            set => _Url = value ?? throw new ArgumentNullException(nameof(value)); 
+        }
         public User User { get; set; }
 
         public Gift(int id, string title, string description, string url, User user)
