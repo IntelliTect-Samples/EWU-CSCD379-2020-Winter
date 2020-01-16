@@ -19,6 +19,7 @@ namespace SecretSanta.Business
             Description = description ?? throw new ArgumentNullException(nameof(description));
             Url = url ?? throw new ArgumentNullException(nameof(url));
             User = user ?? throw new ArgumentNullException(nameof(user));
+            
         }
     }
 }
