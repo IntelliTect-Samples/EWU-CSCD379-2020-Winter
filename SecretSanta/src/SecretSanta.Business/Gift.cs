@@ -6,9 +6,7 @@ namespace SecretSanta.Business
     {
         public int Id { get; }
 
-#pragma warning disable CA1056 // Uri properties should not be strings, or so system says but listening to directions!
         public string Url { get; set; }
-#pragma warning restore CA1056 // Uri properties should not be strings, or so system says but listening to directions!
 
         public string Description { get; set; }
 
@@ -21,9 +19,7 @@ namespace SecretSanta.Business
 
         public User User { get; set; }
 
-#pragma warning disable CA1054 // Uri parameters should not be strings, but listening to directions!
         public Gift(int id, string title, string description, string url, User user)
-#pragma warning restore CA1054 // Uri parameters should not be strings, but listening to directions!
         {
             Id = id;
             Title = title;

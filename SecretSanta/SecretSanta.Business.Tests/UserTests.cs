@@ -4,7 +4,6 @@ using System.Reflection;
 using Microsoft.VisualBasic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-#pragma warning disable CA1707 // doesn't apply to test
 namespace SecretSanta.Business.Tests
 {
     [TestClass]
@@ -64,4 +63,3 @@ namespace SecretSanta.Business.Tests
         }
     }
 }
-#pragma warning restore CA1707
