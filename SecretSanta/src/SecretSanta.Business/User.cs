@@ -17,7 +17,7 @@ namespace SecretSanta.Business
         public string LastName 
         { 
             get => _LastName; 
-            set => _LastName = value ?? throw new ArgumentNullException(nameof(value)); ; 
+            set => _LastName = value ?? throw new ArgumentNullException(nameof(value)); 
         }
         public List<Gift> Gifts { get; }
 
