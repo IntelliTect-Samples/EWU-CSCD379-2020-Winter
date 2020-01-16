@@ -10,12 +10,12 @@ namespace SecretSanta.Business
  
         public List<Gift> Gifts { get; }
 
-        public User(int id, string firstName, string lastName)
+        public User(int id, string firstName, string lastName, List<Gift> gifts)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
-            Gifts = new List<Gift>();
+            Gifts = gifts ?? throw new ArgumentNullException(nameof(gifts));
         }
 
         private string _FirstName = "<Invalid>";

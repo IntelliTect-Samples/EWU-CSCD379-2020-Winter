@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace SecretSanta.Business.Tests
 {
@@ -15,7 +16,7 @@ namespace SecretSanta.Business.Tests
             const string lastName = "last";
 
             // act
-            User user = new User(id, firstName, lastName);
+            User user = new User(id, firstName, lastName, new List<Gift>());
 
             // assert
             Assert.AreEqual<int>(id, user.Id, "1");
@@ -27,14 +28,32 @@ namespace SecretSanta.Business.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Verify_FirstNamePropertyNotNull_NotNull()
         {
-            new User(1, null!, "last");
+            new User(1, null!, "last", new List<Gift>());
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Verify_LastNamePropertyNotNull_NotNull()
         {
-            new User(1, "first", null!);
+            new User(1, "first", null!, new List<Gift>());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        [DataRow("", "<lastname>")]
+        [DataRow("<firstname>", "")]
+        public void Create_PropertiesWhiteSpace_ThrowArgumentException(string fname, string lname)
+        {
+            // Arrange
+            var gifts = new List<Gift>();
+            // Act
+            _ = new User(
+                0,
+                fname,
+                lname,
+                gifts);
+            // Assert
+            // handled from method attributes
         }
     }
 }

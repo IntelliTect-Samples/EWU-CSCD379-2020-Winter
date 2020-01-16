@@ -1,5 +1,6 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace SecretSanta.Business.Tests
 {
@@ -14,7 +15,7 @@ namespace SecretSanta.Business.Tests
             const string title = "test title";
             const string description = "description";
             const string url = "some url";
-            User user = new User(id, "billy", "bob");
+            User user = new User(id, "billy", "bob", new List<Gift>());
             
             // act
             Gift gift = new Gift(id, title, description, url, user);
@@ -29,21 +30,21 @@ namespace SecretSanta.Business.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Verify_TitlePropertyNotNull_NotNull()
         {
-            new Gift(1, null!, "description", "url", new User(1, "billy", "bob"));
+            new Gift(1, null!, "description", "url", new User(1, "billy", "bob", new List<Gift>()));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Verify_DescriptionPropertyNotNull_NotNull()
         {
-            new Gift(1, "title", null!, "url", new User(1, "billy", "bob"));
+            new Gift(1, "title", null!, "url", new User(1, "billy", "bob", new List<Gift>()));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Verify_UrlPropertyNotNull_NotNull()
         {
-            new Gift(1, "title", "description", null!, new User(1, "billy", "bob"));
+            new Gift(1, "title", "description", null!, new User(1, "billy", "bob", new List<Gift>()));
         }
     }
 }

@@ -9,18 +9,6 @@ namespace SecretSanta.Business
         public int Id { get; }
         
         public User? User { get; set; }
-
-        public Gift(int id, string title, string description, string url, User user)
-        {
-            Id = id;
-            Title = title;
-            Description = description;
-            Url = url;
-            User = user;
-        }
-     
-
-
         private string _Title = "<Invalid>";
         public string Title
         {
@@ -42,7 +30,6 @@ namespace SecretSanta.Business
             set => _Url = AssertIsNotNullOrWhitespace(value);
         }
 
-
         private string AssertIsNotNullOrWhitespace(string value) =>
             value switch
             {
@@ -53,6 +40,13 @@ namespace SecretSanta.Business
                 _ => value
             };
 
-
+        public Gift(int id, string title, string description, string url, User user)
+        {
+            Id = id;
+            Title = title;
+            Description = description;
+            Url = url;
+            User = user;
+        }
     }
 }
