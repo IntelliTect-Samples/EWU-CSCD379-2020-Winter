@@ -22,14 +22,14 @@ namespace SecretSanta.Business
             set => _LastName = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-        public List<Gift>? Gifts { get; set; }
+        public List<Gift> Gifts { get; }
 
-        public User(int id, string firstName, string lastName, List<Gift>? gifts)
+        public User(int id, string firstName, string lastName, List<Gift> gifts = null!)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
-            Gifts = gifts;
+            Gifts = gifts ?? new List<Gift>();
         }
     }
 }

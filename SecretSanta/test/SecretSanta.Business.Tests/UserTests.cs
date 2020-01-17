@@ -10,7 +10,7 @@ namespace SecretSanta.Business.Tests
         [TestMethod]
         public void CreateUser_UsingValidInput_Success()
         {
-            User user = new User(1, "TestFirst", "TestLast", new List<Gift>());
+            User user = new User(1, "TestFirst", "TestLast");
 
             Assert.AreEqual<int>(1, user.Id);
             Assert.AreEqual<string>("TestFirst", user.FirstName);
@@ -22,14 +22,14 @@ namespace SecretSanta.Business.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateUser_UsingNullFirstName_ThrowsArgumentNullException()
         {
-            User user = new User(1, null!, "TestLast", new List<Gift>());
+            User user = new User(1, null!, "TestLast");
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ChangeUserFirstName_UsingNullFirstName_ThrowsArgumentNullException()
         {
-            User user = new User(1, "TestFirst", "TestLast", new List<Gift>());
+            User user = new User(1, "TestFirst", "TestLast");
 
             user.FirstName = null!;
         }
@@ -38,14 +38,14 @@ namespace SecretSanta.Business.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void CreateUser_UsingNullLastName_ThrowsArgumentNullException()
         {
-            User user = new User(1, "TestFirst", null!, new List<Gift>());
+            User user = new User(1, "TestFirst", null!);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void ChangeUserLastName_UsingNullLastName_ThrowsArgumentNullException()
         {
-            User user = new User(1, "TestFirst", "TestLast", new List<Gift>());
+            User user = new User(1, "TestFirst", "TestLast");
 
             user.LastName = null!;
         }
