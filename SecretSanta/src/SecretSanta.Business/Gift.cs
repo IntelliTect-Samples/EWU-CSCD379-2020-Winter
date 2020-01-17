@@ -30,9 +30,9 @@ namespace SecretSanta.Business
             set => _User = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-#pragma warning disable CS8618 // Properties are initialized and checked in set method.
+#nullable disable // Properties are initialized and checked in set method.
         public Gift(int id, string title, string description, string url, User user)
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+#nullable enable
         {
             Id = id;
             Title = title;

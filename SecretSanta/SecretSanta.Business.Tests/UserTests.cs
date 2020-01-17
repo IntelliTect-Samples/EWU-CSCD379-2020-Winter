@@ -12,9 +12,9 @@ namespace SecretSanta.Business.Tests
         {
             // Arrange
             List<Gift> gifts = new List<Gift>();
-            User user = new User(0, "First", "Last", gifts);
 
             // Act
+            User user = new User(0, "First", "Last", gifts);
 
             // Assert
             Assert.AreEqual(0, user.Id);

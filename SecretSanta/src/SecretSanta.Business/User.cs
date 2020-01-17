@@ -26,9 +26,9 @@ namespace SecretSanta.Business
         }
 
 
-#pragma warning disable CS8618 // Properties are initialized and checked in set method.
+#nullable disable // Properties are initialized and checked in set method.
         public User(int id, string firstName, string lastName, List<Gift> gifts)
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+#nullable enable
         {
             Id = id;
             FirstName = firstName;
