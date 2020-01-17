@@ -19,9 +19,9 @@ namespace SecretSanta.Business.Tests
             User user = new User(id, firstName, lastName, new List<Gift>());
 
             // assert
-            Assert.AreEqual<int>(id, user.Id, "1");
-            Assert.AreEqual<string>(firstName, user.FirstName, "first");
-            Assert.AreEqual<string>(lastName, user.LastName, "last");
+            Assert.AreEqual<int>(id, user.Id, "User Id not equal");
+            Assert.AreEqual<string>(firstName, user.FirstName, "firstName not equal");
+            Assert.AreEqual<string>(lastName, user.LastName, "lastName not equal");
         }
 
         [TestMethod]

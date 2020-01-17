@@ -7,7 +7,6 @@ namespace SecretSanta.Business
     public class Gift
     {
         public int Id { get; }
-        
         public User? User { get; set; }
         private string _Title = "<Invalid>";
         public string Title

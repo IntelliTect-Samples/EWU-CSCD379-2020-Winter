@@ -8,15 +8,7 @@ namespace SecretSanta.Business
     {
         public int Id { get; }
  
-        public List<Gift> Gifts { get; }
-
-        public User(int id, string firstName, string lastName, List<Gift> gifts)
-        {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            Gifts = gifts ?? throw new ArgumentNullException(nameof(gifts));
-        }
+        public List<Gift> Gifts { get; set; }
 
         private string _FirstName = "<Invalid>";
         public string FirstName
@@ -33,14 +25,21 @@ namespace SecretSanta.Business
         }
 
         private string AssertIsNotNullOrWhitespace(string value) =>
-    value switch
-    {
-        null => throw new ArgumentNullException(nameof(value)),
-        "" => throw new ArgumentException($"{nameof(value)} cannot be an empty string.", nameof(value)),
-        string temp when string.IsNullOrWhiteSpace(temp) =>
-            throw new ArgumentException($"{nameof(value)} cannot be only whitespace.", nameof(value)),
-        _ => value
-    };
+        value switch
+        {
+            null => throw new ArgumentNullException(nameof(value)),
+            "" => throw new ArgumentException($"{nameof(value)} cannot be an empty string.", nameof(value)),
+            string temp when string.IsNullOrWhiteSpace(temp) =>
+                throw new ArgumentException($"{nameof(value)} cannot be only whitespace.", nameof(value)),
+            _ => value
+        };
 
+        public User(int id, string firstName, string lastName, List<Gift> gifts)
+        {
+            Id = id;
+            FirstName = firstName;
+            LastName = lastName;
+            Gifts = gifts ?? throw new ArgumentNullException(nameof(gifts));
+        }
     }
 }
