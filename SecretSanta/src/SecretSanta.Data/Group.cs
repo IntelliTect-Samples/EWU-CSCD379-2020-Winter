@@ -4,8 +4,11 @@ using System.Text;
 
 namespace SecretSanta.Data
 {
-    class Group : FingerPrintEntityBase
+    public class Group : FingerPrintEntityBase
     {
+#nullable disable
         public string Name { get; set; }
+        public ICollection<UserGroup> UserGroups { get; set; }
+#nullable enable
     }
 }
