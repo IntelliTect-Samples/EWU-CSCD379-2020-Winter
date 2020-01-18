@@ -11,7 +11,23 @@ namespace SecretSanta.Data.Tests
         public void Gift_CanBeCreate_AllPropertiesGetSet()
         {
             // Arrange
-            Gift gift = new Gift(1, "Ring 2", "Amazing way to keep the creepers away", "www.ring.com", new User(1, "Inigo", "Montoya", new List<Gift>()));
+            User user = new User
+            {
+                Id = 1,
+                FirstName = "Inigo",
+                LastName = "Montoya",
+                Gifts = new List<Gift>()
+
+            };
+            Gift gift = new Gift
+            {
+                Title = "Ring 2",
+                Description = "Amazing way to keep the creepers away",
+                Url = "www.ring.com",
+                User = user
+            };
+
+            
 
             // Act
 
@@ -27,21 +43,30 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()
         {
-            Gift gift = new Gift(1, null!, "Amazing way to keep the creepers away", "www.ring.com", new User(1, "Inigo", "Montoya", new List<Gift>()));
+            _ = new Gift
+            {
+                Title = null!,
+            };
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
         {
-            Gift gift = new Gift(1, "Ring 2", null!, "www.ring.com", new User(1, "Inigo", "Montoya", new List<Gift>()));
+            _ = new Gift
+            {
+                Description = null!
+            };
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetUrlToNull_ThrowsArgumentNullException()
         {
-            Gift gift = new Gift(1, "Ring 2", "Amazing way to keep the creepers away", null!, new User(1, "Inigo", "Montoya", new List<Gift>()));
+            _ = new Gift
+            {
+                Url = null!
+            };
         }
     }
 }
