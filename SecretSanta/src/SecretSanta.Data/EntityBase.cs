@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SecretSanta.Data
 {
-    class EntityBase
+    public class EntityBase
     {
         public int Id { get; }
 

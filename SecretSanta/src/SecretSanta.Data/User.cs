@@ -12,6 +12,7 @@ namespace SecretSanta.Data
         public string LastName { get => _LastName; set => _LastName = value ?? throw new ArgumentNullException(nameof(LastName)); }
         private string _LastName = string.Empty;
         public ICollection<Gift> Gifts { get; }
+        public string FullName { get=> _FirstName + " "+ _LastName;}
 
         public User(int id, string firstName, string lastName, List<Gift> gifts)
         {

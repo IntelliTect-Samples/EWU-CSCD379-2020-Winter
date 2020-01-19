@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SecretSanta.Data
 {
-    class FingerPrintEntityBase : EntityBase
+    public class FingerPrintEntityBase : EntityBase
     {
         public FingerPrintEntityBase(
             int id, string createdBy, DateTime createdOn, string modifiedBy, DateTime modifiedOn)
