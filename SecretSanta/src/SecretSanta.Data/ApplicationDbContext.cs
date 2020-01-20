@@ -9,10 +9,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SecretSanta.Data
 {
-    class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<Gift> Gifts { get; set; }
         public IHttpContextAccessor HttpContextAccessor { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }

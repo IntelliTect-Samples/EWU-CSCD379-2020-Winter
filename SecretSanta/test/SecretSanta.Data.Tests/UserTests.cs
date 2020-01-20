@@ -6,13 +6,18 @@ using System.Text;
 namespace SecretSanta.Data.Tests
 {
     [TestClass]
-    public class UserTests
+    public class UserTests : TestBase
     {
         [TestMethod]
         public void User_CanBeCreate_AllPropertiesGetSet()
         {
             // Arrange
-            User user = new User(1, "Inigo", "Montoya", new List<Gift>());
+            User user = new User
+            {
+                Id = 1, 
+                FirstName = "Inigo", 
+                LastName = "Montoya"
+            };
 
             // Act
             // Assert
@@ -26,14 +31,24 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void User_SetFirstNameToNull_ThrowsArgumentNullException()
         {
-            User user = new User(1, null!, "Montoya", new List<Gift>());
+            User user = new User
+            {
+                Id = 1, 
+                FirstName = null!, 
+                LastName = "Montoya"
+            };
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void User_SetLastNameToNull_ThrowsArgumentNullException()
         {
-            User user = new User(1, "Inigo", null!, new List<Gift>());
+            User user = new User
+            {
+                Id = 1,
+                FirstName = "Inigo", 
+                LastName = null!
+            };
         }
     }
 }
