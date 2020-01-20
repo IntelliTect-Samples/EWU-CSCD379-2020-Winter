@@ -43,8 +43,6 @@ namespace SecretSanta.Data.Tests
             };
 
             // Act
-            user1.UserGroups = new List<UserGroup>();
-            user2.UserGroups = new List<UserGroup>();
             user1.UserGroups.Add(new UserGroup{User = user1, Group=group1});
             user2.UserGroups.Add(new UserGroup{User = user2, Group = group1});
             user2.UserGroups.Add(new UserGroup{User=user2, Group=group2});

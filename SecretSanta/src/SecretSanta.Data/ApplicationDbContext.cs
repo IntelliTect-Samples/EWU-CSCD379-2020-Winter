@@ -25,6 +25,8 @@ namespace SecretSanta.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            if (modelBuilder==null)
+                throw new ArgumentNullException(nameof(modelBuilder));
             modelBuilder.Entity<UserGroup>().HasKey(pt => new { pt.UserId, pt.GroupId });
 
             modelBuilder.Entity<UserGroup>()

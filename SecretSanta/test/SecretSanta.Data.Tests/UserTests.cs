@@ -1,10 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Moq;
@@ -22,7 +20,7 @@ namespace SecretSanta.Data.Tests
 
             int userId = -1;
 
-            using (var dbContext = new ApplicationDbContext(Options))
+            using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
 
                 // Arrange
