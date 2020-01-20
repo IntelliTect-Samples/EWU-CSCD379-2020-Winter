@@ -9,12 +9,12 @@ namespace SecretSanta.Data
         private string _CreatedBy = string.Empty;
         private string _ModifiedBy = string.Empty;
 
-        public string CreatedBy { get => _CreatedBy; private set => _CreatedBy = value ?? throw new ArgumentNullException(nameof(value)); }
+        public string CreatedBy { get => _CreatedBy; set => _CreatedBy = value ?? throw new ArgumentNullException(nameof(value)); }
 
-        public DateTime CreatedOn { get; private set; }
+        public DateTime CreatedOn { get; set; }
 
-        public string ModifiedBy { get => _ModifiedBy; private set => _ModifiedBy = value ?? throw new ArgumentNullException(nameof(value)); }
+        public string ModifiedBy { get => _ModifiedBy; set => _ModifiedBy = value ?? throw new ArgumentNullException(nameof(value)); }
 
-        public DateTime ModifiedOn { get; private set; }
+        public DateTime ModifiedOn { get; set; }
     }
 }

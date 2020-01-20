@@ -1,12 +1,17 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Data.Tests
 {
     [TestClass]
-    public class UserTests
+    public class UserTests : TestBase
     {
         [TestMethod]
         public void User_CanBeCreate_AllPropertiesGetSet()
@@ -46,6 +51,19 @@ namespace SecretSanta.Data.Tests
             {
                 LastName = null!
             };
+        }
+
+        [TestMethod]
+        public async Task AddUser_SampleUser_ShouldExistInDatabase()
+        {
+            //Arrange
+            //Act
+            using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
+            {
+                applicationDbContext.Users.Add(_Spongebob);
+                await applicationDbContext.SaveChangesAsync();
+            }
+            //Assert
         }
     }
 }

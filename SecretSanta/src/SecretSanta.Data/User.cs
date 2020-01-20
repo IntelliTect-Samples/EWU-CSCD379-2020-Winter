@@ -11,9 +11,8 @@ namespace SecretSanta.Data
         public string LastName { get => _LastName; set => _LastName = value ?? throw new ArgumentNullException(nameof(LastName)); }
         private string _LastName = string.Empty;
         private ICollection<Gift> _Gifts = new List<Gift>();
-
         public ICollection<Gift> Gifts { get => _Gifts; set => _Gifts = value ?? throw new ArgumentNullException(nameof(value)); }
-
         public User? Santa { get; set; }
+        public ICollection<UserGroup> UserGroups { get; set; } = new List<UserGroup>();
     }
 }
