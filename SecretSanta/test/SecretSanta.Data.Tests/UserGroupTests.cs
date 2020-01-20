@@ -12,7 +12,7 @@ using Moq;
 namespace SecretSanta.Data.Tests
 {
     [TestClass]
-    class UserGroupTests : TestBase
+    public class UserGroupTests : TestBase
     {
         [TestMethod]
         public async Task CreateGroupsWithManyUsers()
@@ -75,6 +75,16 @@ namespace SecretSanta.Data.Tests
                 Assert.AreEqual(2, retrievedUser.UserGroups.Count);
                 Assert.IsNotNull(retrievedUser.UserGroups[0].Group);
                 Assert.IsNotNull(retrievedUser.UserGroups[1].Group);
+            }
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
+            {
+                var retrievedGroup = await dbContext.Groups.Where(g => g.Id == group1.Id)
+                    .Include(g => g.UserGroups).ThenInclude(ug => ug.Group).SingleOrDefaultAsync();
+
+                Assert.IsNotNull(retrievedGroup);
+                Assert.AreEqual(2, retrievedGroup.UserGroups.Count);
+                Assert.IsNotNull(retrievedGroup.UserGroups[0].Group);
+                Assert.IsNotNull(retrievedGroup.UserGroups[1].Group);
             }
         }
     }

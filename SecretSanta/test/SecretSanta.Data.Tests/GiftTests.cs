@@ -51,42 +51,22 @@ namespace SecretSanta.Data.Tests
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Gift_SetTitleToNull_ThrowsArgumentNullException()
-        {
-            var gift = new Gift{
-                Id = 1,
-                Title = null!,
-                Description = "Amazing way to keep the creepers away",
-                Url = "www.ring.com",
-                CreatedBy = "imontoya"
-            };
-        }
+
 
         [TestMethod]
+        [DataRow(1, null!, "Amazing way to keep the creepers away", "www.ring.com", "imontoya")]
+        [DataRow(1, "Ring 2", null!, "www.ring.com", "imontoya")]
+        [DataRow(1, "Ring 2", "Amazing way to keep the creepers away", null!, "imontoya")]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
+        public void Gift_SetNullTests_ThrowsArgumentNullException(int id, string title, string desc, string url, string cb)
         {
-            Gift gift = new Gift
+            var gift = new Gift
             {
-                Id = 1,
-                Title = "Ring 2",
-                Description = null!,
-                Url = "www.ring.com"
-            };
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Gift_SetUrlToNull_ThrowsArgumentNullException()
-        {
-            Gift gift = new Gift{
-                Id = 1, 
-                Title = "Ring 2", 
-                Description = "Amazing way to keep the creepers away",
-                Url = null!
-
+                Id = id,
+                Title = title,
+                Description = desc,
+                Url = url,
+                CreatedBy = cb
             };
         }
     }
