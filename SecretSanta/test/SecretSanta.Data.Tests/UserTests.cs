@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace SecretSanta.Data.Tests
 {
@@ -64,6 +65,13 @@ namespace SecretSanta.Data.Tests
                 await applicationDbContext.SaveChangesAsync();
             }
             //Assert
+            using (ApplicationDbContext applicationDbContext =  new ApplicationDbContext((Options)))
+            {
+                User user = await applicationDbContext.Users.Where(u => u.Id == _Spongebob.Id).SingleOrDefaultAsync();
+                Assert.IsNotNull(user);
+                Assert.AreEqual<int>(_Spongebob.Id, user.Id);
+                Assert.AreEqual<string>(_Spongebob.FirstName, user.FirstName);
+            }
         }
     }
 }

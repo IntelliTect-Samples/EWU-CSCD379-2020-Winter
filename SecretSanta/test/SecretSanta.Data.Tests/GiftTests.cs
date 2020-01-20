@@ -1,11 +1,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace SecretSanta.Data.Tests
 {
     [TestClass]
-    public class GiftTests
+    public class GiftTests : TestBase
     {
         [TestMethod]
         public void Gift_CanBeCreate_AllPropertiesGetSet()
@@ -27,7 +30,7 @@ namespace SecretSanta.Data.Tests
                 User = user
             };
 
-            
+
 
             // Act
 
@@ -67,6 +70,33 @@ namespace SecretSanta.Data.Tests
             {
                 Url = null!
             };
+        }
+
+        [TestMethod]
+        public async Task AddGift_ToSpongebob_ShouldExistInDatabase()
+        {
+            //Arrange
+            Gift gift = new Gift()
+            {
+                Id = 1,
+                Title = "Spatula"
+            };
+            _Spongebob.Gifts.Add(gift);
+            //Act
+            using(ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
+            {
+                applicationDbContext.Users.Add(_Spongebob);
+                await applicationDbContext.SaveChangesAsync();
+            }
+            //Assert
+            using(ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
+            {
+                List<User> users = await applicationDbContext.Users.Include(u => u.Gifts).ToListAsync();
+                User user = users.Where(u => u.Id == _Spongebob.Id).FirstOrDefault();
+                Assert.IsNotNull(user);
+                Assert.AreEqual<int>(gift.Id, user.Gifts.ElementAt(0).Id);
+                Assert.AreEqual<string>(gift.Title, user.Gifts.ElementAt(0).Title);
+            }
         }
     }
 }
