@@ -175,7 +175,7 @@ namespace SecretSanta.Data.Tests
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
                 // Since we are pulling back the record from the database and making changes to it, we don't need to re-add it to the collection
-                // thus no Authors.Add call, that is only needed when new records are inserted
+                // thus no Users.Add call, that is only needed when new records are inserted
                 var user = await applicationDbContext.Users.Where(u => u.Id == userId).SingleOrDefaultAsync();
                 user.FirstName = "NewFirst";
                 user.LastName = "NewLast";
@@ -190,6 +190,7 @@ namespace SecretSanta.Data.Tests
                 Assert.IsNotNull(user);
                 Assert.AreEqual("Tester", user.CreatedBy);
                 Assert.AreEqual("NewTester", user.ModifiedBy);
+                Assert.AreEqual("NewFirst", user.FirstName);
             }
         }
     }
