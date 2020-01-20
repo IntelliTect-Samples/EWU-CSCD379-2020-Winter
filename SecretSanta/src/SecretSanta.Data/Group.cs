@@ -6,14 +6,7 @@ namespace SecretSanta.Data
 {
     class Group : FingerPrintEntityBase
     {
-        public Group(
-            int id, string createdBy, DateTime createdOn, string modifiedBy, DateTime modifiedOn,
-            string name)
-            : base(id, createdBy, createdOn, modifiedBy, modifiedOn)
-        {
-            Name = name;
-        }
-
         public string Name { get; set; }
+        public List<UserGroup> UserGroups { get; set; }
     }
 }

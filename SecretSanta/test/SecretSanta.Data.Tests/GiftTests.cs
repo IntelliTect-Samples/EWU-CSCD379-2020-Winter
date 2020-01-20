@@ -11,7 +11,20 @@ namespace SecretSanta.Data.Tests
         public void Gift_CanBeCreate_AllPropertiesGetSet()
         {
             // Arrange
-            Gift gift = new Gift(1, "Ring 2", "Amazing way to keep the creepers away", "www.ring.com", new User(1, "Inigo", "Montoya", new List<Gift>()));
+            var user = new User
+            {
+                Id = 1,
+                FirstName = "Inigo",
+                LastName = "Montoya",
+                CreatedBy = "imontoya"
+            };
+            var gift = new Gift{
+                Id = 1,
+                Title = "Ring 2",
+                Description = "Amazing way to keep the creepers away",
+                Url = "www.ring.com",
+                CreatedBy = "imontoya"
+            };
 
             // Act
 
@@ -27,7 +40,13 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()
         {
-            Gift gift = new Gift(1, null!, "Amazing way to keep the creepers away", "www.ring.com", new User(1, "Inigo", "Montoya", new List<Gift>()));
+            var gift = new Gift{
+                Id = 1,
+                Title = null!,
+                Description = "Amazing way to keep the creepers away",
+                Url = "www.ring.com",
+                //User = new User(1, "Inigo", "Montoya", new List<Gift>())
+            };
         }
 
         [TestMethod]
