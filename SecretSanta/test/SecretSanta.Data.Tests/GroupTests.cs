@@ -14,6 +14,13 @@ namespace SecretSanta.Data.Tests
     [TestClass]
     public class GroupTests : TestBase
     {
+        private readonly Group _Group = new Group
+        {
+            Name = "group",
+            UserGroups = new List<UserGroup>()
+        };
+
+
         [TestMethod]
         public async Task CreateGroup_ShouldSaveIntoDatabase()
         {
@@ -21,15 +28,12 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var applicationDbContext = new ApplicationDbContext(Options))
             {
-                var group = new Group();
-                applicationDbContext.Groups.Add(group);
-
-                var group2 = new Group();
-                applicationDbContext.Groups.Add(group2);
-
+                
+                applicationDbContext.Groups.Add(_Group);
                 await applicationDbContext.SaveChangesAsync();
 
-                groupId = group.Id;
+                groupId = _Group.Id;
+                
             }
 
             // Act
@@ -39,7 +43,7 @@ namespace SecretSanta.Data.Tests
                 var group = await applicationDbContext.Groups.Where(a => a.Id == groupId).SingleOrDefaultAsync();
 
                 Assert.IsNotNull(group);
-                Assert.AreEqual("group", group.Name);
+                Assert.AreEqual(_Group.Name, group.Name);
             }
         }
 
@@ -47,21 +51,17 @@ namespace SecretSanta.Data.Tests
         public async Task CreateGroup_ShouldSetFingerPrintDataOnInitialSave()
         {
             IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
-                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "imontoya"));
+                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "caleb"));
 
             int groupId = -1;
             // Arrange
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var group = new Group();
-                applicationDbContext.Groups.Add(group);
-
-                var group2 = new Group();
-                applicationDbContext.Groups.Add(group2);
-
+                
+                applicationDbContext.Groups.Add(_Group);
                 await applicationDbContext.SaveChangesAsync();
 
-                groupId = group.Id;
+                groupId = _Group.Id;
             }
 
             // Act
@@ -71,7 +71,8 @@ namespace SecretSanta.Data.Tests
                 var group = await applicationDbContext.Groups.Where(a => a.Id == groupId).SingleOrDefaultAsync();
 
                 Assert.IsNotNull(group);
-                Assert.AreEqual("group", group.Name);
+                Assert.AreEqual("caleb", group.CreatedBy);
+                Assert.AreEqual("caleb", group.ModifiedBy);
                 
             }
         }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SecretSanta.Data
 {
-    public class Group : EntityBase
+    public class Group : FingerPrintEntityBase
     {
 #nullable disable
         public string Name { get => _Name; set => _Name = value ?? throw new ArgumentNullException(nameof(value)); }

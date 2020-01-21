@@ -40,8 +40,11 @@ namespace SecretSanta.Data.Tests
                 .UseLoggerFactory(GetLoggerFactory())
                 .EnableSensitiveDataLogging().Options;
 
-            using var context = new ApplicationDbContext(Options);
-            context.Database.EnsureCreated();
+            using (var context = new ApplicationDbContext(Options))
+            {
+                context.Database.EnsureCreated();
+            }
+            
         }
 
         [TestCleanup]

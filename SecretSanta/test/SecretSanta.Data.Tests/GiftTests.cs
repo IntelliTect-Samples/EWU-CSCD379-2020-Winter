@@ -66,16 +66,12 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var applicationDbContext = new ApplicationDbContext(Options))
             {
-                var gift = new Gift();
                 
-                applicationDbContext.Gifts.Add(gift);
-
-                var gift2 = new Gift();
-                applicationDbContext.Gifts.Add(gift2);
-
+                
+                applicationDbContext.Gifts.Add(_Gift);
                 await applicationDbContext.SaveChangesAsync();
 
-                giftId = gift.Id;
+                giftId = _Gift.Id;
             }
 
             // Act
