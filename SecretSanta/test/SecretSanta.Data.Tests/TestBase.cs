@@ -46,6 +46,19 @@ namespace SecretSanta.Data.Tests
         protected DbContextOptions<ApplicationDbContext> Options { get; private set; }
 #nullable enable
 
+        private static ILoggerFactory GetLoggerFactory()
+        {
+            IServiceCollection serviceCollection = new ServiceCollection();
+            serviceCollection.AddLogging(builder =>
+            {
+                builder.AddConsole()
+                    .AddFilter(DbLoggerCategory.Database.Command.Name,
+                        LogLevel.Information);
+            });
+            return serviceCollection.BuildServiceProvider().
+                GetService<ILoggerFactory>();
+        }
+
         [TestInitialize]
         public void OpenConnection()
         {
@@ -54,6 +67,8 @@ namespace SecretSanta.Data.Tests
 
             Options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseSqlite(SqliteConnection)
+                .UseLoggerFactory(GetLoggerFactory())
+                .EnableSensitiveDataLogging()
                 .Options;
 
             using (var context = new ApplicationDbContext(Options))
