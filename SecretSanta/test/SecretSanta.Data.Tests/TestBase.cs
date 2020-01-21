@@ -11,7 +11,7 @@ namespace SecretSanta.Data.Tests
 {
     public class TestBase
     {
-#nullable disable
+#nullable disable // really hate this... haven't come up with a best practice for this yet
         private SqliteConnection SqliteConnection { get; set; }
         protected DbContextOptions<ApplicationDbContext> Options { get; private set; }
 #nullable enable
