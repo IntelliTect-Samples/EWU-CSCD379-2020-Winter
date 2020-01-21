@@ -14,14 +14,5 @@ namespace SecretSanta.Data
         private string _Url = string.Empty;
         public User User { get; set; }
         public int UserId { get; set; }
-
-        public Gift(int id, string title, string description, string url, User user)
-        {
-            Id = id;
-            Title = title;
-            Description = description;
-            Url = url;
-            User = user;
-        }
     }
 }

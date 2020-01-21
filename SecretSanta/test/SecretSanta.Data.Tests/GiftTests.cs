@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace SecretSanta.Data.Tests
 {
     [TestClass]
-    public class GiftTests
+    public class GiftTests : TestBase
     {
         [TestMethod]
         public void Gift_CanBeCreate_AllPropertiesGetSet()
