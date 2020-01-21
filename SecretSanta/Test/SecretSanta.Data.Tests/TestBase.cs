@@ -40,7 +40,7 @@ namespace SecretSanta.Data.Tests
         public void OpenConnection()
         {
             SqliteConnection = new SqliteConnection("DataSource=:memory:");
-            SqliteConnection = new SqliteConnection("DataSource=testdatabase.db");
+            //SqliteConnection = new SqliteConnection("DataSource=testdatabase.db");
             SqliteConnection.Open();
 
             Options = new DbContextOptionsBuilder<ApplicationDbContext>()
