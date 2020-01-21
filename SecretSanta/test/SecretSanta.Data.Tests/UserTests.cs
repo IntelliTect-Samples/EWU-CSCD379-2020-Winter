@@ -16,7 +16,7 @@ namespace SecretSanta.Data.Tests
         public void User_CanBeCreate_AllPropertiesGetSet()
         {
             // Arrange
-            User user = new User{Id = 1, FirstName = "Inigo", LastName = "Montoya", Gifts = new List<Gift>()};
+            User user = new User {Id = 1, FirstName = "Inigo", LastName = "Montoya", Gifts = new List<Gift>()};
 
             // Act
             // Assert
@@ -39,42 +39,34 @@ namespace SecretSanta.Data.Tests
         {
             User user = new User {Id = 1, FirstName = "Inigo", LastName = null!, Gifts = new List<Gift>()};
         }
-        [TestMethod]
-        public async Task CreateAuthor_ShouldSaveIntoDatabase()
-        {
-            int authorId = -1;
-            // Arrange
-            using (var applicationDbContext = new ApplicationDbContext(Options))
-            {
-                var user = new User
-                {
-                    FirstName = "Inigo",
-                    LastName = "Montoya",
-                    Gifts = new List<Gift>()
-                };
-                applicationDbContext.Users.Add(user);
 
-                var user2 = new User
+        [TestMethod]
+        public async Task CreateUser_ShouldSaveIntoDatabase()
+        {
+            int userId = -1;
+            using (var applicationDbContext = new ApplicationDbContext(Options, HttpContextAccessor))
+            {
+                User user = new User
                 {
                     FirstName = "Inigo",
                     LastName = "Montoya",
                     Gifts = new List<Gift>()
                 };
-                applicationDbContext.Users.Add(user2);
+                applicationDbContext.Users?.Add(user);
 
                 await applicationDbContext.SaveChangesAsync();
-
-                authorId = user.Id;
+                userId = user.Id;
             }
 
             // Act
-            // Assert
-            using (var applicationDbContext = new ApplicationDbContext(Options))
-            {
-                var author = await applicationDbContext.Users.Where(a => a.Id == authorId).SingleOrDefaultAsync();
 
-                Assert.IsNotNull(author);
-                Assert.AreEqual("Inigo", author.FirstName);
+            // Assert
+            using (var applicationDbContext = new ApplicationDbContext(Options, HttpContextAccessor))
+            {
+                var user = await applicationDbContext.Users.Where(i => i.Id == userId).SingleOrDefaultAsync();
+
+                Assert.IsNotNull(user);
+                Assert.AreEqual("Inigo", user.FirstName);
             }
         }
     }

@@ -1,8 +1,12 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using System;
+using System.Security.Claims;
 
 namespace SecretSanta.Data.Tests
 {
@@ -12,6 +16,9 @@ namespace SecretSanta.Data.Tests
         private SqliteConnection SqliteConnection { get; set; }
         protected DbContextOptions<ApplicationDbContext> Options { get; private set; }
 #nullable enable
+        public IHttpContextAccessor HttpContextAccessor { get => _HttpContextAccessor; set => _HttpContextAccessor = value ?? throw new ArgumentNullException(nameof(HttpContextAccessor)); }
+        private IHttpContextAccessor _HttpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
+            hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "kveselits"));
 
         private static ILoggerFactory GetLoggerFactory()
         {

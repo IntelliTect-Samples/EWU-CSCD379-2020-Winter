@@ -1,20 +1,19 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Gift> Gifts { get; set; }
-        public DbSet<User> Users { get; set; }
-        public DbSet<GroupSet> GroupSets { get; set; }
-        public IHttpContextAccessor HttpContextAccessor { get; set; }
+        public DbSet<Gift>? Gifts { get; set; }
+        public DbSet<User>? Users { get; set; }
+        public DbSet<Group>? Groups { get; set; }
+        public DbSet<GroupSet>? GroupSets { get; set; }
+        public IHttpContextAccessor? HttpContextAccessor { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
