@@ -43,12 +43,41 @@ namespace SecretSanta.Data
 
         public override int SaveChanges()
         {
-            return base.SaveChanges();//implement
+            AddFingerPrinting();
+            return base.SaveChanges();
         }
 
-        //public override Task<int> SaveChangesAsync(System.Threading.CancellationToken cancellationToken = default)
-        //{
+        public override Task<int> SaveChangesAsync(System.Threading.CancellationToken cancellationToken = default)
+        {
+            AddFingerPrinting();
+            return base.SaveChangesAsync(cancellationToken);
+        }
 
-        //}
+        private void AddFingerPrinting()
+        {
+            var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified);
+            var added = ChangeTracker.Entries().Where(e => e.State == EntityState.Added);
+
+            foreach(var entry in added)
+            {
+                var fingerPrintEntry = entry.Entity as FingerPrintEntityBase;
+                if(!(fingerPrintEntry is null))
+                {
+                    fingerPrintEntry.CreatedOn = DateTime.UtcNow;
+                    fingerPrintEntry.CreatedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
+                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+                }
+            }
+            foreach(var entry in modified)
+            {
+                var fingerPrintEntry = entry.Entity as FingerPrintEntityBase;
+                if(!(fingerPrintEntry is null))
+                {
+                    fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
+                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? fingerPrintEntry.ModifiedBy;
+                }
+            }
+        }
     }
 }
