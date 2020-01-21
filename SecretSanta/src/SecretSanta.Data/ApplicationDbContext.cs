@@ -16,7 +16,9 @@ namespace SecretSanta.Data
         public DbSet<Gift> Gifts { get; set; } = null!;
         public IHttpContextAccessor HttpContextAccessor { get; set; }
 
+#nullable disable // I hate this solution. trying to find a better one
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+#nullable enable
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
