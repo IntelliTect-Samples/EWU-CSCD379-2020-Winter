@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SecretSanta.Data
 {
+    
 	public class ApplicationDbContext : DbContext
 	{
         public DbSet<Gift>? Gifts { get; set; }

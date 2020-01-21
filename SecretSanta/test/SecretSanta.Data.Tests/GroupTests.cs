@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,7 +29,41 @@ namespace SecretSanta.Data.Tests
 			Assert.IsNotNull(group.UserGroups);
 		}
 
-        [TestMethod]
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		[ExcludeFromCodeCoverage]
+		public void GroupCreate_NullNameData_ThrowsException()
+		{
+			// Arrange
+			Group group = new Group
+			{
+				Name = null!,
+				UserGroups = new List<UserGroup>()
+			};
+
+			// Act
+
+			// Assert
+		}
+		[TestMethod]
+		[ExpectedException(typeof(ArgumentNullException))]
+		[ExcludeFromCodeCoverage]
+		public void GroupCreate_NullUserGroupData_ThrowsException()
+		{
+			// Arrange
+			Group group = new Group
+			{
+				Name = "group",
+				UserGroups = null!
+			};
+
+			// Act
+
+			// Assert
+		}
+
+
+		[TestMethod]
         public async Task GroupCreate_SaveToDatabase_GroupInserted()
         {
             // Arrange

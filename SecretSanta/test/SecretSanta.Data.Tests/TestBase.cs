@@ -12,6 +12,9 @@ using System.Text;
 
 namespace SecretSanta.Data.Tests
 {
+    /// <summary>
+    /// Extra Credit: See below GetLoggerFactory method
+    /// </summary>
     [TestClass]
     public class TestBase
     {
@@ -24,14 +27,15 @@ namespace SecretSanta.Data.Tests
         private IHttpContextAccessor _HttpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
                 hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "dsergio"));
 
+
         private static ILoggerFactory GetLoggerFactory()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
             serviceCollection.AddLogging(builder =>
             {
                 builder.AddConsole()
-                    .AddFilter(DbLoggerCategory.Database.Command.Name,
-                        LogLevel.Information);
+                    .AddFilter(DbLoggerCategory.Database.Command.Name, 
+                    LogLevel.Trace);
             });
             return serviceCollection.BuildServiceProvider().
                 GetService<ILoggerFactory>();

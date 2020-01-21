@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ namespace SecretSanta.Data.Tests
     public class GiftTests : TestBase
     {
         [TestMethod]
-        public void Gift_CanBeCreate_AllPropertiesGetSet()
+        public void GiftCreate_ValidData_ValidData()
         {
             // Arrange
             User user = new User
@@ -40,68 +41,27 @@ namespace SecretSanta.Data.Tests
             Assert.IsNotNull(gift.User);
         }
 
-        [TestMethod]
+        [DataTestMethod]
+        [DataRow(null!, "description", "url.com")]
+        [DataRow("title", null!, "url.com")]
+        [DataRow("title", "description", null!)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Gift_SetTitleToNull_ThrowsArgumentNullException()
+        [ExcludeFromCodeCoverage]
+        public void GiftCreate_NullData_ThrowsException(string title, string description, string url)
         {
             User user = new User
             {
                 Id = 1,
-                FirstName = "Inigo",
-                LastName = "Montoya",
+                FirstName = "David",
+                LastName = "Sergio",
                 Gifts = new List<Gift>()
             };
             _ = new Gift
             {
                 Id = 1,
-                Title = null!,
-                Description = "Amazing way to keep the creepers away",
-                Url = "www.ring.com",
-                User = user
-            };
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
-        {
-            // Arrange
-            User user = new User
-            {
-                Id = 1,
-                FirstName = "Inigo",
-                LastName = "Montoya",
-                Gifts = new List<Gift>()
-            };
-
-            // Act
-            _ = new Gift
-            {
-                Id = 1,
-                Title = "Ring 2",
-                Description = null!,
-                Url = "www.ring.com",
-                User = user
-            };
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Gift_SetUrlToNull_ThrowsArgumentNullException()
-        {
-            User user = new User
-            {
-                Id = 1,
-                FirstName = "Inigo",
-                LastName = "Montoya",
-                Gifts = new List<Gift>()
-            };
-            _ = new Gift
-            {
-                Id = 1,
-                Title = "Ring 2",
-                Description = "Amazing way to keep the creepers away",
-                Url = null!,
+                Title = title,
+                Description = description,
+                Url = url,
                 User = user
             };
         }

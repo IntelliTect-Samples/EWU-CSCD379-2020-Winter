@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace SecretSanta.Data.Tests
     public class UserTests : TestBase
     {
         [TestMethod]
-        public void User_CanBeCreate_AllPropertiesGetSet()
+        public void UserCreate_ValidData_ValidData()
         {
             // Arrange
             User user = new User
@@ -31,28 +32,21 @@ namespace SecretSanta.Data.Tests
             Assert.IsNotNull(user.Gifts);
         }
 
-        [TestMethod]
+        [DataTestMethod]
+        [DataRow(null!, "Sergio")]
+        [DataRow("David", null!)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void User_SetFirstNameToNull_ThrowsArgumentNullException()
+        [ExcludeFromCodeCoverage]
+        public void UserCreate_NullData_ThrowsException(string firstName, string lastName)
         {
-            _ = new User
-            {
-                Id = 1,
-                FirstName = null!,
-                LastName = "Montoya",
-                Gifts = new List<Gift>()
-            };
-        }
+            // Arrange
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void User_SetLastNameToNull_ThrowsArgumentNullException()
-        {
+            // Act
             _ = new User
             {
                 Id = 1,
-                FirstName = "Inigo",
-                LastName = null!,
+                FirstName = firstName,
+                LastName = lastName,
                 Gifts = new List<Gift>()
             };
         }
