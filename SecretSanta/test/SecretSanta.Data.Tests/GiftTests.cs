@@ -27,7 +27,8 @@ namespace SecretSanta.Data.Tests
                 Title = "Ring 2",
                 Description = "Amazing way to keep the creepers away",
                 Url = "www.ring.com",
-                User = user
+                User = user,
+                Id = 1
             };
 
 
