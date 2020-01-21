@@ -8,7 +8,7 @@ namespace SecretSanta.Data
     {
 #nullable disable
         public string Name { get; set; }
-        public ICollection<UserGroup> UserGroups { get; set; }
+        public IList<UserGroup> UserGroups { get; }
 #nullable enable
     }
 }

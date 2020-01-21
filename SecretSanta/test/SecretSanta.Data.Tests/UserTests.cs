@@ -1,39 +1,88 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Data.Tests
 {
     [TestClass]
-    public class UserTests
+    public class UserTests : TestBase
     {
         [TestMethod]
-        public void User_CanBeCreate_AllPropertiesGetSet()
+        public async Task User_Create_DbAllPropertiesGetSet()
         {
             // Arrange
-            User user = new User(1, "Inigo", "Montoya", new List<Gift>());
+            int userId = -1;
+
+            var user = new User
+            {
+                Id = 1,
+                FirstName = "Inigo",
+                LastName = "Montoya",
+                CreatedBy = "imontoya",
+                Santa = null,
+                Gifts = new List<Gift>(),
+                UserGroups = new List<UserGroup>()
+            };
 
             // Act
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options))
+            {
+                dbContext.Users.Add(user);
+                await dbContext.SaveChangesAsync();
+                userId = user.Id;
+            }
             // Assert
-            Assert.AreEqual(1, user.Id);
-            Assert.AreEqual("Inigo", user.FirstName);
-            Assert.AreEqual("Montoya", user.LastName);
-            Assert.IsNotNull(user.Gifts);
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options))
+            {
+                User testUser = await dbContext.Users.Where(u => u.Id == userId).SingleOrDefaultAsync();
+                Assert.IsNotNull(user);
+                Assert.AreEqual("Inigo", testUser.FirstName);
+                Assert.AreEqual("Montoya", testUser.LastName);
+            }
         }
 
         [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void User_SetFirstNameToNull_ThrowsArgumentNullException()
+        public async Task User_ShouldSaveFingerPrintData()
         {
-            User user = new User(1, null!, "Montoya", new List<Gift>());
-        }
+            // Arrange
+            int userId = -1;
+            IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta => hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "imont"));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void User_SetLastNameToNull_ThrowsArgumentNullException()
-        {
-            User user = new User(1, "Inigo", null!, new List<Gift>());
+
+            var user = new User
+            {
+                Id = 1,
+                FirstName = "Inigo",
+                LastName = "Montoya",
+                CreatedBy = "imont",
+                Santa = null,
+                Gifts = new List<Gift>(),
+                UserGroups = new List<UserGroup>()
+            };
+
+            //Act
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
+            {
+                dbContext.Users.Add(user);
+                await dbContext.SaveChangesAsync();
+                userId = user.Id;
+            }
+
+            // Assert
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
+            {
+                User testUser = await dbContext.Users.Where(u => u.Id == userId).SingleOrDefaultAsync();
+                Assert.IsNotNull(testUser);
+                Assert.AreEqual("imont", testUser.CreatedBy);
+                Assert.AreEqual("imont", testUser.ModifiedBy);
+            }
         }
     }
 }
