@@ -104,11 +104,11 @@ namespace SecretSanta.Data.Tests
         }
 
         [TestMethod]
-        public async Task CreateGift_SaveToDatabase_GiftInserted()
+        public async Task GiftCreate_SaveToDatabase_GiftInserted()
         {
             // Arrange
             int giftId = -1;
-            using (var applicationDbContext = new ApplicationDbContext(Options))
+            using (var applicationDbContext = new ApplicationDbContext(Options, HttpContextAccessor))
             {
                 User user = new User
                 {
@@ -134,7 +134,7 @@ namespace SecretSanta.Data.Tests
             // Act
 
             // Assert
-            using (var applicationDbContext = new ApplicationDbContext(Options))
+            using (var applicationDbContext = new ApplicationDbContext(Options, HttpContextAccessor))
             {
                 var gift = await applicationDbContext.Gifts.Where(i => i.Id == giftId).SingleOrDefaultAsync();
 
