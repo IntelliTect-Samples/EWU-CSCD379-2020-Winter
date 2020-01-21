@@ -1,10 +1,13 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 
 namespace SecretSanta.Data.Tests
@@ -43,6 +46,7 @@ namespace SecretSanta.Data.Tests
 
 #nullable disable
         private SqliteConnection SqliteConnection { get; set; }
+        protected IHttpContextAccessor _HttpContextAccessor = Mock.Of<IHttpContextAccessor>(hta => hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "SpongeBob"));
         protected DbContextOptions<ApplicationDbContext> Options { get; private set; }
 #nullable enable
 

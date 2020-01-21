@@ -114,5 +114,23 @@ namespace SecretSanta.Data.Tests
                 Assert.AreEqual<int>(_Gift.User.Id, gift.User.Id);
             }
         }
+
+        [TestMethod]
+        public async Task AddGift_ToDatabase_ShouldHaveFingerprint()
+        {
+            //Arrange
+            //Act
+            using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options, _HttpContextAccessor))
+            {
+                applicationDbContext.Gifts.Add(_Gift);
+                await applicationDbContext.SaveChangesAsync();
+            }
+            //Assert
+            using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options, _HttpContextAccessor))
+            {
+                Gift gift = await applicationDbContext.Gifts.Where(g => g.Id == _Gift.Id).SingleOrDefaultAsync();
+                Assert.AreEqual<string>("SpongeBob", gift.CreatedBy);
+            }
+        }
     }
 }

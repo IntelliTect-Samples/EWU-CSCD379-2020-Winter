@@ -73,5 +73,23 @@ namespace SecretSanta.Data.Tests
                 Assert.AreEqual<string>(_Spongebob.FirstName, user.FirstName);
             }
         }
+
+        [TestMethod]
+        public async Task AddUser_SampleUser_ShouldBeFingerPrinted()
+        {
+            //Arrange
+            //Act
+            using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options, _HttpContextAccessor))
+            {
+                applicationDbContext.Users.Add(_Spongebob);
+                await applicationDbContext.SaveChangesAsync();
+            }
+            //Assert
+            using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options, _HttpContextAccessor))
+            {
+                User user = await applicationDbContext.Users.Where(u => u.Id == _Spongebob.Id).SingleOrDefaultAsync();
+                Assert.AreEqual<string>("SpongeBob",user.CreatedBy);
+            }
+        }
     }
 }
