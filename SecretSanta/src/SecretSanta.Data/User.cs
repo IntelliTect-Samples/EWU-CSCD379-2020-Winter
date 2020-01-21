@@ -26,6 +26,12 @@ namespace SecretSanta.Data
                 _LastName = value;
             }
         }
-        public ICollection<Gift> Gifts { get; set; }
+        public int? SantaId { get; set; }
+        public User? Santa { get; set; }
+#nullable disable
+        public IList<Gift> Gifts { get; set; }
+        public IList<UserGroup> UserGroups { get; set; }
+#nullable enable
+
     }
 }

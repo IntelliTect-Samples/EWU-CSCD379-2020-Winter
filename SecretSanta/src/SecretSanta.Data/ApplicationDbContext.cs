@@ -4,54 +4,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace BlogEngine.Data
+namespace SecretSanta.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Post> Posts { get; private set; }
-        public DbSet<Author> Authors { get; private set; }
-        public DbSet<Comment> Comments { get; private set; }
-        public DbSet<Tag> Tags { get; private set; }
-        public DbSet<PostTag> PostTags { get; private set; }
-        public IHttpContextAccessor HttpContextAccessor { get; private set; }
-
-// Justifiction: Properties initialized by Entity Framework.
-#nullable disable // CS8618: Non-nullable field is uninitialized. Consider declaring as nullable.
-        public ApplicationDbContext(
+#nullable disable
+        public DbSet<User> Users { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Gift> Gifts { get; set; }
+        public DbSet<UserGroup> UserGroups { get; set; }
+        private IHttpContextAccessor HttpContextAccessor { get; set; }
 #nullable enable
-            DbContextOptions<ApplicationDbContext> options) : base(options) { }
-
-// Justifiction: Properties initialized by Entity Framework.
-#nullable disable // CS8618: Non-nullable field is uninitialized. Consider declaring as nullable.
-        public ApplicationDbContext(
-#nullable enable
-
-                DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) : 
-            base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContext) : base(dbContext) { }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContext, IHttpContextAccessor httpContextAccessor) : base(dbContext)
         {
             HttpContextAccessor = httpContextAccessor;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            if (modelBuilder is null)
-            {
-                throw new ArgumentNullException(nameof(modelBuilder));
-            }
+            _ = modelBuilder?.Entity<UserGroup>().HasKey(ug => new { ug.UserId, ug.GroupId });
 
-            modelBuilder.Entity<PostTag>().HasKey(postTag => new { postTag.PostId, postTag.TagId });
-
-            modelBuilder.Entity<PostTag>()
-                .HasOne(postTag => postTag.Post)
-                .WithMany(post => post!.PostTags)
-                .HasForeignKey(postTag => postTag.PostId);
-
-            modelBuilder.Entity<PostTag>()
-                .HasOne(postTag => postTag.Tag)
-                .WithMany(tag => tag!.PostTags)
-                .HasForeignKey(postTag => postTag.TagId);
+            modelBuilder?.Entity<UserGroup>().HasOne(ug => ug.User).WithMany(u => u.UserGroups).HasForeignKey(ug => ug.UserId);
+            modelBuilder?.Entity<UserGroup>().HasOne(ug => ug.Group).WithMany(u => u.UserGroups).HasForeignKey(ug => ug.GroupId);
         }
 
         public override int SaveChanges()
@@ -59,8 +38,7 @@ namespace BlogEngine.Data
             AddFingerPrinting();
             return base.SaveChanges();
         }
-
-        public override Task<int> SaveChangesAsync(System.Threading.CancellationToken cancellationToken = default)
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             AddFingerPrinting();
             return base.SaveChangesAsync(cancellationToken);
@@ -73,21 +51,23 @@ namespace BlogEngine.Data
 
             foreach (var entry in added)
             {
-                if (entry.Entity is FingerPrintEntityBase fingerPrintEntry)
+                var fingerPrintEntry = entry.Entity as FingerPrintEntityBase;
+                if (fingerPrintEntry != null)
                 {
                     fingerPrintEntry.CreatedOn = DateTime.UtcNow;
-                    fingerPrintEntry.CreatedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? "";
+                    fingerPrintEntry.CreatedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
                     fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
-                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? "";
+                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
                 }
             }
 
             foreach (var entry in modified)
             {
-                if (entry.Entity is FingerPrintEntityBase fingerPrintEntry)
+                var fingerPrintEntry = entry.Entity as FingerPrintEntityBase;
+                if (fingerPrintEntry != null)
                 {
                     fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
-                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? "";
+                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
                 }
             }
         }

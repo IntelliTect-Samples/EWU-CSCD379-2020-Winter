@@ -7,15 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlogEngine.Data.Tests
+namespace SecretSanta.Data.Tests
 {
-    public class TestBase
+    public abstract class TestBase
     {
 #nullable disable
         private SqliteConnection SqliteConnection { get; set; }
         protected DbContextOptions<ApplicationDbContext> Options { get; private set; }
 #nullable enable
-
         private static ILoggerFactory GetLoggerFactory()
         {
             IServiceCollection serviceCollection = new ServiceCollection();
@@ -30,7 +29,7 @@ namespace BlogEngine.Data.Tests
         }
 
         [TestInitialize]
-        virtual public void TestInitialize()
+        public void InitializeTests()
         {
             SqliteConnection = new SqliteConnection("DataSource=:memory:");
             SqliteConnection.Open();
@@ -41,12 +40,14 @@ namespace BlogEngine.Data.Tests
                 .EnableSensitiveDataLogging()
                 .Options;
 
-            using var context = new ApplicationDbContext(Options);
-            context.Database.EnsureCreated();
+            using (var context = new ApplicationDbContext(Options))
+            {
+                context.Database.EnsureCreated();
+            }
         }
 
         [TestCleanup]
-        virtual  public void TestCleanup()
+        public void TeardownTests()
         {
             SqliteConnection.Close();
         }
