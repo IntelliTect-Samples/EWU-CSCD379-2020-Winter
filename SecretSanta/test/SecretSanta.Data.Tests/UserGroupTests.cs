@@ -20,6 +20,7 @@ namespace SecretSanta.Data.Tests
             LastName = "walsh",
             UserGroups = new List<UserGroup>()
         };
+
         private readonly Group _Group1 = new Group { Name = "group1" };
         private readonly Group _Group2 = new Group { Name = "group2" };
 
@@ -31,7 +32,7 @@ namespace SecretSanta.Data.Tests
         };
 
         [TestMethod]
-        public async Task CreateUserWithManyGroups()
+        public async Task Create_UserWithManyGroups()
         {
             IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "caleb"));
@@ -45,6 +46,9 @@ namespace SecretSanta.Data.Tests
             _User.Gifts = new List<Gift> { _Gift };
             _User.UserGroups = userGroups;
 
+            //_User.UserGroups.Add(new UserGroup { Group = _Group1, User = _User });
+            //_User.UserGroups.Add(new UserGroup { Group = _Group2, User = _User });
+
             using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
                 dbContext.Users.Add(_User);
@@ -54,22 +58,22 @@ namespace SecretSanta.Data.Tests
 
             using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var userFromDb = await dbContext.Users.Where(u => u.Id == _User.Id).Include(u => u.Gifts)
+                var retrievedUsers = await dbContext.Users.Where(u => u.Id == _User.Id).Include(u => u.Gifts)
                     .Include(u => u.UserGroups).ThenInclude(g => g.Group).SingleOrDefaultAsync();
 
-                var giftOnUser = userFromDb.Gifts.ElementAt(0);
+                var giftOnUser = retrievedUsers.Gifts.ElementAt(0);
 
-                Assert.IsNotNull(userFromDb);
-                Assert.AreEqual(_User.FirstName, userFromDb.FirstName);
-                Assert.AreEqual(_User.LastName, userFromDb.LastName);
-                Assert.AreEqual(_User.Id, userFromDb.Id);
+                Assert.IsNotNull(retrievedUsers);
+                Assert.AreEqual(_User.FirstName, retrievedUsers.FirstName);
+                Assert.AreEqual(_User.LastName, retrievedUsers.LastName);
+                Assert.AreEqual(_User.Id, retrievedUsers.Id);
                 Assert.IsNotNull(_User.UserGroups[0]);
                 Assert.IsNotNull(_User.UserGroups[1]);
-                Assert.AreEqual(userGroups[0].GroupId, userFromDb.UserGroups[0].GroupId);
-                Assert.AreEqual(userGroups[0].UserId, userFromDb.UserGroups[0].UserId);
-                Assert.AreEqual(userGroups[1].GroupId, userFromDb.UserGroups[1].GroupId);
-                Assert.AreEqual(userGroups[1].UserId, userFromDb.UserGroups[1].UserId);
-                Assert.AreEqual(1, userFromDb.Gifts.Count);
+                Assert.AreEqual(userGroups[0].GroupId, retrievedUsers.UserGroups[0].GroupId);
+                Assert.AreEqual(userGroups[0].UserId, retrievedUsers.UserGroups[0].UserId);
+                Assert.AreEqual(userGroups[1].GroupId, retrievedUsers.UserGroups[1].GroupId);
+                Assert.AreEqual(userGroups[1].UserId, retrievedUsers.UserGroups[1].UserId);
+                Assert.AreEqual(1, retrievedUsers.Gifts.Count);
                 Assert.AreEqual(_Gift.Url, giftOnUser.Url);
                 Assert.AreEqual(_Gift.Title, giftOnUser.Title);
                 Assert.AreEqual(_Gift.Description, giftOnUser.Description);
