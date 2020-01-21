@@ -1,9 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Data.Tests
 {
@@ -77,7 +77,7 @@ namespace SecretSanta.Data.Tests
         public async Task AddGift_ToDatabase_ShouldExistInDatabase()
         {
             //Arrange
-           
+
             //Act
             using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
             {
@@ -99,13 +99,13 @@ namespace SecretSanta.Data.Tests
             //Arrange
             _Gift.User = _Spongebob;
             //Act
-            using(ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
+            using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
             {
                 applicationDbContext.Gifts.Add(_Gift);
                 await applicationDbContext.SaveChangesAsync();
             }
             //Assert
-            using(ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
+            using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
             {
                 List<Gift> gifts = await applicationDbContext.Gifts.Include(g => g.User).ToListAsync();
                 Gift gift = gifts.Where(g => g.Id == _Gift.Id).FirstOrDefault();

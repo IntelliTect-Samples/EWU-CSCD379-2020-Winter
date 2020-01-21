@@ -1,13 +1,9 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Data.Tests
 {
@@ -88,7 +84,7 @@ namespace SecretSanta.Data.Tests
             using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options, _HttpContextAccessor))
             {
                 User user = await applicationDbContext.Users.Where(u => u.Id == _Spongebob.Id).SingleOrDefaultAsync();
-                Assert.AreEqual<string>("SpongeBob",user.CreatedBy);
+                Assert.AreEqual<string>("SpongeBob", user.CreatedBy);
             }
         }
     }

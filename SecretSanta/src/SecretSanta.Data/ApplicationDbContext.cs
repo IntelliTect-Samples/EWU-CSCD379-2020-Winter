@@ -57,10 +57,10 @@ namespace SecretSanta.Data
             var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified);
             var added = ChangeTracker.Entries().Where(e => e.State == EntityState.Added);
 
-            foreach(var entry in added)
+            foreach (var entry in added)
             {
                 var fingerPrintEntry = entry.Entity as FingerPrintEntityBase;
-                if(!(fingerPrintEntry is null))
+                if (!(fingerPrintEntry is null))
                 {
                     fingerPrintEntry.CreatedOn = DateTime.UtcNow;
                     fingerPrintEntry.CreatedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
@@ -68,10 +68,10 @@ namespace SecretSanta.Data
                     fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
                 }
             }
-            foreach(var entry in modified)
+            foreach (var entry in modified)
             {
                 var fingerPrintEntry = entry.Entity as FingerPrintEntityBase;
-                if(!(fingerPrintEntry is null))
+                if (!(fingerPrintEntry is null))
                 {
                     fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
                     fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
