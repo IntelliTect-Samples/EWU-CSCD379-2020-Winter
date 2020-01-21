@@ -65,6 +65,7 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
         {
+            // Arrange
             User user = new User
             {
                 Id = 1,
@@ -72,6 +73,8 @@ namespace SecretSanta.Data.Tests
                 LastName = "Montoya",
                 Gifts = new List<Gift>()
             };
+
+            // Act
             _ = new Gift
             {
                 Id = 1,
