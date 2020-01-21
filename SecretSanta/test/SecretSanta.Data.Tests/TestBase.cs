@@ -34,7 +34,13 @@ namespace SecretSanta.Data.Tests
             Name = "JellyFishHunters",
             ModifiedBy = "Patrick",
         };
-    
+
+        public static Gift _Gift = new Gift()
+        {
+            Id = 9879679,
+            Title = "Spatula"
+        };
+
 #nullable disable
         private SqliteConnection SqliteConnection { get; set; }
         protected DbContextOptions<ApplicationDbContext> Options { get; private set; }

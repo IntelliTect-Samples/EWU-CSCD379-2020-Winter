@@ -73,29 +73,44 @@ namespace SecretSanta.Data.Tests
         }
 
         [TestMethod]
-        public async Task AddGift_ToSpongebob_ShouldExistInDatabase()
+        public async Task AddGift_ToDatabase_ShouldExistInDatabase()
         {
             //Arrange
-            Gift gift = new Gift()
+           
+            //Act
+            using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
             {
-                Id = 1,
-                Title = "Spatula"
-            };
-            _Spongebob.Gifts.Add(gift);
+                applicationDbContext.Gifts.Add(_Gift);
+                await applicationDbContext.SaveChangesAsync();
+            }
+            //Assert
+            using (ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
+            {
+                List<Gift> gifts = await applicationDbContext.Gifts.ToListAsync();
+                Assert.IsNotNull(gifts.ElementAt(0));
+                Assert.AreEqual(_Gift.Id, gifts.ElementAt(0).Id);
+            }
+        }
+
+        [TestMethod]
+        public async Task AddGift_ToSpongebob_ShouldCreateForeignRelationship()
+        {
+            //Arrange
+            _Gift.User = _Spongebob;
             //Act
             using(ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
             {
-                applicationDbContext.Users.Add(_Spongebob);
+                applicationDbContext.Gifts.Add(_Gift);
                 await applicationDbContext.SaveChangesAsync();
             }
             //Assert
             using(ApplicationDbContext applicationDbContext = new ApplicationDbContext(Options))
             {
-                List<User> users = await applicationDbContext.Users.Include(u => u.Gifts).ToListAsync();
-                User user = users.Where(u => u.Id == _Spongebob.Id).FirstOrDefault();
-                Assert.IsNotNull(user);
-                Assert.AreEqual<int>(gift.Id, user.Gifts.ElementAt(0).Id);
-                Assert.AreEqual<string>(gift.Title, user.Gifts.ElementAt(0).Title);
+                List<Gift> gifts = await applicationDbContext.Gifts.Include(g => g.User).ToListAsync();
+                Gift gift = gifts.Where(g => g.Id == _Gift.Id).FirstOrDefault();
+                Assert.IsNotNull(gift);
+                Assert.AreEqual<string>(_Gift.Title, gift.Title);
+                Assert.AreEqual<int>(_Gift.User.Id, gift.User.Id);
             }
         }
     }

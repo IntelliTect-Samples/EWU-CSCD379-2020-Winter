@@ -13,7 +13,6 @@ namespace SecretSanta.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Gift> Gifts { get; set; }
         public DbSet<Group> Groups { get; set; }
-        public DbSet<UserGroup> UserGroups { get; set; }
 #nullable disable
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -64,9 +63,9 @@ namespace SecretSanta.Data
                 if(!(fingerPrintEntry is null))
                 {
                     fingerPrintEntry.CreatedOn = DateTime.UtcNow;
-                    fingerPrintEntry.CreatedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    fingerPrintEntry.CreatedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
                     fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
-                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
                 }
             }
             foreach(var entry in modified)
@@ -75,7 +74,7 @@ namespace SecretSanta.Data
                 if(!(fingerPrintEntry is null))
                 {
                     fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
-                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? fingerPrintEntry.ModifiedBy;
+                    fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
                 }
             }
         }

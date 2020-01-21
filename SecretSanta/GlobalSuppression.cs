@@ -10,3 +10,5 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "Just for generic testing, security not concern", Scope = "member", Target = "~F:SecretSanta.Data.Tests.TestBase._Spongebob")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "Just for generic testing, security not concern", Scope = "member", Target = "~F:SecretSanta.Data.Tests.TestBase._Patrick")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "Just for generic testing, security not concern", Scope = "member", Target = "~F:SecretSanta.Data.Tests.TestBase._JellyFishGroup")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "Just for generic testing, security not concern", Scope = "member", Target = "~F:SecretSanta.Data.Tests.TestBase._Gift")]
+
