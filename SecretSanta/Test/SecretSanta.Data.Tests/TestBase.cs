@@ -12,6 +12,7 @@ using System.Text;
 
 namespace SecretSanta.Data.Tests
 {
+    [TestClass]
     public class TestBase
     {
 #nullable disable
