@@ -169,9 +169,14 @@ namespace SecretSanta.Data.Tests
 			{
 				Name = "Group 2"
 			};
-			
+			Group group3 = new Group
+			{
+				Name = "Group 3"
+			};
+
 			user.UserGroups.Add(new UserGroup { Group = group1, User = user });
 			user.UserGroups.Add(new UserGroup { Group = group2, User = user });
+			user.UserGroups.Add(new UserGroup { Group = group3, User = user });
 
 			// Act
 			// Assert
@@ -188,9 +193,10 @@ namespace SecretSanta.Data.Tests
 
 
 				Assert.IsNotNull(retrievedUser);
-				Assert.AreEqual(2, retrievedUser.UserGroups.Count);
+				Assert.AreEqual(3, retrievedUser.UserGroups.Count);
 				Assert.IsNotNull(retrievedUser.UserGroups[0].Group);
 				Assert.IsNotNull(retrievedUser.UserGroups[1].Group);
+				Assert.IsNotNull(retrievedUser.UserGroups[2].Group);
 			}
 		}
 	}
