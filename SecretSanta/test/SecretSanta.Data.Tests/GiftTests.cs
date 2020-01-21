@@ -43,5 +43,11 @@ namespace SecretSanta.Data.Tests
         {
             Gift gift = new Gift(1, "Ring 2", "Amazing way to keep the creepers away", null!, new User(1, "Inigo", "Montoya", new List<Gift>()));
         }
+
+        [TestMethod]
+        public void Gift_AddGift_ShouldCreateForeignRelationship()
+        {
+            
+        }
     }
 }
