@@ -25,7 +25,7 @@ namespace SecretSanta.Data
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
-            httpContextAccessor = httpContextAccessor;
+            HttpContextAccessor = httpContextAccessor;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace SecretSanta.Data.Tests
 {
     [TestClass]
-    class GroupTests : TestBase
+    public class GroupTests : TestBase
     {
         [TestMethod]
         public async Task CreateGroup_ShouldSaveIntoDatabase()
@@ -21,10 +21,10 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var applicationDbContext = new ApplicationDbContext(Options))
             {
-                var group = new Group("group");
+                var group = new Group();
                 applicationDbContext.Groups.Add(group);
 
-                var group2 = new Group("group2");
+                var group2 = new Group();
                 applicationDbContext.Groups.Add(group2);
 
                 await applicationDbContext.SaveChangesAsync();
@@ -53,10 +53,10 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var group = new Group("group");
+                var group = new Group();
                 applicationDbContext.Groups.Add(group);
 
-                var group2 = new Group("group2");
+                var group2 = new Group();
                 applicationDbContext.Groups.Add(group2);
 
                 await applicationDbContext.SaveChangesAsync();
@@ -86,10 +86,10 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var applicationDbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var group = new Group("group");
+                var group = new Group();
                 applicationDbContext.Groups.Add(group);
 
-                var group2 = new Group("group2");
+                var group2 = new Group();
                 applicationDbContext.Groups.Add(group2);
 
                 await applicationDbContext.SaveChangesAsync();
