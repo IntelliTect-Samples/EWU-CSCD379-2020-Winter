@@ -17,12 +17,5 @@ namespace SecretSanta.Data
         private List<UserGroup> _UserGroups = new List<UserGroup>();
         public User? Santa { get; set; }
 
-        //public User(int id, string firstName, string lastName, List<Gift> gifts)
-        //{
-        //    Id = id;
-        //    FirstName = firstName;
-        //    LastName = lastName;
-        //    Gifts = gifts;
-        //}
     }
 }
