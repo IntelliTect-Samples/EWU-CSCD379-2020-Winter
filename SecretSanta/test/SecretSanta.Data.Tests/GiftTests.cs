@@ -20,8 +20,8 @@ namespace SecretSanta.Data.Tests
                     Title = "Ring Doorbell",
                     Url = "www.ring.com",
                     Description = "The doorbell that saw too much",
-                    User = new User { FirstName = "Inigo", LastName = "Montoya" }
-                });
+                    User = new User("Inigo", "Montoya")
+                }); ;
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -40,7 +40,7 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()
         {
-            var gift = new Gift
+            _ = new Gift
             {
                 Title = null!
             };
@@ -50,7 +50,7 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
         {
-            var gift = new Gift
+            _ = new Gift
             {
                 Description = null!
             };
@@ -60,7 +60,7 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetUrlToNull_ThrowsArgumentNullException()
         {
-            var gift = new Gift
+            _ = new Gift
             {
                 Url = null!
             };
