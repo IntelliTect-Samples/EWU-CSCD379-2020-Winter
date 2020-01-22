@@ -19,11 +19,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Users.Add(new User
-                {
-                    FirstName = "Inigo",
-                    LastName = "Montoya"
-                });
+                dbContext.Users.Add(new User("Inigo", "Montoya"));
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -47,11 +43,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                dbContext.Users.Add(new User
-                {
-                    FirstName = "Inigo",
-                    LastName = "Montoya"
-                });
+                dbContext.Users.Add(new User("Inigo","Montoya"));
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -75,11 +67,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                dbContext.Users.Add(new User
-                {
-                    FirstName = "Inigo",
-                    LastName = "Montoya"
-                });
+                dbContext.Users.Add(new User("Inigo", "Montoya"));
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -117,9 +105,8 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var group = new Group { Title = "Enchanted Forest" };
-                var user = new User { FirstName = "Inigo", LastName = "Montoya" };
-                user.UserGroups = new List<UserGroup>();
+                var group = new Group("Enchanted Forest");
+                var user = new User("Inigo", "Montoya");
                 user.UserGroups.Add(new UserGroup { User = user, Group = group });
                 dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
@@ -147,8 +134,7 @@ namespace SecretSanta.Data.Tests
             {
                 var gift1 = new Gift { Title = "Ring Doorbell", Url = "www.ring.com", Description = "Just a cool little toy so I can keep my amazon packages" };
                 var gift2 = new Gift { Title = "Arduino", Url = "www.arduino.com", Description = "Every good geek needs an IOT device" };
-                var user = new User { FirstName = "Inigo", LastName = "Montoya" };
-                user.Gifts = new List<Gift>();
+                var user = new User("Inigo", "Montoya");
                 user.Gifts.Add(gift1);
                 user.Gifts.Add(gift2);
                 dbContext.Users.Add(user);
@@ -169,20 +155,14 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void User_SetFirstNameToNull_ThrowsArgumentNullException()
         {
-            var user = new User
-            {
-                FirstName = null!
-            };
+            _ = new User(null!, "Montoya");
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void User_SetLastNameToNull_ThrowsArgumentNullException()
         {
-            var user = new User
-            {
-                LastName = null!
-            };
+            _ = new User("Inigo", null!);
         }
     }
 }
