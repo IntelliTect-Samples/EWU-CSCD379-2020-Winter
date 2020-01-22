@@ -20,6 +20,17 @@ namespace SecretSanta.Data.Tests
             UserGroups = new List<UserGroup>()
         };
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+
+        public void Create_VerifyPropertyNameNotNull_NotNull()
+        {
+            new Group
+            {
+                Name = null!
+            };
+        }
+
 
         [TestMethod]
         public async Task CreateGroup_ShouldSaveIntoDatabase()
