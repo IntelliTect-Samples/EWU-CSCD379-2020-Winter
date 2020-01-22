@@ -1,8 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Moq;
 
 namespace SecretSanta.Data.Tests
 {
@@ -13,21 +15,21 @@ namespace SecretSanta.Data.Tests
         public async Task Gift_CanBeCreate_AllPropertiesGetSet()
         {
             // Arrange
+            IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
+                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "imontoya"));
             var user = new User
             {
                 Id = 1,
                 FirstName = "Inigo",
-                LastName = "Montoya",
-                CreatedBy = "imontoya"
+                LastName = "Montoya"
             };
             var gift = new Gift{
                 Id = 1,
                 Title = "Ring 2",
                 Description = "Amazing way to keep the creepers away",
-                Url = "www.ring.com",
-                CreatedBy = "imontoya"
+                Url = "www.ring.com"
             };
-            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options))
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
                 gift.User = user;
 
@@ -39,7 +41,7 @@ namespace SecretSanta.Data.Tests
             // Act
 
             // Assert
-            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options))
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
                 var gifts = await dbContext.Gifts.Include(g => g.User).ToListAsync();
                 //var posts = await dbContext.Posts.ToListAsync();
