@@ -15,7 +15,7 @@ namespace SecretSanta.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Gift> Gifts { get; set; }
         public DbSet<Group> Groups { get; set; }
-      //  public DbSet<UserGroup> UserGroups { get; set; }
+        public DbSet<UserGroup> UserGroups { get; set; }
 
         public IHttpContextAccessor HttpContextAccessor { get; set; }
 
@@ -33,14 +33,14 @@ namespace SecretSanta.Data
             modelBuilder.Entity<UserGroup>().HasKey(pt => new { pt.UserId, pt.GroupId });
 
             modelBuilder.Entity<UserGroup>()
-                .HasOne(u => u.User)
-                .WithMany(gu => gu.UserGroups)
-                .HasForeignKey(u => u.UserId);
+                .HasOne(pt => pt.User)
+                .WithMany(p => p.UserGroups)
+                .HasForeignKey(pt => pt.UserId);
 
             modelBuilder.Entity<UserGroup>()
-                .HasOne(gu => gu.Group)
-                .WithMany(gu => gu.UserGroups)
-                .HasForeignKey(g => g.GroupId);
+                .HasOne(pt => pt.Group)
+                .WithMany(t => t.UserGroups)
+                .HasForeignKey(pt => pt.UserId);
         }
 
         public override int SaveChanges()
