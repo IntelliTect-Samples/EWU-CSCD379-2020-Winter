@@ -12,10 +12,13 @@ namespace SecretSanta.Data
         private string _LastName = string.Empty;
         public int? SantaId { get; set; }
         public User? Santa { get; set; }
-#nullable disable
-        public IList<Gift> Gifts { get; set; }
-        public IList<UserGroup> UserGroups { get; set; }
-#nullable enable
+        public IList<Gift> Gifts { get; } = new List<Gift>();
+        public IList<UserGroup> UserGroups { get; } = new List<UserGroup>();
 
+        public User(string firstName, string lastName)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+        }
     }
 }

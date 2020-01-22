@@ -16,10 +16,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Groups.Add(new Group
-                {
-                    Title = "Enchanted Forest"
-                });
+                dbContext.Groups.Add(new Group(title: "Enchanted Forest"));
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
