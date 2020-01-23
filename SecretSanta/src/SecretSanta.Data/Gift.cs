@@ -1,5 +1,5 @@
 ﻿using System;
-
+//random comment for pipeline testing
 namespace SecretSanta.Data
 {
     public class Gift : FingerPrintEntityBase
