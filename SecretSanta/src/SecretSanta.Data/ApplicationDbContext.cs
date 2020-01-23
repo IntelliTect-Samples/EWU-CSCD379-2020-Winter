@@ -51,8 +51,7 @@ namespace SecretSanta.Data
 
             foreach (var entry in added)
             {
-                var fingerPrintEntry = entry.Entity as FingerPrintEntityBase;
-                if (fingerPrintEntry != null)
+                if (entry.Entity is FingerPrintEntityBase fingerPrintEntry)
                 {
                     fingerPrintEntry.CreatedOn = DateTime.UtcNow;
                     fingerPrintEntry.CreatedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
@@ -63,8 +62,7 @@ namespace SecretSanta.Data
 
             foreach (var entry in modified)
             {
-                var fingerPrintEntry = entry.Entity as FingerPrintEntityBase;
-                if (fingerPrintEntry != null)
+                if (entry.Entity is FingerPrintEntityBase fingerPrintEntry)
                 {
                     fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
                     fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
