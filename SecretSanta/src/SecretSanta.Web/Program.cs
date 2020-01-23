@@ -3,7 +3,11 @@ using Microsoft.Extensions.Hosting;
 
 namespace SecretSanta.Web
 {
+<<<<<<< master
     public static class Program
+=======
+    static public class Program
+>>>>>>> Refactored out suppression and msbuild files.
     {
         public static void Main(string[] args)
         {
