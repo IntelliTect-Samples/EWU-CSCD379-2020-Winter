@@ -7,6 +7,7 @@
 =======
 # Assignment
 
+<<<<<<< master
 The purpose of this assignment is to learn the following:
 
 - Create a data layer using Entity Framework (EF)
@@ -56,4 +57,7 @@ The following are options for extra credit:
 <<<<<<< master
 >>>>>>> Configured a starting point for Assignment2
 =======
+>>>>>>> Update README.md
+=======
+See [Assignment3.md](Assignment3.md)
 >>>>>>> Update README.md
