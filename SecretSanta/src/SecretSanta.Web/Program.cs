@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace SecretSanta.Web
 {
-    public static class Program
+    static public class Program
     {
         public static void Main(string[] args)
         {
