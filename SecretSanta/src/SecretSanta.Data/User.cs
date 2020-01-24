@@ -17,9 +17,9 @@ namespace SecretSanta.Data
             set => _Gifts = value ?? throw new ArgumentNullException(nameof(value));
         }
 
-#nullable disable
-        public List<UserGroup> UserGroups { get; set; }
-#nullable enable
+
+        public List<UserGroup> UserGroups { get; } = new List<UserGroup>();
+
         public User? Santa { get; set; }
 
     }

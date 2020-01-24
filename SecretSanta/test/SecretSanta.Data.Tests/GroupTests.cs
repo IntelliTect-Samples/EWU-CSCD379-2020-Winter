@@ -16,8 +16,7 @@ namespace SecretSanta.Data.Tests
     {
         private readonly Group _Group = new Group
         {
-            Name = "group",
-            UserGroups = new List<UserGroup>()
+            Name = "group"
         };
 
         [TestMethod]

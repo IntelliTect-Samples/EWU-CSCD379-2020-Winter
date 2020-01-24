@@ -14,22 +14,6 @@ namespace SecretSanta.Data.Tests
     [TestClass]
     public class UserGroupTests : TestBase
     {
-        private readonly User _User = new User
-        {
-            FirstName = "caleb",
-            LastName = "walsh",
-            UserGroups = new List<UserGroup>()
-        };
-
-        private readonly Group _Group1 = new Group { Name = "group1" };
-        private readonly Group _Group2 = new Group { Name = "group2" };
-
-        private readonly Gift _Gift = new Gift
-        {
-            Title = "gift",
-            Description = "description",
-            Url = "www.url.com"
-        };
 
         [TestMethod]
         public async Task Create_UserWithManyGroups()
