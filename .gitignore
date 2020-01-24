@@ -273,3 +273,7 @@ __pycache__/
 # tools/
 
 # End of https://www.gitignore.io/api/aspnetcore
+/SecretSanta/test/SecretSanta.Api.Tests/coverage.json
+/SecretSanta/test/SecretSanta.Business.Tests/coverage.json
+/SecretSanta/test/SecretSanta.Data.Tests/coverage.json
+/SecretSanta/test/SecretSanta.Web.Tests/coverage.json

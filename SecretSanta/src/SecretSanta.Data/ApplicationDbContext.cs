@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +13,20 @@ namespace SecretSanta.Data
     
 	public class ApplicationDbContext : DbContext
 	{
-        public DbSet<Gift>? Gifts { get; set; }
-        public DbSet<User>? Users { get; set; }
-        public DbSet<Group>? Groups { get; set; }
-        public DbSet<UserGroup>? UserGroups { get; set; }
+        public DbSet<Gift> Gifts { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<UserGroup> UserGroups { get; set; }
 
         public IHttpContextAccessor? HttpContextAccessor { get; set; }
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         {
             HttpContextAccessor = httpContextAccessor;
         }
@@ -54,13 +59,12 @@ namespace SecretSanta.Data
 
         private void AddFingerPrinting()
         {
-            var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified);
-            var added = ChangeTracker.Entries().Where(e => e.State == EntityState.Added);
+            IEnumerable<EntityEntry> modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Modified);
+            IEnumerable<EntityEntry> added = ChangeTracker.Entries().Where(e => e.State == EntityState.Added);
 
-            foreach (var entry in added)
+            foreach (EntityEntry entry in added)
             {
-                var fingerPrintEntry = entry.Entity as FingerPrintEntityBase;
-                if (fingerPrintEntry != null)
+                if (entry.Entity is FingerPrintEntityBase fingerPrintEntry)
                 {
                     fingerPrintEntry.CreatedOn = DateTime.UtcNow;
                     fingerPrintEntry.CreatedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? "";
@@ -69,10 +73,9 @@ namespace SecretSanta.Data
                 }
             }
 
-            foreach (var entry in modified)
+            foreach (EntityEntry entry in modified)
             {
-                var fingerPrintEntry = entry.Entity as FingerPrintEntityBase;
-                if (fingerPrintEntry != null)
+                if (entry.Entity is FingerPrintEntityBase fingerPrintEntry)
                 {
                     fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
                     fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? "";
@@ -80,7 +83,7 @@ namespace SecretSanta.Data
             }
         }
 
-        public override Task<int> SaveChangesAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public override Task<int> SaveChangesAsync(System.Threading.CancellationToken cancellationToken = default)
         {
             AddFingerPrinting();
             return base.SaveChangesAsync(cancellationToken);

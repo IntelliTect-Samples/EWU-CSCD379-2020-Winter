@@ -54,7 +54,7 @@ namespace SecretSanta.Data.Tests
                 .EnableSensitiveDataLogging()
                 .Options;
 
-            using (var context = new ApplicationDbContext(Options))
+            using (ApplicationDbContext context = new ApplicationDbContext(Options))
             {
                 context.Database.EnsureCreated();
             }

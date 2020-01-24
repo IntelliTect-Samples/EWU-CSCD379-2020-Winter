@@ -59,8 +59,7 @@ namespace SecretSanta.Data.Tests
 				LastName = "Sergio",
 				Gifts = new List<Gift>()
 			};
-
-			UserGroup userGroup = new UserGroup
+			_ = new UserGroup
 			{
 				Group = null!,
 				GroupId = 0,
@@ -85,9 +84,7 @@ namespace SecretSanta.Data.Tests
 				Name = "Group 1",
 				UserGroups = new List<UserGroup>()
 			};
-
-
-			UserGroup userGroup = new UserGroup
+			_ = new UserGroup
 			{
 				Group = group1,
 				GroupId = group1.Id,
@@ -185,7 +182,7 @@ namespace SecretSanta.Data.Tests
 				applicationDbContext.Users?.Add(user);
 				await applicationDbContext.SaveChangesAsync();
 
-				var retrievedUser = await applicationDbContext.Users
+				User retrievedUser = await applicationDbContext.Users
 					.Where(i => i.Id == user.Id)
 					.Include(i => i.UserGroups)
 					.ThenInclude(k => k.Group)

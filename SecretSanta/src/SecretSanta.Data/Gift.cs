@@ -15,7 +15,6 @@ namespace SecretSanta.Data
 
         public User User { get => _User; set => _User = value ?? throw new ArgumentNullException(nameof(User)); }
         private User _User = new User();
-        public int UserId { get; set; }
        
     }
 }
