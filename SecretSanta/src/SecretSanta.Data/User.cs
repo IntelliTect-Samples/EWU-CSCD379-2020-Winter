@@ -31,6 +31,8 @@ namespace SecretSanta.Data
 
         private ICollection<Gift> _Gifts = new List<Gift>();
 
+        public User? Santa { get; set; }
+        
         public IList<UserGroupRelation> Relations
         {
             get => _Relations;
