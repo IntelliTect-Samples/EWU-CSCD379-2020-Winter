@@ -25,9 +25,9 @@ namespace SecretSanta.Data.Tests
                 var gifts = await dbContext.Gifts.ToListAsync();
 
                 Assert.AreEqual(1, gifts.Count);
-                Assert.AreEqual("Ring Doorbell", gifts[0].Title);
-                Assert.AreEqual("www.ring.com", gifts[0].Url);
-                Assert.AreEqual("The doorbell that saw too much", gifts[0].Description);
+                Assert.AreEqual(SampleData.Money, gifts[0].Title);
+                Assert.AreEqual(SampleData.MoneyUrl, gifts[0].Url);
+                Assert.AreEqual(SampleData.MoneyDescription, gifts[0].Description);
             }
         }
         [TestMethod]
