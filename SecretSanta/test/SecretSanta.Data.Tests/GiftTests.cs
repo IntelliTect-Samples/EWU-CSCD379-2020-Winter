@@ -30,6 +30,49 @@ namespace SecretSanta.Data.Tests
                 Assert.AreEqual(SampleData.MoneyDescription, gifts[0].Description);
             }
         }
+
+        [TestMethod]
+        public async Task AddGift_WithUser_CreatesRelationship()
+        {
+            //Arrange
+            //Act
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options))
+            {
+                dbContext.Gifts.Add(SampleData.CreateSpongebobsSpatula);
+                await dbContext.SaveChangesAsync();
+            }
+            //Assert
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options))
+            {
+                Gift gift = await dbContext.Gifts.Include(g => g.User).FirstOrDefaultAsync();
+                Assert.IsNotNull(gift.User);
+                Assert.AreEqual<string>(SampleData.Spongebob, gift.User.FirstName);
+                Assert.IsTrue(gift.User.Id != 0);
+            }
+        }
+
+        [TestMethod]
+        public async Task AddGift_ValidGift_HasFingerprintData()
+        {
+            //Arrange
+            //Act
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options))
+            {
+                dbContext.Gifts.Add(SampleData.CreateMrKrabsMoney);
+                await dbContext.SaveChangesAsync();
+            }
+            //Assert
+            using (ApplicationDbContext dbContext = new ApplicationDbContext(Options))
+            {
+                Gift gift = await dbContext.Gifts.FirstOrDefaultAsync(); //dont need to do check for null gift or anything like that because we already tested adding gift to database
+                Assert.IsNotNull(gift.CreatedBy);
+                Assert.IsNotNull(gift.CreatedOn);
+                Assert.IsNotNull(gift.ModifiedBy);
+                Assert.IsNotNull(gift.ModifiedOn);
+                Assert.IsTrue(gift.Id != 0);
+            }
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()
