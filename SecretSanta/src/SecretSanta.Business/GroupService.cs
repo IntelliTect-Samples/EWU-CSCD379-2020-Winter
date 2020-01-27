@@ -3,39 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SecretSanta.Business
 {
-    public class GroupService : IEntityService<Group>
+    public class GroupService : EntityService<Group>
     {
-        public Task<bool> DeleteAsync(int id)
+        public GroupService(ApplicationDbContext dbContext, IMapper mapper) : base(dbContext, mapper)
         {
-            throw new NotImplementedException();
-        }
 
-        public Task<List<Group>> FetchAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Group> FetchByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Group> InsertAsync(Group entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Group[]> InsertAsync(params Group[] entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Group> UpdateAsync(int id, Group entity)
-        {
-            throw new NotImplementedException();
         }
     }
 }
