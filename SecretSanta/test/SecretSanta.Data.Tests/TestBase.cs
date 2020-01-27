@@ -1,8 +1,10 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using AutoMapper;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SecretSanta.Business;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +16,9 @@ namespace SecretSanta.Data.Tests
 #nullable disable
         private SqliteConnection SqliteConnection { get; set; }
         protected DbContextOptions<ApplicationDbContext> Options { get; private set; }
+
+        protected IMapper _Mapper = AutomapperProfileConfiguration.CreateMapper();
+
 #nullable enable
         private static ILoggerFactory GetLoggerFactory()
         {

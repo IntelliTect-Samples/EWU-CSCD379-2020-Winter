@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SecretSanta.Business
 {
-    public abstract class EntityService<TEntity> : IEntityService<TEntity>
+    public abstract class  EntityService<TEntity> : IEntityService<TEntity>
         where TEntity : EntityBase
     {
         protected ApplicationDbContext ApplicationDbContext { get; }
