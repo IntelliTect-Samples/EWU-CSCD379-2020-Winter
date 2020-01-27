@@ -66,10 +66,19 @@ namespace SecretSanta.Data
             {
                 if (entry.Entity is FingerPrintEntityBase fingerPrintEntry)
                 {
+                    ResetValue(entry, nameof(FingerPrintEntityBase.CreatedOn));
+                    ResetValue(entry, nameof(FingerPrintEntityBase.CreatedBy));
+
                     fingerPrintEntry.ModifiedOn = DateTime.UtcNow;
                     fingerPrintEntry.ModifiedBy = HttpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier).Value ?? string.Empty;
                 }
             }
+        }
+
+        private static void ResetValue(EntityEntry entry, string propertyName)
+        {
+            PropertyEntry property = entry.Property(propertyName);
+            property.CurrentValue = property.OriginalValue;
         }
     }
 }
