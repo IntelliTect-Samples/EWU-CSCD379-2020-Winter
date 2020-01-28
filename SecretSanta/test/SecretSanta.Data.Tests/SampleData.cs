@@ -27,5 +27,13 @@ namespace SecretSanta.Data.Tests
         public const string Desc2 = "GiftDescription2";
         public const string Url2 = "GiftUrl2";
         static public Gift CreateGift2() => new Gift(Title2, Desc2, Url2, CreatePrincessButtercup());
+
+        // Group 1
+        public const String GroupTitle1 = "GroupTitle1";
+        static public Group CreateGroup1() => new Group(GroupTitle1);
+
+        // Group2
+        public const String GroupTitle2 = "GroupTitle2";
+        static public Group CreateGroup2() => new Group(GroupTitle2);
     }
 }

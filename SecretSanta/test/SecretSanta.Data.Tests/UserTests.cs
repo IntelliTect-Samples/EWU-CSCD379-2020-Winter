@@ -19,7 +19,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Users.Add(new User("Inigo", "Montoya"));
+                dbContext.Users.Add(SampleData.CreateInigoMontoya());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -29,8 +29,8 @@ namespace SecretSanta.Data.Tests
                 var users = await dbContext.Users.ToListAsync();
 
                 Assert.AreEqual(1, users.Count);
-                Assert.AreEqual("Inigo", users[0].FirstName);
-                Assert.AreEqual("Montoya", users[0].LastName);
+                Assert.AreEqual(SampleData.Inigo, users[0].FirstName);
+                Assert.AreEqual(SampleData.Montoya, users[0].LastName);
             }
         }
 
@@ -43,7 +43,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                dbContext.Users.Add(new User("Inigo","Montoya"));
+                dbContext.Users.Add(SampleData.CreateInigoMontoya());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -67,7 +67,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                dbContext.Users.Add(new User("Inigo", "Montoya"));
+                dbContext.Users.Add(SampleData.CreateInigoMontoya());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -105,8 +105,8 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var group = new Group("Enchanted Forest");
-                var user = new User("Inigo", "Montoya");
+                var group = SampleData.CreateGroup1();
+                var user = SampleData.CreateInigoMontoya();
                 user.UserGroups.Add(new UserGroup { User = user, Group = group });
                 dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
@@ -119,7 +119,7 @@ namespace SecretSanta.Data.Tests
 
                 Assert.AreEqual(1, users.Count);
                 Assert.AreEqual(1, users[0].UserGroups.Count);
-                Assert.AreEqual("Enchanted Forest", users[0].UserGroups[0].Group.Title);
+                Assert.AreEqual(SampleData.GroupTitle1, users[0].UserGroups[0].Group.Title);
             }
         }
 
@@ -155,14 +155,14 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void User_SetFirstNameToNull_ThrowsArgumentNullException()
         {
-            _ = new User(null!, "Montoya");
+            _ = new User(null!, SampleData.Montoya);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void User_SetLastNameToNull_ThrowsArgumentNullException()
         {
-            _ = new User("Inigo", null!);
+            _ = new User(SampleData.Inigo, null!);
         }
     }
 }
