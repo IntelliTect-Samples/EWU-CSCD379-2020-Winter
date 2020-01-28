@@ -14,7 +14,7 @@ namespace SecretSanta.Business.Tests
     public class GiftServiceTests : TestBase
     {
         [TestMethod]
-        public async Task FetchAllAsync_TwoGroups_Success()
+        public async Task FetchAllAsync_TwoGifts_Success()
         {
             //Arrange
             Gift gift1 = SampleData.CreateSpongebobsSpatula;
@@ -28,6 +28,8 @@ namespace SecretSanta.Business.Tests
             List<Gift> gifts = giftService.FetchAllAsync().Result;
             //Assert
             Assert.AreEqual<string>(gift1.Title, gifts.ElementAt(0).Title);
+            Assert.IsNotNull(gifts.ElementAt(0).User);
+            Assert.AreEqual<string>(gift1.User.FirstName, gifts.ElementAt(0).User.FirstName);
         }
 
         [TestMethod]
@@ -43,6 +45,8 @@ namespace SecretSanta.Business.Tests
             Gift result = giftService.FetchByIdAsync(1).Result;
             //Assert
             Assert.AreEqual<string>(gift.Title, result.Title);
+            Assert.IsNotNull(result.User);
+            Assert.AreEqual<string>(gift.User.FirstName, result.User.FirstName);
         }
 
         [TestMethod]
