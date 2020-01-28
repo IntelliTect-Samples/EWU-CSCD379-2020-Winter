@@ -12,9 +12,24 @@ namespace SecretSanta.Data
         private string _Description = string.Empty;
         public string Url { get => _Url; set => _Url = value ?? throw new ArgumentNullException(nameof(Url)); }
         private string _Url = string.Empty;
-#nullable disable
+
         public User User { get; set; }
-#nullable enable
+
         public int UserId { get; set; }
+
+        public Gift(string title, string description, string url, User user) : 
+            this(title, description, url)
+        {
+            User = user;
+        }
+#nullable disable
+        private Gift(
+#nullable enable
+            string title, string description, string url)
+        {
+            Title = title;
+            Description = description;
+            Url = url;
+        }
     }
 }
