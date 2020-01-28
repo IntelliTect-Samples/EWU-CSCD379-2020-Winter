@@ -12,6 +12,8 @@ namespace SecretSanta.Business
         public AutomapperProfileConfiguration()
         {
             CreateMap<Gift, Gift>().ForMember(g => g.Id, option => option.Ignore());
+            CreateMap<Group, Group>().ForMember(g => g.Id, option => option.Ignore());
+            CreateMap<User, User>().ForMember(u => u.Id, option => option.Ignore());
         }
 
         static public IMapper CreateMapper()

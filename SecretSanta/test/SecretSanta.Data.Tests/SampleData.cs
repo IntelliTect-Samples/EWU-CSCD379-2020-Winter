@@ -20,11 +20,17 @@ namespace SecretSanta.Data.Tests
         public const string MoneyDescription = "A 5 letter word for happiness: MONEY.";
         public const string MoneyUrl = "www.10ReasonsToNotWasteADime.com";
 
+        public const string JellyFishers = "JellyFishers";
+
+        public const string MoneyGrubbers = "MoneyGrubbers";
+
 
         static public User CreateSpongebob => new User(Spongebob, Squarepants);
         static public User CreateMrKrabs => new User(Eugene, Krabs);
         static public Gift CreateSpongebobsSpatula => new Gift(GoldenSpatula, SpatulaDescription, SpatulaUrl, CreateSpongebob);
         static public Gift CreateMrKrabsMoney => new Gift(Money, MoneyDescription, MoneyUrl, CreateMrKrabs);
+        static public Group CreateJellyFishers => new Group(JellyFishers);
+        static public Group CreateMoneyGrubbers => new Group(MoneyGrubbers);
 
 
     }
