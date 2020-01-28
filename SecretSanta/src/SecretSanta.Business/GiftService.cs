@@ -20,4 +20,4 @@ namespace SecretSanta.Business
             await ApplicationDbContext.Set<Gift>().Include(g => g.User).SingleAsync(item => item.Id == id);
     }
 }
-}
+
