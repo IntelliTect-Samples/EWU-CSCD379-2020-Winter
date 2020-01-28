@@ -1,3 +1,3 @@
-# CSCD-379-2020-Winter
+# Assignment
 
-## See [Wiki](../../wiki)
+See [Assignment3.md](Assignment3.md)
