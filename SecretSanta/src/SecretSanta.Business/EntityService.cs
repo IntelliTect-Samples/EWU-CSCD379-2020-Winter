@@ -23,7 +23,7 @@ namespace SecretSanta.Business
             throw new NotImplementedException();
         }
 
-        public async Task<List<TEntity>> FetchAllAsync() =>
+        public async Task <List<TEntity>> FetchAllAsync() =>
             await ApplicationDbContext.Set<TEntity>().ToListAsync();
 
         virtual public async Task<TEntity> FetchByIdAsync(int id) =>
