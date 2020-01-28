@@ -1,6 +1,4 @@
-﻿using BlogEngine.Data;
-using BlogEngine.Data.Tests;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -10,18 +8,21 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using BlogEngine.Business.Tests;
+using Microsoft.Extensions.Options;
+using SecretSanta.Data;
 
-namespace BlogEngine.Business.Tests
+namespace SecretSanta.Business.Tests
 {
     [TestClass]
-    public class AuthorServiceTests : TestBase
+    public class UserServiceTests : TestBase
     {
         [TestMethod]
         public async Task InsertAsync_InigoAndPrincess_Success()
         {
             // Arrange
             using var dbContextInsert = new ApplicationDbContext(Options);
-            IAuthorService service = new AuthorService(dbContextInsert, Mapper);
+            IUserService service = new UserService(dbContextInsert, Mapper);
 
             var inigo = SampleData.CreateInigoMontoya();
 
@@ -37,7 +38,7 @@ namespace BlogEngine.Business.Tests
         {
             // Arrange
             using var dbContextInsert = new ApplicationDbContext(Options);
-            IAuthorService service = new AuthorService(dbContextInsert, Mapper);
+            IUserService service = new UserService(dbContextInsert, Mapper);
 
             var inigo = SampleData.CreateInigoMontoya();
             var princess = SampleData.CreatePrincessButtercup();

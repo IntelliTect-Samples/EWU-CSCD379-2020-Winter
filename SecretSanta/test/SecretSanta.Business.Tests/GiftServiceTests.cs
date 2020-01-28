@@ -1,5 +1,4 @@
-﻿using BlogEngine.Data;
-using BlogEngine.Data.Tests;
+﻿using SecretSanta.Data.Tests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,7 +10,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BlogEngine.Business.Tests
+namespace SecretSanta.Business.Tests
 {
     [TestClass]
     public class PostServiceTests : TestBase

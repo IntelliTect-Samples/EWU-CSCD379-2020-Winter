@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using BlogEngine.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SecretSanta.Data;
 
-namespace BlogEngine.Business
+namespace SecretSanta.Business
 {
     public abstract class EntityService<TEntity>:IEntityService<TEntity>
         where TEntity: EntityBase

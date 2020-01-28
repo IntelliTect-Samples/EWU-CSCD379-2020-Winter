@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SecretSanta.Data.Tests
 {
-    public abstract class TestBase
+    public class TestBase
     {
 #nullable disable
         private SqliteConnection SqliteConnection { get; set; }

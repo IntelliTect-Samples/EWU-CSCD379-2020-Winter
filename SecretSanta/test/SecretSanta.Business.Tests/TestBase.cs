@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BlogEngine.Data;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,9 +8,10 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace BlogEngine.Business.Tests
+
+namespace SecretSanta.Business.Tests
 {
-    public class TestBase : BlogEngine.Data.Tests.TestBase
+    public class TestBase : SecretSanta.Data.Tests.TestBase
     {
 // Justification: Set by TestInitialize
 #nullable disable // CS8618: Non-nullable field is uninitialized. Consider declaring as nullable.

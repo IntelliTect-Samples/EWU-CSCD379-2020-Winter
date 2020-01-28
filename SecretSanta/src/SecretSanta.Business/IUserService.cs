@@ -1,12 +1,12 @@
-﻿using BlogEngine.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using SecretSanta.Data;
 
-namespace BlogEngine.Business
+namespace SecretSanta.Business
 {
-    public interface IAuthorService : IEntityService<Author>
+    public interface IUserService : IEntityService<User>
     {
 
     }

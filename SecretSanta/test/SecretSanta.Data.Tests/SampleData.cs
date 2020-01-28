@@ -7,20 +7,19 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using SecretSanta.Data;
 
-namespace BlogEngine.Data.Tests
+namespace SecretSanta.Data.Tests
 {
     static public class SampleData
     {
         public const string Inigo = "Inigo";
         public const string Montoya = "Montoya";
-        public const string InigoMontoyaEmail = "inigo@montoya.me";
 
         public const string Princess = "Princess";
         public const string Buttercup = "Buttercup";
-        public const string PrincessButtercupEmail = "inigo@montoya.me";
 
-        static public Author CreateInigoMontoya() => new Author(Inigo, Montoya, InigoMontoyaEmail);
-        static public Author CreatePrincessButtercup() => new Author(Princess, Buttercup, PrincessButtercupEmail);
+        static public User CreateInigoMontoya() => new User(Inigo, Montoya);
+        static public User CreatePrincessButtercup() => new User(Princess, Buttercup);
     }
 }

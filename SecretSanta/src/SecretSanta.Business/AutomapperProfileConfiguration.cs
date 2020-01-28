@@ -1,19 +1,18 @@
 ﻿using AutoMapper;
-using BlogEngine.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using SecretSanta.Data;
 
-namespace BlogEngine.Business
+namespace SecretSanta.Business
 {
     public class AutomapperProfileConfiguration : Profile
     {
         public AutomapperProfileConfiguration()
         {
-            CreateMap<Author, Author>().ForMember(property => property.Id, option => option.Ignore());
-            CreateMap<Tag, Tag>().ForMember(property => property.Id, option => option.Ignore());
+            CreateMap<User, User>().ForMember(property => property.Id, option => option.Ignore());
         }
 
         static public IMapper CreateMapper()

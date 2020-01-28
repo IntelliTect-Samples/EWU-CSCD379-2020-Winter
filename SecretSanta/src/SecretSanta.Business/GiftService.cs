@@ -1,21 +1,22 @@
 ﻿using AutoMapper;
-using BlogEngine.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlogEngine.Business;
+using SecretSanta.Data;
 
-namespace BlogEngine.Business
+namespace SecretSanta.Business
 {
-    public class PostService : EntityService<Post>, IPostService
+    public class GiftService : EntityService<Gift>, IPostService
     {
-        public PostService(ApplicationDbContext applicationDbContext, IMapper mapper) :
+        public GiftService(ApplicationDbContext applicationDbContext, IMapper mapper) :
             base(applicationDbContext, mapper)
         {
         }
 
-        public override async Task<Post> FetchByIdAsync(int id) =>
-            await ApplicationDbContext.Set<Post>().Include(nameof(Post.Author)).SingleAsync(item => item.Id == id);
+        public override async Task<Gift> FetchByIdAsync(int id) =>
+            await ApplicationDbContext.Set<Gift>().Include(nameof(Gift.User)).SingleAsync(item => item.Id == id);
     }
 }

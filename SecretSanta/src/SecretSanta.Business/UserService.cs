@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
-using BlogEngine.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SecretSanta.Data;
 
-namespace BlogEngine.Business
+namespace SecretSanta.Business
 {
-    public class AuthorService : EntityService<Author>, IAuthorService
+    public class UserService : EntityService<User>, IUserService
     {
-        public AuthorService(ApplicationDbContext context, IMapper mapper):
+        public UserService(ApplicationDbContext context, IMapper mapper):
             base(context, mapper)
         { }
     }
