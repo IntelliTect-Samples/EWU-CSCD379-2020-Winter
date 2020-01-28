@@ -1,3 +1,4 @@
+
 ﻿using AutoMapper;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,6 @@ namespace SecretSanta.Data.Tests
         protected DbContextOptions<ApplicationDbContext> Options { get; private set; }
 
         protected IMapper _Mapper = AutomapperProfileConfiguration.CreateMapper();
-
 #nullable enable
         private static ILoggerFactory GetLoggerFactory()
         {

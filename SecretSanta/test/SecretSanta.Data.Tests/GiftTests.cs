@@ -72,7 +72,6 @@ namespace SecretSanta.Data.Tests
                 Assert.IsTrue(gift.Id != 0);
             }
         }
-
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()
