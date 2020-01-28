@@ -20,13 +20,13 @@ namespace SecretSanta.Data.Tests
         public const string Title1 = "GiftTitle1";
         public const string Desc1 = "GiftDescription1";
         public const string Url1 = "GiftUrl1";
-        static public Gift CreateGift1() => new Gift(Title1, Desc1, Url1, CreateInigoMontoya());
+        static public Gift CreateGift1() => new Gift(Title1, Url1, Desc1, CreateInigoMontoya());
 
         // Gift 2
         public const string Title2 = "GiftTitle2";
         public const string Desc2 = "GiftDescription2";
         public const string Url2 = "GiftUrl2";
-        static public Gift CreateGift2() => new Gift(Title2, Desc2, Url2, CreatePrincessButtercup());
+        static public Gift CreateGift2() => new Gift(Title2, Url2, Desc2, CreatePrincessButtercup());
 
         // Group 1
         public const String GroupTitle1 = "GroupTitle1";
