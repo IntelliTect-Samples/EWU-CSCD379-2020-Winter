@@ -17,7 +17,7 @@ namespace SecretSanta.Data
 #nullable enable
         public int UserId { get; set; }
 
-        public Gift(string title, string description, string url, User user)
+        public Gift(string title, string url, string description, User user)
 // Justification: Checking for null isn't possible using constructor chaining.
 #pragma warning disable CA1062 // Validate arguments of public methods
             : this(title, url, description, user.Id)
@@ -31,6 +31,7 @@ namespace SecretSanta.Data
             Title = title;
             Url = url;
             Description = description;
+            UserId = userId;
         }
     }
 }
