@@ -30,6 +30,54 @@ namespace SecretSanta.Data.Tests
                 Assert.AreEqual(SampleData.RingDescription, gifts[0].Description);
             }
         }
+
+        [TestMethod]
+        public async Task Gift_Add_ShouldHaveFingerprintData()
+        {
+            // Arrange
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                dbContext.Gifts.Add(SampleData.CreateRingGift());
+                await dbContext.SaveChangesAsync();
+            }
+            // Act
+            // Assert
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                var gifts = await dbContext.Gifts.Include(g => g.User).ToListAsync();
+
+                Assert.IsNotNull(gifts[0].CreatedBy);
+                Assert.IsNotNull(gifts[0].ModifiedBy);
+                Assert.AreNotEqual(new DateTime(), gifts[0].CreatedOn);
+                Assert.AreNotEqual(new DateTime(), gifts[0].ModifiedOn);
+                Assert.AreEqual(1, gifts[0].Id);
+            }
+        }
+
+        [TestMethod]
+        public async Task Gift_AddWithUser_ShouldCreateForeignRelaitonship()
+        {
+            // Arrange
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                dbContext.Gifts.Add(SampleData.CreateRingGift());
+                await dbContext.SaveChangesAsync();
+            }
+            // Act
+            // Assert
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                var gifts = await dbContext.Gifts.Include(g => g.User).ToListAsync();
+
+                Assert.AreEqual(1, gifts.Count);
+                Assert.AreEqual(SampleData.RingTitle, gifts[0].Title);
+                Assert.AreEqual(SampleData.RingUrl, gifts[0].Url);
+                Assert.AreEqual(SampleData.RingDescription, gifts[0].Description);
+                Assert.AreEqual(1, gifts[0].Id);
+
+            }
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()

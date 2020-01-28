@@ -9,7 +9,7 @@ using System.Text;
 
 namespace SecretSanta.Data.Tests
 {
-    public abstract class TestBase
+    public class TestBase
     {
 #nullable disable
         private SqliteConnection SqliteConnection { get; set; }
@@ -29,7 +29,7 @@ namespace SecretSanta.Data.Tests
         }
 
         [TestInitialize]
-        public void InitializeTests()
+        virtual public void InitializeTests()
         {
             SqliteConnection = new SqliteConnection("DataSource=:memory:");
             SqliteConnection.Open();
@@ -47,7 +47,7 @@ namespace SecretSanta.Data.Tests
         }
 
         [TestCleanup]
-        public void TeardownTests()
+        virtual public void TeardownTests()
         {
             SqliteConnection.Close();
         }
