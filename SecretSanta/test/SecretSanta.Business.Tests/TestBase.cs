@@ -12,7 +12,7 @@ using System.Reflection;
 
 namespace SecretSanta.Business.Tests
 {
-    public class TestBase : SecretSanta.Data.Tests
+    public class TestBase : SecretSanta.Data.Tests.TestBase
     {
         // Justification: Set by TestInitialize
 #nullable disable // CS8618: Non-nullable field is uninitialized. Consider declaring as nullable.
