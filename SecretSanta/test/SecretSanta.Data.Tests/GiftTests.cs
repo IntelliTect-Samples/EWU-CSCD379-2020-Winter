@@ -15,13 +15,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Gifts.Add(new Gift
-                {
-                    Title = "Ring Doorbell",
-                    Url = "www.ring.com",
-                    Description = "The doorbell that saw too much",
-                    User = new User("Inigo", "Montoya")
-                }); ;
+                dbContext.Gifts.Add(SampleData.CreateGift1());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -31,39 +25,80 @@ namespace SecretSanta.Data.Tests
                 var gifts = await dbContext.Gifts.ToListAsync();
 
                 Assert.AreEqual(1, gifts.Count);
-                Assert.AreEqual("Ring Doorbell", gifts[0].Title);
-                Assert.AreEqual("www.ring.com", gifts[0].Url);
-                Assert.AreEqual("The doorbell that saw too much", gifts[0].Description);
+                Assert.AreEqual(SampleData.GiftTitle1, gifts[0].Title);
+                Assert.AreEqual(SampleData.GiftDescription1, gifts[0].Description);
+                Assert.AreEqual(SampleData.GiftUrl1, gifts[0].Url);
             }
         }
+
+        [TestMethod]
+        public async Task Gift_UpdateDescription_Success()
+        {
+            // Arrange
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                dbContext.Gifts.Add(SampleData.CreateGift1());
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+            // Act
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                Gift gift = await dbContext.Gifts.SingleOrDefaultAsync();
+                gift.Description = "New Description";
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+            // Assert
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                Gift gift = await dbContext.Gifts.SingleOrDefaultAsync();
+
+                Assert.AreEqual<string>("New Description", gift.Description);
+            }
+        }
+
+        [TestMethod]
+        public async Task Gift_DeleteGift_Success()
+        {
+            var gift = SampleData.CreateGift1();
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                dbContext.Gifts.Add(gift);
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                dbContext.Gifts.Remove(gift);
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                var gifts = await dbContext.Gifts.ToListAsync();
+
+                Assert.AreEqual<int>(0, gifts.Count);
+            }
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Title = null!
-            };
+            SampleData.CreateGift1().Title = null!;
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Description = null!
-            };
+            SampleData.CreateGift1().Description = null!;
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetUrlToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Url = null!
-            };
+            SampleData.CreateGift1().Url = null!;
         }
     }
 }
