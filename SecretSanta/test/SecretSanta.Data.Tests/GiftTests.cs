@@ -41,14 +41,16 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
         {
-            
+            Gift gift = SampleData.CreateGift();
+            gift.Description = null!;
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetUrlToNull_ThrowsArgumentNullException()
         {
-            
+            Gift gift = SampleData.CreateGift();
+            gift.Url = null!;
         }
     }
 }

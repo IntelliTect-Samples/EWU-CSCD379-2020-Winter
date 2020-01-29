@@ -9,8 +9,8 @@
         public const string Buttercup = "Buttercup";
 
         private const string Title = "Ring Doorbell";
-        private const string Description = "www.ring.com";
-        private const string Url = "The doorbell that saw too much";
+        private const string Url = "www.ring.com";
+        private const string Description = "The doorbell that saw too much";
 
         private const string TitleArduino = "Arduino";
         private const string DescriptionArduino = "www.arduino.com";
@@ -24,6 +24,7 @@
 
         public static Gift CreateGift(User user) =>
             (new Gift(Title, Description, Url, user));
+
         public static Gift CreateGiftArduino() => new Gift(TitleArduino, DescriptionArduino, UrlArduino,
             SampleData.CreatePrincessButtercup());
 
