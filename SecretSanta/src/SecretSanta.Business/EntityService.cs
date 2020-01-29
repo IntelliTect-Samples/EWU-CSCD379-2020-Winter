@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data;
 using System.Collections.Generic;
