@@ -1,17 +1,6 @@
-﻿using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using SecretSanta.Data;
-
-namespace SecretSanta.Data.Tests
+﻿namespace SecretSanta.Data.Tests
 {
-    static public class SampleData
+    public static class SampleData
     {
         public const string Inigo = "Inigo";
         public const string Montoya = "Montoya";
@@ -19,7 +8,21 @@ namespace SecretSanta.Data.Tests
         public const string Princess = "Princess";
         public const string Buttercup = "Buttercup";
 
-        static public User CreateInigoMontoya() => new User(Inigo, Montoya);
-        static public User CreatePrincessButtercup() => new User(Princess, Buttercup);
+        private const string Title = "Ring Doorbell";
+        private const string Description = "www.ring.com";
+        private const string Url = "The doorbell that saw too much";
+
+        private const string TitleArduino = "Arduino";
+        private const string DescriptionArduino = "www.arduino.com";
+        private const string UrlArduino = "Every good geek needs an IOT device";
+
+        public static User CreateInigoMontoya() => new User(Inigo, Montoya);
+        public static User CreatePrincessButtercup() => new User(Princess, Buttercup);
+
+        public static Gift CreateGift() =>
+            (new Gift(Title, Description, Url, CreateInigoMontoya()));
+
+        public static Gift CreateGiftArduino() => new Gift(TitleArduino, DescriptionArduino, UrlArduino,
+            SampleData.CreatePrincessButtercup());
     }
 }

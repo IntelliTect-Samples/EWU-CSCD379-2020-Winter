@@ -4,12 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlogEngine.Business;
 using SecretSanta.Data;
 
 namespace SecretSanta.Business
 {
-    public class GiftService : EntityService<Gift>, IPostService
+    public class GiftService : EntityService<Gift>, IEntityService<Gift>
     {
         public GiftService(ApplicationDbContext applicationDbContext, IMapper mapper) :
             base(applicationDbContext, mapper)

@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace SecretSanta.Data.Tests
 {
@@ -15,13 +16,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Gifts.Add(new Gift
-                {
-                    Title = "Ring Doorbell",
-                    Url = "www.ring.com",
-                    Description = "The doorbell that saw too much",
-                    User = new User("Inigo", "Montoya")
-                }); ;
+                dbContext.Gifts.Add(SampleData.CreateGift());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -36,34 +31,26 @@ namespace SecretSanta.Data.Tests
                 Assert.AreEqual("The doorbell that saw too much", gifts[0].Description);
             }
         }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Title = null!
-            };
+            _ = SampleData.CreateGift().Title = null!;
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Description = null!
-            };
+            
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetUrlToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Url = null!
-            };
+            
         }
     }
 }

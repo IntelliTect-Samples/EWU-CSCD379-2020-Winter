@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
@@ -17,8 +18,8 @@ namespace SecretSanta.Data
         public User User { get; set; }
 #nullable enable
         public int UserId { get; set; }
-        public Gift(string title, string description, User user) :
-            this(title, description)
+        public Gift(string title, string description, string url, User user) :
+            this(title, description, url)
         {
             User = user;
         }
@@ -29,10 +30,11 @@ namespace SecretSanta.Data
         private Gift(
 #nullable enable
 #pragma warning restore IDE0051 // Remove unused private members
-            string title, string description)
+            string title, string description, string url)
         {
             Title = title;
             Description = description;
+            Url = url;
         }
     }
 }
