@@ -16,10 +16,26 @@ namespace SecretSanta.Data
         }
         private string _Title = string.Empty;
 
-        public string Description { get => _Description; set => _Description = value ?? throw new ArgumentNullException(nameof(Description)); }
+        public string Description
+        {
+            get => _Description; set
+            {
+                AssertIsNotNullOrWhitespace(value);
+                _Description = value;
+            }
+        }
         private string _Description = string.Empty;
-        public string Url { get => _Url; set => _Url = value ?? throw new ArgumentNullException(nameof(Url)); }
+
+        public string Url
+        {
+            get => _Url; set
+            {
+                AssertIsNotNullOrWhitespace(value);
+                _Url = value;
+            }
+        }
         private string _Url = string.Empty;
+
 #nullable disable
         public User User { get; set; }
 #nullable enable
