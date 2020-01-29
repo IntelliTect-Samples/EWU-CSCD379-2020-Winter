@@ -20,9 +20,9 @@ namespace SecretSanta.Business.Tests
 #nullable enable
 
         [TestInitialize]
-        public override void TestInitialize()
+        public override void InitializeTests()
         {
-            base.TestInitialize();
+            base.InitializeTests();
             Mapper = AutomapperProfileConfiguration.CreateMapper();
         }
     }

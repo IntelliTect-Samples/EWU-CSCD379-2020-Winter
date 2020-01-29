@@ -29,7 +29,7 @@ namespace SecretSanta.Data.Tests
         }
 
         [TestInitialize]
-        public void InitializeTests()
+        virtual public void InitializeTests()
         {
             SqliteConnection = new SqliteConnection("DataSource=:memory:");
             SqliteConnection.Open();
@@ -47,7 +47,7 @@ namespace SecretSanta.Data.Tests
         }
 
         [TestCleanup]
-        public void TeardownTests()
+        virtual public void CleanupTests()
         {
             SqliteConnection.Close();
         }
