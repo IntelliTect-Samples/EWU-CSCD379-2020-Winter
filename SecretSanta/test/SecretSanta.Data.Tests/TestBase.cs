@@ -29,9 +29,11 @@ namespace SecretSanta.Data.Tests
         }
 
         [TestInitialize]
-        public void InitializeTests()
+        virtual public void TestInitialize()
         {
+            SqliteConnection = new SqliteConnection("DataSource=secret_santa.db");
             SqliteConnection = new SqliteConnection("DataSource=:memory:");
+
             SqliteConnection.Open();
 
             Options = new DbContextOptionsBuilder<ApplicationDbContext>()

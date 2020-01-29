@@ -15,13 +15,9 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Gifts.Add(new Gift
-                {
-                    Title = "Ring Doorbell",
-                    Url = "www.ring.com",
-                    Description = "The doorbell that saw too much",
-                    User = new User("Inigo", "Montoya")
-                }); ;
+                var testGift = SampleData.CreateViper();
+                testGift.User = SampleData.CreateWilliamAdama();
+                dbContext.Gifts.Add(testGift);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -31,39 +27,21 @@ namespace SecretSanta.Data.Tests
                 var gifts = await dbContext.Gifts.ToListAsync();
 
                 Assert.AreEqual(1, gifts.Count);
-                Assert.AreEqual("Ring Doorbell", gifts[0].Title);
-                Assert.AreEqual("www.ring.com", gifts[0].Url);
-                Assert.AreEqual("The doorbell that saw too much", gifts[0].Description);
+                Assert.AreEqual(SampleData.CreateViper().Title, gifts[0].Title);
+                Assert.AreEqual(SampleData.CreateViper().Url, gifts[0].Url);
+                Assert.AreEqual(SampleData.CreateViper().Description, gifts[0].Description);
             }
         }
-        [TestMethod]
+
+        [DataTestMethod]
+        [DataRow(null!, "description", "url")]
+        [DataRow("title", null!, "url")]
+        [DataRow("title", "description", null!)]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void Gift_SetTitleToNull_ThrowsArgumentNullException()
+        public void Gift_SetDataToNull_ThrowsArgumentNullException(string title, string description, string url)
         {
-            _ = new Gift
-            {
-                Title = null!
-            };
+            _ = new Gift(title, description, url, SampleData.CreateWilliamAdama());
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
-        {
-            _ = new Gift
-            {
-                Description = null!
-            };
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void Gift_SetUrlToNull_ThrowsArgumentNullException()
-        {
-            _ = new Gift
-            {
-                Url = null!
-            };
-        }
     }
 }
