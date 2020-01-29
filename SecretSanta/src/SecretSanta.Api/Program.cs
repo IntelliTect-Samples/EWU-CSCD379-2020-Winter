@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace BlogEngine.Api
+namespace SecretSanta.Api
 {
     static public class Program
     {
