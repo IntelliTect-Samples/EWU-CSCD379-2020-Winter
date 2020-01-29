@@ -18,7 +18,7 @@ namespace SecretSanta.Data
         public int UserId { get; set; }
 
         public Gift(string title, string description, string url, User user) :
-            this(title, description, url, user.Id)
+            this(title, description, url, user.Id) // TODO
         {
             User = user;
         }
