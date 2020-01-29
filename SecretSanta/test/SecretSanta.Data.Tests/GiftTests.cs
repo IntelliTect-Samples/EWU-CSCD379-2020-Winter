@@ -119,7 +119,7 @@ namespace SecretSanta.Data.Tests
         {
             _ = new Gift(
                 null!, "The doorbell that saw too much",
-                "www.ring.com", new User("Inigo", "Montoya")
+                "www.ring.com", SampleData.User1
             );
         }
 
@@ -129,7 +129,7 @@ namespace SecretSanta.Data.Tests
         {
             _ = new Gift(
                 "Ring Doorbell", null!,
-                "www.ring.com", new User("Inigo", "Montoya")
+                "www.ring.com", SampleData.User2
             );
         }
 
@@ -139,7 +139,7 @@ namespace SecretSanta.Data.Tests
         {
             _ = new Gift(
                 "Ring Doorbell", "The doorbell that saw too much",
-                null!, new User("Inigo", "Montoya")
+                null!, SampleData.User3
             );
         }
     }
