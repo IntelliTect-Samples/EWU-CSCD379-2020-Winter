@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Data.Tests
@@ -15,13 +14,12 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Gifts.Add(new Gift
-                {
-                    Title = "Ring Doorbell",
-                    Url = "www.ring.com",
-                    Description = "The doorbell that saw too much",
-                    User = new User("Inigo", "Montoya")
-                }); ;
+                dbContext.Gifts.Add(
+                    new Gift(
+                        "Ring Doorbell", "The doorbell that saw too much",
+                        "www.ring.com", new User("Inigo", "Montoya")
+                    )
+                );
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -40,30 +38,30 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetTitleToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Title = null!
-            };
+            _ = new Gift(
+                null!, "The doorbell that saw too much",
+                "www.ring.com", new User("Inigo", "Montoya")
+            );
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetDescriptionToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Description = null!
-            };
+            _ = new Gift(
+                "Ring Doorbell", null!,
+                "www.ring.com", new User("Inigo", "Montoya")
+            );
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void Gift_SetUrlToNull_ThrowsArgumentNullException()
         {
-            _ = new Gift
-            {
-                Url = null!
-            };
+            _ = new Gift(
+                "Ring Doorbell", "The doorbell that saw too much",
+                null!, new User("Inigo", "Montoya")
+            );
         }
     }
 }
