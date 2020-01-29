@@ -67,7 +67,7 @@ namespace SecretSanta.Data.Tests
             // Update Teapot Data
             await using (var context = new ApplicationDbContext(Options))
             {
-                var gift = await context.Gifts.SingleOrDefaultAsync();
+                var gift = await context.Gifts.Include(g => g.User).SingleOrDefaultAsync();
                 Assert.AreEqual("Teapot", gift.Title);
                 Assert.AreEqual("It comes with bonus gifts!", gift.Description);
                 Assert.AreEqual("Jim", gift.User.FirstName);
@@ -82,7 +82,7 @@ namespace SecretSanta.Data.Tests
             // Check that update succeeded
             await using (var context = new ApplicationDbContext(Options))
             {
-                var gift = await context.Gifts.SingleOrDefaultAsync();
+                var gift = await context.Gifts.Include(g => g.User).SingleOrDefaultAsync();
                 Assert.AreEqual("Cyan Teapot", gift.Title);
                 Assert.AreEqual("Getting more specific, now!", gift.Description);
                 Assert.AreEqual("firstname", gift.User.FirstName);
