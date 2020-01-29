@@ -22,7 +22,10 @@
         public static Gift CreateGift() =>
             (new Gift(Title, Description, Url, CreateInigoMontoya()));
 
+        public static Gift CreateGift(User user) =>
+            (new Gift(Title, Description, Url, user));
         public static Gift CreateGiftArduino() => new Gift(TitleArduino, DescriptionArduino, UrlArduino,
             SampleData.CreatePrincessButtercup());
+
     }
 }

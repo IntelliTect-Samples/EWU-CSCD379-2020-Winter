@@ -15,7 +15,7 @@ namespace SecretSanta.Business.Tests
             using var dbContext = new ApplicationDbContext(Options);
             IEntityService<Gift> service = new GiftService(dbContext, Mapper);
             User inigoMontoya = SampleData.CreateInigoMontoya();
-            Gift gift = SampleData.CreateGift();
+            Gift gift = SampleData.CreateGift(inigoMontoya);
 
             await service.InsertAsync(gift);
 
