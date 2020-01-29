@@ -13,8 +13,26 @@ namespace SecretSanta.Data
         public string Url { get => _Url; set => _Url = value ?? throw new ArgumentNullException(nameof(Url)); }
         private string _Url = string.Empty;
 #nullable disable
-        public User User { get; set; }
+        private User _User;
+        public User User { get => _User; set => _User = value ?? throw new ArgumentNullException(nameof(User)); }
 #nullable enable
         public int UserId { get; set; }
+
+        public Gift(string title, string description, string url, User user)
+        {
+            Title = title;
+            Description = description;
+            Url = url;
+            User = user;
+            UserId = User.Id;
+        }
+
+        public Gift(string title, string description, string url, int userId)
+        {
+            Title = title;
+            Description = description;
+            Url = url;
+            UserId = userId;
+        }
     }
 }

@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="IntelliTect.Analyzers" Version="0.1.5" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
     <Compile Include="..\*Suppression.cs" />
     <Compile Include="..\..\SolutionSuppression.cs" />
   </ItemGroup>

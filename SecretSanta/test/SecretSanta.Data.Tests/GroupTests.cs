@@ -16,7 +16,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Groups.Add(new Group(title: "Enchanted Forest"));
+                dbContext.Groups.Add(SampleData.CreateSampleGroup());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -26,7 +26,7 @@ namespace SecretSanta.Data.Tests
                 var groups = await dbContext.Groups.ToListAsync();
 
                 Assert.AreEqual(1, groups.Count);
-                Assert.AreEqual("Enchanted Forest", groups[0].Title);
+                Assert.AreEqual(SampleData.GroupTitle, groups[0].Title);
             }
         }
     }
