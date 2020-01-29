@@ -14,144 +14,147 @@ namespace SecretSanta.Data.Tests
         [TestMethod]
         public async Task User_CanSaveToDatabase()
         {
-            // Arrange
+            User user = SampleData.User1;
+            string fname = user.FirstName;
+            string lname = user.LastName;
+
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Users.Add(new User("Inigo", "Montoya"));
+                dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
-            // Act
-            // Assert
+
             using (var dbContext = new ApplicationDbContext(Options))
             {
                 var users = await dbContext.Users.ToListAsync();
 
                 Assert.AreEqual(1, users.Count);
-                Assert.AreEqual("Inigo", users[0].FirstName);
-                Assert.AreEqual("Montoya", users[0].LastName);
+                Assert.AreEqual(fname, users[0].FirstName);
+                Assert.AreEqual(lname, users[0].LastName);
             }
         }
 
         [TestMethod]
         public async Task User_HasFingerPrintDataAddedOnInitialSave()
         {
-            IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
-                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "imontoya"));
+            User user = SampleData.User2;
+            string identifier = $"{user.LastName}, {user.FirstName}";
 
-            // Arrange
+            IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
+                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, identifier));
+
+            
+
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                dbContext.Users.Add(new User("Inigo","Montoya"));
+                dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
-            // Act
-            // Assert
+
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
                 var users = await dbContext.Users.ToListAsync();
 
                 Assert.AreEqual(1, users.Count);
-                Assert.AreEqual("imontoya", users[0].CreatedBy);
-                Assert.AreEqual("imontoya", users[0].ModifiedBy);
+                Assert.AreEqual(identifier, users[0].CreatedBy);
+                Assert.AreEqual(identifier, users[0].ModifiedBy);
             }
         }
 
         [TestMethod]
         public async Task User_HasFingerPrintDataUpdateOnUpdate()
         {
+            User user1 = SampleData.User1;
+            string identifier1 = $"{user1.LastName}, {user1.FirstName}";
+
+            User user2 = SampleData.User3;
+            string fname = user2.FirstName;
+            string lname = user2.LastName;
+            string identifier2 = $"{user2.LastName}, {user2.FirstName}";
+
             IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
-                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "imontoya"));
+                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, identifier1));
 
-            // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                dbContext.Users.Add(new User("Inigo", "Montoya"));
+                dbContext.Users.Add(user1);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
-            // Act
+
             httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
-                    hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "pbuttercup"));
+                    hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, identifier2));
 
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
                 var users = await dbContext.Users.ToListAsync();
 
                 Assert.AreEqual(1, users.Count);
-                users[0].FirstName = "Princess";
-                users[0].LastName = "Buttercup";
+                users[0].FirstName = fname;
+                users[0].LastName = lname;
 
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
 
-            // Assert
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
                 var users = await dbContext.Users.ToListAsync();
 
                 Assert.AreEqual(1, users.Count);
-                Assert.AreEqual("imontoya", users[0].CreatedBy);
-                Assert.AreEqual("pbuttercup", users[0].ModifiedBy);
+                Assert.AreEqual(identifier1, users[0].CreatedBy);
+                Assert.AreEqual(identifier2, users[0].ModifiedBy);
             }
         }
 
         [TestMethod]
         public async Task User_CanBeJoinedToGroup()
         {
-            IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
-                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "imontoya"));
+            User user = SampleData.User1;
+            string identifier = $"{user.LastName}, {user.FirstName}";
 
-            // Arrange
+            Group group = SampleData.Group1;
+            string title = group.Title;
+
+            IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
+                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, identifier));
+
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var group = new Group("Enchanted Forest");
-                var user = new User("Inigo", "Montoya");
                 user.UserGroups.Add(new UserGroup { User = user, Group = group });
                 dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
-            // Act
-            // Assert
+
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
                 var users = await dbContext.Users.Include(u => u.UserGroups).ThenInclude(ug => ug.Group).ToListAsync();
 
                 Assert.AreEqual(1, users.Count);
                 Assert.AreEqual(1, users[0].UserGroups.Count);
-                Assert.AreEqual("Enchanted Forest", users[0].UserGroups[0].Group.Title);
+                Assert.AreEqual(title, users[0].UserGroups[0].Group.Title);
             }
         }
 
         [TestMethod]
         public async Task User_CanBeHaveGifts()
         {
-            IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
-                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, "imontoya"));
+            User user = SampleData.User3;
+            string identifier = $"{user.LastName}, {user.FirstName}";
 
-            // Arrange
+            Gift gift1 = SampleData.Gift1User(user);
+            Gift gift2 = SampleData.Gift2User(user);
+
+            user.Gifts.Add(gift1);
+            user.Gifts.Add(gift2);
+
+            IHttpContextAccessor httpContextAccessor = Mock.Of<IHttpContextAccessor>(hta =>
+                hta.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == new Claim(ClaimTypes.NameIdentifier, identifier));
+
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var user = new User("Inigo", "Montoya");
-
-                var gift1 = new Gift(
-                    "Ring Doorbell",
-                    "Just a cool little toy so I can keep my amazon packages",
-                    "www.ring.com",
-                    user
-                );
-                var gift2 = new Gift(
-                    "Arduino",
-                    "Every good geek needs an IOT device",
-                    "www.arduino.com",
-                    user
-                );
-
-                user.Gifts.Add(gift1);
-                user.Gifts.Add(gift2);
                 dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
-            // Act
-            // Assert
+
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
                 var users = await dbContext.Users.Include(u => u.Gifts).ToListAsync();

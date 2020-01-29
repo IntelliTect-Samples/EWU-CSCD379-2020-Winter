@@ -28,8 +28,11 @@
         public static User User2 => new User(firstName2, lastName2);
         public static User User3 => new User(firstName3, lastName3);
 
-        public static Gift Gift1 => new Gift(title1, desc1, url1, User1);
-        public static Gift Gift2 => new Gift(title2, desc2, url2, User2);
+        public static Gift Gift1 => Gift1User(User1);
+        public static Gift Gift2 => Gift2User(User2);
+
+        public static Gift Gift1User(User user) => new Gift(title1, desc1, url1, user);
+        public static Gift Gift2User(User user) => new Gift(title2, desc2, url2, user);
 
         public static Group Group1 => new Group(group1);
     }
