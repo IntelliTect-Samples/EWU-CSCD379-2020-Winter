@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace SecretSanta.Data
@@ -15,7 +16,8 @@ namespace SecretSanta.Data
 #nullable disable
         public User User { get; set; }
 #nullable enable
-        public int UserId { get; set; }
+        [Required]
+        public int? UserId { get; set; }
 
         public Gift(string title, string description, string url, User user) :
             this(title, description, url, user.Id) // TODO
@@ -24,7 +26,7 @@ namespace SecretSanta.Data
         }
 
         private Gift(
-            string title, string description, string url, int userId)
+            string title, string description, string url, int? userId)
         {
             Title = title;
             Description = description;
