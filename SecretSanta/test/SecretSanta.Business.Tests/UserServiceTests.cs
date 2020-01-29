@@ -1,16 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
-using BlogEngine.Business.Tests;
-using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data;
+using SecretSanta.Data.Tests;
 
 namespace SecretSanta.Business.Tests
 {
@@ -34,7 +26,7 @@ namespace SecretSanta.Business.Tests
         }
 
         [TestMethod]
-        public async Task UpdateAuthor_ShouldSaveIntoDatabase()
+        public async Task UpdateUser_ShouldSaveIntoDatabase()
         {
             // Arrange
             using var dbContextInsert = new ApplicationDbContext(Options);
@@ -48,18 +40,18 @@ namespace SecretSanta.Business.Tests
 
             // Act
             using var dbContextFetch = new ApplicationDbContext(Options);
-            Author inigoFromDb = await dbContextFetch.Authors.SingleAsync(item => item.Id == inigo.Id);
+            User inigoFromDb = await dbContextFetch.Users.SingleAsync(item => item.Id == inigo.Id);
 
             const string montoyaThe3rd = "Montoya The 3rd";
             inigoFromDb.LastName = montoyaThe3rd;
 
             // Update Inigo Montoya using the princesses Id.
-            await service.UpdateAsync(princess.Id!.Value, inigoFromDb);
+            await service.UpdateAsync(princess.Id, inigoFromDb);
 
             // Assert
             using var dbContextAssert = new ApplicationDbContext(Options);
-            inigoFromDb = await dbContextAssert.Authors.SingleAsync(item => item.Id == inigo.Id);
-            var princessFromDb = await dbContextAssert.Authors.SingleAsync(item => item.Id == 2); 
+            inigoFromDb = await dbContextAssert.Users.SingleAsync(item => item.Id == inigo.Id);
+            var princessFromDb = await dbContextAssert.Users.SingleAsync(item => item.Id == 2); 
 
             Assert.AreEqual(
                 (SampleData.Inigo, montoyaThe3rd), (princessFromDb.FirstName, princessFromDb.LastName));

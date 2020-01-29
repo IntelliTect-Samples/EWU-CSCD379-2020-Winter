@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SecretSanta.Data
 {
@@ -8,7 +7,7 @@ namespace SecretSanta.Data
         private string _FirstName = null!;
         public string FirstName
         {
-            get { return _FirstName; }
+            get => _FirstName;
             set 
             {
                 AssertIsNotNullOrWhitespace(value);
@@ -19,7 +18,7 @@ namespace SecretSanta.Data
         private string _LastName = null!;
         public string LastName
         {
-            get { return _LastName; }
+            get => _LastName;
             set
             {
                 AssertIsNotNullOrWhitespace(value);

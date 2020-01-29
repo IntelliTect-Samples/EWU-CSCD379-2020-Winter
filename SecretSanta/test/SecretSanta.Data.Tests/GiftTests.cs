@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace SecretSanta.Data.Tests
 {

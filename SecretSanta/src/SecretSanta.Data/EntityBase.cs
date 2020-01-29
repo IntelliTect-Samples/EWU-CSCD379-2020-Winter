@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace SecretSanta.Data
 {
     public class EntityBase
     {
         [Required]
-        public int? Id { get; protected set; }
+        public int Id { get; set; }
 
         static protected string AssertIsNotNullOrWhitespace(string value) =>
             value switch
