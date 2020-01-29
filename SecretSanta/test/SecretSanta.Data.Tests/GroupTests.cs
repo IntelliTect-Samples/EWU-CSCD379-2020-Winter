@@ -13,20 +13,21 @@ namespace SecretSanta.Data.Tests
         [TestMethod]
         public async Task Group_CanBeSavedToDatabase()
         {
-            // Arrange
+            Group group = SampleData.Group1;
+            string title = group.Title;
+
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Groups.Add(new Group(title: "Enchanted Forest"));
+                dbContext.Groups.Add(group);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
-            // Act
-            // Assert
+
             using (var dbContext = new ApplicationDbContext(Options))
             {
                 var groups = await dbContext.Groups.ToListAsync();
 
                 Assert.AreEqual(1, groups.Count);
-                Assert.AreEqual("Enchanted Forest", groups[0].Title);
+                Assert.AreEqual(title, groups[0].Title);
             }
         }
     }
