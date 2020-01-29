@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
 
 namespace SecretSanta.Api
-{
-    // Justification: Disable until ConfigureServices is added back.
+{
+    // Justification: Disable until ConfigureServices is added back.
 #pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
-    public class Startup
+    public class Startup
     #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -21,7 +21,7 @@ namespace SecretSanta.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                _ = app.UseDeveloperExceptionPage();
             }
 
             app.UseRouting();
