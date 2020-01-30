@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using static SecretSanta.Data.Tests.SampleData;
 
 namespace SecretSanta.Data.Tests
 {
@@ -16,7 +14,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Groups.Add(new Group(title: "Enchanted Forest"));
+                dbContext.Groups.Add(CreateGroup_Forest());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -26,7 +24,7 @@ namespace SecretSanta.Data.Tests
                 var groups = await dbContext.Groups.ToListAsync();
 
                 Assert.AreEqual(1, groups.Count);
-                Assert.AreEqual("Enchanted Forest", groups[0].Title);
+                Assert.AreEqual(GroupForest_Title, groups[0].Title);
             }
         }
     }

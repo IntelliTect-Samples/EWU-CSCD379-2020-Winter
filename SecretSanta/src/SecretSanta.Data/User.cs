@@ -1,15 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SecretSanta.Data
 {
     public class User : FingerPrintEntityBase
     {
-        public string FirstName { get => _FirstName; set => _FirstName = value ?? throw new ArgumentNullException(nameof(FirstName)); }
+        public string FirstName
+        {
+            get => _FirstName;
+            set
+            {
+                AssertIsNotNullOrWhitespace(value);
+                _FirstName = value;
+            }
+        }
         private string _FirstName = string.Empty;
-        public string LastName { get => _LastName; set => _LastName = value ?? throw new ArgumentNullException(nameof(LastName)); }
+
+        public string LastName
+        {
+            get => _LastName;
+            set
+            {
+                AssertIsNotNullOrWhitespace(value);
+                _LastName = value;
+            }
+        }
+
         private string _LastName = string.Empty;
+
         public int? SantaId { get; set; }
         public User? Santa { get; set; }
         public IList<Gift> Gifts { get; } = new List<Gift>();

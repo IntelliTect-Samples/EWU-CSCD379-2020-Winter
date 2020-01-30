@@ -3,10 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
+using static SecretSanta.Data.Tests.SampleData;
 
 namespace SecretSanta.Data.Tests
 {
@@ -19,7 +18,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Users.Add(new User("Inigo", "Montoya"));
+                dbContext.Users.Add(CreateUser_InigoMontoya());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -29,8 +28,8 @@ namespace SecretSanta.Data.Tests
                 var users = await dbContext.Users.ToListAsync();
 
                 Assert.AreEqual(1, users.Count);
-                Assert.AreEqual("Inigo", users[0].FirstName);
-                Assert.AreEqual("Montoya", users[0].LastName);
+                Assert.AreEqual(UserInigoMontoya_FName, users[0].FirstName);
+                Assert.AreEqual(UserInigoMontoya_LName, users[0].LastName);
             }
         }
 
@@ -43,7 +42,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                dbContext.Users.Add(new User("Inigo","Montoya"));
+                dbContext.Users.Add(CreateUser_InigoMontoya());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -67,7 +66,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                dbContext.Users.Add(new User("Inigo", "Montoya"));
+                dbContext.Users.Add(CreateUser_InigoMontoya());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -79,8 +78,8 @@ namespace SecretSanta.Data.Tests
                 var users = await dbContext.Users.ToListAsync();
 
                 Assert.AreEqual(1, users.Count);
-                users[0].FirstName = "Princess";
-                users[0].LastName = "Buttercup";
+                users[0].FirstName = UserPrincessButtercup_FName;
+                users[0].LastName = UserPrincessButtercup_LName;
 
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
@@ -105,8 +104,8 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var group = new Group("Enchanted Forest");
-                var user = new User("Inigo", "Montoya");
+                var group = CreateGroup_Forest();
+                var user = CreateUser_InigoMontoya();
                 user.UserGroups.Add(new UserGroup { User = user, Group = group });
                 dbContext.Users.Add(user);
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
@@ -119,7 +118,7 @@ namespace SecretSanta.Data.Tests
 
                 Assert.AreEqual(1, users.Count);
                 Assert.AreEqual(1, users[0].UserGroups.Count);
-                Assert.AreEqual("Enchanted Forest", users[0].UserGroups[0].Group.Title);
+                Assert.AreEqual(GroupForest_Title, users[0].UserGroups[0].Group.Title);
             }
         }
 
@@ -132,9 +131,9 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                var gift1 = new Gift { Title = "Ring Doorbell", Url = "www.ring.com", Description = "Just a cool little toy so I can keep my amazon packages" };
-                var gift2 = new Gift { Title = "Arduino", Url = "www.arduino.com", Description = "Every good geek needs an IOT device" };
-                var user = new User("Inigo", "Montoya");
+                var gift1 = CreateGift_Doorbell();
+                var gift2 = CreateGift_Arduino();
+                var user = CreateUser_InigoMontoya();
                 user.Gifts.Add(gift1);
                 user.Gifts.Add(gift2);
                 dbContext.Users.Add(user);
@@ -155,14 +154,14 @@ namespace SecretSanta.Data.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void User_SetFirstNameToNull_ThrowsArgumentNullException()
         {
-            _ = new User(null!, "Montoya");
+            _ = new User(null!, UserInigoMontoya_LName);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void User_SetLastNameToNull_ThrowsArgumentNullException()
         {
-            _ = new User("Inigo", null!);
+            _ = new User(UserInigoMontoya_FName, null!);
         }
     }
 }
