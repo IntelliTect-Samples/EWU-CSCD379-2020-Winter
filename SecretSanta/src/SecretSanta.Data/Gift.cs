@@ -35,6 +35,7 @@
         }
         private string _Url = string.Empty;
 
+
 #nullable disable
         public User User { get; set; }
 #nullable enable

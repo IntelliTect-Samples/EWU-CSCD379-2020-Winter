@@ -14,7 +14,6 @@ namespace SecretSanta.Data
             }
         }
         private string _Title = string.Empty;
-
         public IList<UserGroup> UserGroups { get; } = new List<UserGroup>();
 
         public Group(string title)

@@ -26,7 +26,7 @@ namespace SecretSanta.Data
         }
 
         private string _LastName = string.Empty;
-
+        
         public int? SantaId { get; set; }
         public User? Santa { get; set; }
         public IList<Gift> Gifts { get; } = new List<Gift>();
