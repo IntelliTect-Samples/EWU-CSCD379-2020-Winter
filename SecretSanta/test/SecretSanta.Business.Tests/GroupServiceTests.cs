@@ -13,7 +13,7 @@ namespace SecretSanta.Business.Tests
 	public class GroupServiceTests : TestBase
 	{
         [TestMethod]
-        public async Task InsertAsync_ColonialFleet_Success()
+        public async Task CreateGroup_ColonialFleet_Success()
         {
             // Arrange
             using var dbContextInsert = new ApplicationDbContext(Options);
@@ -62,6 +62,27 @@ namespace SecretSanta.Business.Tests
             
 
             Assert.AreEqual(cylonShipFromDb.Title, diffTitle);
+        }
+
+        [TestMethod]
+        public async Task DeleteGroup_CylonShip_Success()
+        {
+            // Arrange
+            using var dbContextInsert = new ApplicationDbContext(Options);
+            IGroupService service = new GroupService(dbContextInsert, Mapper);
+
+            Group cylonShip = SampleData.CreateGroupCylonShip();
+            
+
+            // Act
+            await service.InsertAsync(cylonShip);
+            Assert.IsNotNull(cylonShip.Id);
+            await service.DeleteAsync(cylonShip.Id);
+
+            // Assert
+            List<Group> groups = await service.FetchAllAsync();
+
+            Assert.AreEqual(0, groups.Count);
         }
     }
 }

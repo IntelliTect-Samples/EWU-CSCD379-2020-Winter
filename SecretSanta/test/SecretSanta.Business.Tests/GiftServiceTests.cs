@@ -14,7 +14,7 @@ namespace SecretSanta.Business.Tests
     public class GiftServiceTests : TestBase
     {
         [TestMethod]
-        public async Task InsertAsync_CylonDetector_Success()
+        public async Task CreateGift_CylonDetector_Success()
         {
             // Arrange
             using var dbContextInsert = new ApplicationDbContext(Options);
@@ -30,26 +30,7 @@ namespace SecretSanta.Business.Tests
             Assert.IsNotNull(cylonDetector.Id);
         }
 
-        [TestMethod]
-        public async Task DeleteAsync_FTLDrive_Success()
-        {
-            // Arrange
-            using var dbContextInsert = new ApplicationDbContext(Options);
-            IGiftService service = new GiftService(dbContextInsert, Mapper);
-
-            Gift ftlDrive = SampleData.CreateGiftFTLDrive();
-            ftlDrive.User = SampleData.CreateUserKaraThrace();
-
-            // Act
-            await service.InsertAsync(ftlDrive);
-            Assert.IsNotNull(ftlDrive.Id);
-            await service.DeleteAsync(ftlDrive.Id);
-
-            // Assert
-            List<Gift> gifts = await service.FetchAllAsync();
-
-            Assert.AreEqual(0, gifts.Count);
-        }
+        
 
         [TestMethod]
         public async Task UpdateGift_SaveIntoDatabase()
@@ -87,6 +68,27 @@ namespace SecretSanta.Business.Tests
             Assert.AreEqual(
                 (SampleData.CreateGiftCylonDetector().Title, cylonDetectorV2), 
                 (cylonDetectorFromDb.Title, cylonDetectorFromDb.Description));
+        }
+
+        [TestMethod]
+        public async Task DeleteGift_FTLDrive_Success()
+        {
+            // Arrange
+            using var dbContextInsert = new ApplicationDbContext(Options);
+            IGiftService service = new GiftService(dbContextInsert, Mapper);
+
+            Gift ftlDrive = SampleData.CreateGiftFTLDrive();
+            ftlDrive.User = SampleData.CreateUserKaraThrace();
+
+            // Act
+            await service.InsertAsync(ftlDrive);
+            Assert.IsNotNull(ftlDrive.Id);
+            await service.DeleteAsync(ftlDrive.Id);
+
+            // Assert
+            List<Gift> gifts = await service.FetchAllAsync();
+
+            Assert.AreEqual(0, gifts.Count);
         }
     }
 }

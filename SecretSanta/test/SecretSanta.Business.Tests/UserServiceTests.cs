@@ -13,7 +13,7 @@ namespace SecretSanta.Business.Tests
 	public class UserServiceTests : TestBase
 	{
         [TestMethod]
-        public async Task InsertAsync_GaiusBaltar_Success()
+        public async Task CreateUser_GaiusBaltar_Success()
         {
             // Arrange
             using var dbContextInsert = new ApplicationDbContext(Options);
@@ -27,6 +27,26 @@ namespace SecretSanta.Business.Tests
 
             // Assert
             Assert.IsNotNull(gaius.Id);
+        }
+
+        [TestMethod]
+        public async Task DeleteUser_Number6_Success()
+        {
+            // Arrange
+            using var dbContextInsert = new ApplicationDbContext(Options);
+            IUserService service = new UserService(dbContextInsert, Mapper);
+
+            User number6 = SampleData.CreateUserNumber6();
+
+            // Act
+            await service.InsertAsync(number6);
+            Assert.IsNotNull(number6.Id);
+            await service.DeleteAsync(number6.Id);
+
+            // Assert
+            List<User> users = await service.FetchAllAsync();
+
+            Assert.AreEqual(0, users.Count);
         }
 
         [TestMethod]
