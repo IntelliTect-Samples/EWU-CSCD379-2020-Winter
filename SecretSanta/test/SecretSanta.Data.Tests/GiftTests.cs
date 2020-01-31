@@ -98,5 +98,64 @@ namespace SecretSanta.Data.Tests
         {
             _ = new Gift(SampleData.RingTitle, null!, SampleData.RingDescription, SampleData.CreateJerettLatimer());
         }
+
+        [TestMethod]
+        public async Task Gift_UpdateUser_Success()
+        {
+            // Arrange
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                dbContext.Gifts.Add(SampleData.CreateRingGift());
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+            // Act
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                var gift = await dbContext.Gifts.Include(g => g.User).SingleOrDefaultAsync();
+
+                Assert.AreEqual(SampleData.RingTitle, gift.Title);
+                Assert.AreEqual(SampleData.RingUrl, gift.Url);
+                Assert.AreEqual(SampleData.RingDescription, gift.Description);
+                Assert.AreEqual(1, gift.Id);
+
+                gift.User.FirstName = "Changed Name";
+
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+
+            // Assert
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                var gift = await dbContext.Gifts.Include(g => g.User).SingleOrDefaultAsync();
+
+                Assert.AreEqual("Changed Name", gift.User.FirstName);
+            }
+        }
+
+        [TestMethod]
+        public async Task Gift_DeleteGift_Success()
+        {
+            // Arrange
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                dbContext.Gifts.Add(SampleData.CreateRingGift());
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+            // Act
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                var gift = await dbContext.Gifts.Include(g => g.User).SingleOrDefaultAsync();
+                dbContext.Gifts.Remove(gift);
+                await dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+
+            // Assert
+            using (var dbContext = new ApplicationDbContext(Options))
+            {
+                var gifts = await dbContext.Gifts.Include(g => g.User).ToListAsync();
+
+                Assert.AreEqual(0, gifts.Count);
+            }
+        }
     }
 }
