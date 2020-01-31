@@ -20,15 +20,35 @@ namespace SecretSanta.Business.Tests
             using var dbContextInsert = new ApplicationDbContext(Options);
             IGiftService service = new GiftService(dbContextInsert, Mapper);
 
-            var cylonDetector = SampleData.CreateCylonDetector();
-            cylonDetector.User = SampleData.CreateKaraThrace();
+            Gift cylonDetector = SampleData.CreateGiftCylonDetector();
+            cylonDetector.User = SampleData.CreateUserKaraThrace();
 
             // Act
             await service.InsertAsync(cylonDetector);
-            
 
             // Assert
             Assert.IsNotNull(cylonDetector.Id);
+        }
+
+        [TestMethod]
+        public async Task DeleteAsync_FTLDrive_Success()
+        {
+            // Arrange
+            using var dbContextInsert = new ApplicationDbContext(Options);
+            IGiftService service = new GiftService(dbContextInsert, Mapper);
+
+            Gift ftlDrive = SampleData.CreateGiftFTLDrive();
+            ftlDrive.User = SampleData.CreateUserKaraThrace();
+
+            // Act
+            await service.InsertAsync(ftlDrive);
+            Assert.IsNotNull(ftlDrive.Id);
+            await service.DeleteAsync(ftlDrive.Id);
+
+            // Assert
+            List<Gift> gifts = await service.FetchAllAsync();
+
+            Assert.AreEqual(0, gifts.Count);
         }
 
         [TestMethod]
@@ -38,10 +58,10 @@ namespace SecretSanta.Business.Tests
             using var dbContextInsert = new ApplicationDbContext(Options);
             IGiftService service = new GiftService(dbContextInsert, Mapper);
 
-            var cylonDetector = SampleData.CreateCylonDetector();
-            cylonDetector.User = SampleData.CreateKaraThrace();
-            var viper = SampleData.CreateViper();
-            viper.User = SampleData.CreateKaraThrace();
+            var cylonDetector = SampleData.CreateGiftCylonDetector();
+            cylonDetector.User = SampleData.CreateUserKaraThrace();
+            var viper = SampleData.CreateGiftViper();
+            viper.User = SampleData.CreateUserKaraThrace();
 
             cylonDetector = await service.InsertAsync(cylonDetector);
             viper = await service.InsertAsync(viper);
@@ -65,7 +85,7 @@ namespace SecretSanta.Business.Tests
             var viperFromDb = await dbContextAssert.Gifts.SingleAsync(item => item.Id == viper.Id);
 
             Assert.AreEqual(
-                (SampleData.CreateCylonDetector().Title, cylonDetectorV2), 
+                (SampleData.CreateGiftCylonDetector().Title, cylonDetectorV2), 
                 (cylonDetectorFromDb.Title, cylonDetectorFromDb.Description));
         }
     }

@@ -19,7 +19,7 @@ namespace SecretSanta.Business.Tests
             using var dbContextInsert = new ApplicationDbContext(Options);
             IGroupService service = new GroupService(dbContextInsert, Mapper);
 
-            var fleet = SampleData.CreateColonialFleet();
+            var fleet = SampleData.CreateGroupColonialFleet();
 
             // Act
             await service.InsertAsync(fleet);
@@ -36,7 +36,7 @@ namespace SecretSanta.Business.Tests
             using var dbContextInsert = new ApplicationDbContext(Options);
             IGroupService service = new GroupService(dbContextInsert, Mapper);
 
-            var cylonShip = SampleData.CreateCylonShip();
+            var cylonShip = SampleData.CreateGroupCylonShip();
             
 
             cylonShip = await service.InsertAsync(cylonShip);

@@ -19,7 +19,7 @@ namespace SecretSanta.Business.Tests
             using var dbContextInsert = new ApplicationDbContext(Options);
             IUserService service = new UserService(dbContextInsert, Mapper);
 
-            var gaius = SampleData.CreateGaiusBaltar();
+            var gaius = SampleData.CreateUserGaiusBaltar();
 
             // Act
             await service.InsertAsync(gaius);
@@ -36,8 +36,8 @@ namespace SecretSanta.Business.Tests
             using var dbContextInsert = new ApplicationDbContext(Options);
             IUserService service = new UserService(dbContextInsert, Mapper);
 
-            var lee = SampleData.CreateLeeAdama();
-            var kara = SampleData.CreateKaraThrace();
+            var lee = SampleData.CreateUserLeeAdama();
+            var kara = SampleData.CreateUserKaraThrace();
 
             lee = await service.InsertAsync(lee);
             kara = await service.InsertAsync(kara);
