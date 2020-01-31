@@ -41,9 +41,11 @@ namespace SecretSanta.Data
 #nullable enable
         public int UserId { get; set; }
 
-        
 
+
+#pragma warning disable CA1062 // Validate arguments of public methods
         public Gift(string title, string description, string url, User user) : this(title, description, url, user.Id)
+#pragma warning restore CA1062 // Validate arguments of public methods
         {
             User = user ?? throw new ArgumentNullException(nameof(user));
         }
