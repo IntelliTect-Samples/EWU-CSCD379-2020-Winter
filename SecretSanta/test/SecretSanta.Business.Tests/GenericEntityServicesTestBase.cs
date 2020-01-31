@@ -46,14 +46,18 @@ namespace SecretSanta.Business.Tests
 
             // Act
             await service.InsertAsync(entity);
+            // for some reason the following doesn't work for no warning
+            //TEntity fetched = await service.FetchByIdAsync((int) ((entity.Id) ?? throw new ArgumentNullException(entity.Id.GetType().FullName)));
             TEntity fetched = await service.FetchByIdAsync((int) (entity.Id!));
 
             // Assert
-            var props = entity.GetType().GetProperties(BindingFlags.Public);
+            PropertyInfo[] props = entity.GetType().GetProperties(BindingFlags.Public);
             foreach (var property in props)
             {
                 var name = property.Name;
-#nullable disable // I don't like this... everything I tried hasn't worked though will try more
+                // I don't like this... everything I tried hasn't worked though will try more but sorta stuck with this for now
+                // I really want to use reflection though!
+#nullable disable
                 entity.GetType().GetProperty(name).GetValue(entity);
                 var fetchedValue = entity.GetType().GetProperty(name).GetValue(fetched);
                 var entityValue = entity.GetType().GetProperty(name).GetValue(entity);

@@ -10,6 +10,7 @@ namespace SecretSanta.Business.Tests
     [TestClass]
     public class GiftServiceTests : GenericEntityServicesTestBase<Gift>
     {
+        /* replaced by generic
         [TestMethod]
         public async Task InsertAsync_Gift_Success()
         {
@@ -25,8 +26,9 @@ namespace SecretSanta.Business.Tests
 
             // Assert
             Assert.IsNotNull(gift.Id);
-        }
+        }*/
 
+        /* replaced by generic
         [TestMethod]
         public async Task CreateGift_ShouldSaveIntoDatabase()
         {
@@ -48,7 +50,7 @@ namespace SecretSanta.Business.Tests
             Assert.IsNotNull(inigo.Id);
             Assert.AreSame(gift.User, inigo);
             Assert.AreEqual(inigo.Id, gift.User.Id);
-        }
+        }*/
 
         [TestMethod]
         public async Task UpdateGift_ShouldSaveIntoDatabase()
