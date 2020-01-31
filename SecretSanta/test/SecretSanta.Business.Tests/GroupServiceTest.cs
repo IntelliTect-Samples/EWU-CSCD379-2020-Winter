@@ -2,26 +2,21 @@
 using static SecretSanta.Data.Tests.SampleData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace SecretSanta.Business.Tests
 {
     [TestClass]
-    public class GroupServiceTests : TestBase
+    public class GroupServiceTests : GenericEntityServicesTestBase<Group>
     {
-        [TestMethod]
-        public async Task InsertAsync_User_Success()
+        protected override IEntityService<Group> GetService(ApplicationDbContext dbContext, IMapper mapper)
         {
-            // Arrange
-            using var dbContextInsert = new ApplicationDbContext(Options);
-            IGroupService service = new GroupService(dbContextInsert, Mapper);
+            return new GroupService(dbContext, mapper);
+        }
 
-            var group = CreateGroup_Cast();
-
-            // Act
-            await service.InsertAsync(group);
-
-            // Assert
-            Assert.IsNotNull(group.Id);
+        protected override Group CreateEntity()
+        {
+            return CreateGroup_Cast();
         }
     }
 }
