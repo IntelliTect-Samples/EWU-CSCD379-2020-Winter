@@ -2,12 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
+using AutoMapper;
 using static SecretSanta.Data.Tests.SampleData;
 
 namespace SecretSanta.Business.Tests
 {
     [TestClass]
-    public class GiftServiceTests : TestBase
+    public class GiftServiceTests : GenericEntityServicesTestBase<Gift>
     {
         [TestMethod]
         public async Task InsertAsync_Gift_Success()
@@ -84,6 +85,16 @@ namespace SecretSanta.Business.Tests
 
             Assert.AreEqual(
                 (GiftJunk_Title, GiftJunk_Url, GiftJunk_Description), (junkFromDb.Title, junkFromDb.Url, junkFromDb.Description));
+        }
+
+        protected override IEntityService<Gift> GetService(ApplicationDbContext dbContext, IMapper mapper)
+        {
+            return new GiftService(dbContext, mapper);
+        }
+
+        protected override Gift CreateEntity()
+        {
+            return CreateGift_Doorbell(CreateUser_InigoMontoya());
         }
     }
 }

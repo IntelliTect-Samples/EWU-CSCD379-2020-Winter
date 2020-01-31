@@ -1,4 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Data;
@@ -43,20 +46,53 @@ namespace SecretSanta.Business.Tests
 
             // Act
             await service.InsertAsync(entity);
-            TEntity fetched = await service.FetchByIdAsync((int) entity.Id);
+            TEntity fetched = await service.FetchByIdAsync((int) (entity.Id!));
 
             // Assert
             var props = entity.GetType().GetProperties(BindingFlags.Public);
             foreach (var property in props)
             {
                 var name = property.Name;
+#nullable disable // I don't like this... everything I tried hasn't worked though will try more
                 entity.GetType().GetProperty(name).GetValue(entity);
-                Assert.AreEqual(entity.GetType().GetProperty(name).GetValue(fetched), entity.GetType().GetProperty(name).GetValue(entity));
+                var fetchedValue = entity.GetType().GetProperty(name).GetValue(fetched);
+                var entityValue = entity.GetType().GetProperty(name).GetValue(entity);
+#nullable enable
+                Assert.AreEqual(fetchedValue, entityValue);
             }
+        }
+
+        [TestMethod]
+        public async Task FetchAll_Entity_Success()
+        {
+            // Arrange
+            using var startupContenxt = new ApplicationDbContext(Options);
+
+            TEntity entity1 = CreateEntity();
+            TEntity entity2 = CreateEntity();
+            TEntity entity3 = CreateEntity();
+
+            // so Automapper don't map
+            startupContenxt.Add(entity1);
+            startupContenxt.Add(entity2);
+            startupContenxt.Add(entity3);
+            startupContenxt.SaveChanges();
+
+            using var dbContext = new ApplicationDbContext(Options);
+            IEntityService<TEntity> service = GetService(dbContext, Mapper);
+
+            // Act
+            List<TEntity> stuff = await service.FetchAllAsync();
+
+            // Assert
+            CollectionAssert.AreEquivalent(
+                new[]{entity1.Id, entity2.Id, entity3.Id},
+                stuff.Select(e=>e.Id).ToArray());
         }
 
         // Update
 
         // Destroy
+        // skipped, not implemented in service and we didn't go over in class. I'll probably do it later to learn though
     }
 }
