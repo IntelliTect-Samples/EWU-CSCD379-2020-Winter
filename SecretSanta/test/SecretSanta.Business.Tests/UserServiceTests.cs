@@ -32,6 +32,60 @@ namespace SecretSanta.Business.Tests
         }
 
         [TestMethod]
+        public async Task FetchAll_ShouldRetrieveAllUsers_Success()
+        {
+            //Arrange
+            using var dbContext = new ApplicationDbContext(Options);
+
+            IUserService service = new UserService(dbContext, Mapper);
+
+            User user1 = SampleData.CreateBillyBob();
+            User user2 = SampleData.CreateFredFlintstone();
+
+            await service.InsertAsync(user1);
+            await service.InsertAsync(user2);
+
+            //Act
+            List<User> users = await service.FetchAllAsync();
+
+            User userFromDb = users[0];
+            User userFromDb2 = users[1];
+
+            //Assert
+            Assert.AreEqual(user1, userFromDb);
+            Assert.AreEqual(user2, userFromDb2);
+            Assert.IsNotNull(userFromDb.FirstName);
+            Assert.IsNotNull(userFromDb.LastName);
+            Assert.IsNotNull(userFromDb2.FirstName);
+            Assert.IsNotNull(userFromDb2.LastName);
+            Assert.AreEqual(SampleData.Billy, userFromDb.FirstName);
+            Assert.AreEqual(SampleData.Bob, userFromDb.LastName);
+            Assert.AreEqual(SampleData.Fred, userFromDb2.FirstName);
+            Assert.AreEqual(SampleData.Flintstone, userFromDb2.LastName);
+        }
+
+        [TestMethod]
+        public async Task FetchById_User_Success()
+        {
+            // Arrange
+            using var dbContext = new ApplicationDbContext(Options);
+
+            IUserService userService = new UserService(dbContext, Mapper);
+
+            var user = SampleData.CreateBillyBob();
+
+            // Act
+            await userService.InsertAsync(user);
+
+            using var dbContext2 = new ApplicationDbContext(Options);
+            userService = new UserService(dbContext, Mapper);
+            User userFromDb = await userService.FetchByIdAsync(user.Id!.Value);
+
+            // Assert
+            Assert.IsNotNull(userFromDb);
+        }
+
+        [TestMethod]
         public async Task UpdateUser_ShouldSaveIntoDatabase()
         {
             // Arrange
