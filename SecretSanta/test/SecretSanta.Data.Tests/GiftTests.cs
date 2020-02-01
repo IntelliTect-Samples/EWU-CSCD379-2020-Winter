@@ -18,7 +18,7 @@ namespace SecretSanta.Data.Tests
             // Arrange
             using (var dbContext = new ApplicationDbContext(Options))
             {
-                dbContext.Gifts.Add(new Gift("Title", "Description", "www.website.com", new User("Inigo", "Montoya")));
+                dbContext.Gifts.Add(SampleData.CreateCoolGift());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -31,7 +31,7 @@ namespace SecretSanta.Data.Tests
                 Assert.AreEqual("Title", gifts[0].Title);
                 Assert.AreEqual("Description", gifts[0].Description);
                 Assert.AreEqual("www.website.com", gifts[0].Url);
-                
+
             }
         }
         [TestMethod]
@@ -66,10 +66,10 @@ namespace SecretSanta.Data.Tests
             // Act
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                dbContext.Gifts.Add(new Gift("Title", "Description", "www.website.com", new User("Inigo", "Montoya")));
+                dbContext.Gifts.Add(SampleData.CreateCoolGift());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
-            
+
             // Assert
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
@@ -90,7 +90,7 @@ namespace SecretSanta.Data.Tests
 
             using (var dbContext = new ApplicationDbContext(Options, httpContextAccessor))
             {
-                dbContext.Gifts.Add(new Gift("Title", "Description", "www.website.com", new User("Inigo", "Montoya")));
+                dbContext.Gifts.Add(SampleData.CreateCoolGift());
                 await dbContext.SaveChangesAsync().ConfigureAwait(false);
             }
             // Act
@@ -124,7 +124,7 @@ namespace SecretSanta.Data.Tests
         {
             // Arrange
             User user = new User("Caleb", "Walsh");
-            Gift gift = new Gift("My Title", "Some description", "www.website.com", user);
+            Gift gift = SampleData.CreateCoolGift();
 
             // Act
             using (ApplicationDbContext dbContext = new ApplicationDbContext(Options))

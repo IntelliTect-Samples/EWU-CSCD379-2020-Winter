@@ -32,6 +32,57 @@ namespace SecretSanta.Business.Tests
         }
 
         [TestMethod]
+        public async Task FetchAll_ShouldRetrieveAllGroups_Success()
+        {
+            //Arrange
+            using var dbContext = new ApplicationDbContext(Options);
+
+            IGroupService service = new GroupService(dbContext, Mapper);
+
+            Group group1 = SampleData.CreateCoolGroup();
+            Group group2 = SampleData.CreateCrazyGroup();
+
+            await service.InsertAsync(group1);
+            await service.InsertAsync(group2);
+
+            //Act
+            List<Group> groups = await service.FetchAllAsync();
+
+            Group groupFromDb = groups[0];
+            Group groupFromDb2 = groups[1];
+
+            //Assert
+            Assert.AreEqual(group1, groupFromDb);
+            Assert.AreEqual(group2, groupFromDb2);
+            Assert.IsNotNull(groupFromDb.Title);
+            Assert.IsNotNull(groupFromDb2.Title);
+            Assert.AreEqual(SampleData.CoolGroupName, groupFromDb.Title);
+            Assert.AreEqual((SampleData.Billy, SampleData.Bob),
+                        (groupFromDb2.Title, groupFromDb2.Title));
+        }
+
+        [TestMethod]
+        public async Task FetchById_Group_Success()
+        {
+            // Arrange
+            using var dbContext = new ApplicationDbContext(Options);
+
+            IGroupService groupService = new GroupService(dbContext, Mapper);
+
+            var group = SampleData.CreateCoolGroup();
+
+            // Act
+            await groupService.InsertAsync(group);
+
+            using var dbContext2 = new ApplicationDbContext(Options);
+            groupService = new GroupService(dbContext, Mapper);
+            Group groupFromDb = await groupService.FetchByIdAsync(group.Id!.Value);
+
+            // Assert
+            Assert.IsNotNull(groupFromDb);
+        }
+
+        [TestMethod]
         public async Task UpdateGroup_ShouldSaveIntoDatabase()
         {
             // Arrange
@@ -62,6 +113,34 @@ namespace SecretSanta.Business.Tests
             Assert.AreEqual(SampleData.CrazyGroupName, crazyGroupFromDb.Title);
             //Assert.AreEqual(extremeTitle, coolGroupFromDb.Title);
 
+        }
+
+        [TestMethod]
+        public async Task Delete_SingleGroupOnly_Success()
+        {
+            // Arrange
+            using var dbContext = new ApplicationDbContext(Options);
+            IGroupService groupService = new GroupService(dbContext, Mapper);
+
+            var group = SampleData.CreateCoolGroup();
+            var group2 = SampleData.CreateCrazyGroup();
+
+            await groupService.InsertAsync(group);
+            await groupService.InsertAsync(group2);
+
+            await dbContext.SaveChangesAsync();
+
+            // Act
+            bool deleted = await groupService.DeleteAsync(group.Id!.Value);
+            using var dbContextAssert = new ApplicationDbContext(Options);
+            Group groupFromDb = await dbContextAssert.Set<Group>().SingleOrDefaultAsync(e => e.Id == group.Id);
+            Group groupFromDb2 = await dbContextAssert.Set<Group>().SingleOrDefaultAsync(e => e.Id == group2.Id);
+
+            // Assert
+            Assert.IsTrue(deleted);
+            Assert.IsNull(groupFromDb);
+            Assert.AreEqual(group2.Title, groupFromDb2.Title);
+            Assert.AreEqual(group2.Id, groupFromDb2.Id);
         }
     }
 }

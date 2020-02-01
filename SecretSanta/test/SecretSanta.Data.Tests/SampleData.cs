@@ -21,7 +21,7 @@ namespace SecretSanta.Data.Tests
         public const string GiftUrl = "www.url.com";
 
         public const string CrazyGiftTitle = "Crazy Gift";
-        public const string CrazyGiftDescription = "The crazies gift";
+        public const string CrazyGiftDescription = "The craziest gift";
         public const string CrazyUrl = "www.crazy.com";
 
 

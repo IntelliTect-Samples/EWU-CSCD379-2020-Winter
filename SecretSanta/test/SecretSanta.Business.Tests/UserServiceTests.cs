@@ -38,34 +38,58 @@ namespace SecretSanta.Business.Tests
             using var dbContextInsert = new ApplicationDbContext(Options);
             IUserService service = new UserService(dbContextInsert, Mapper);
 
-            User billy = SampleData.CreateBillyBob();
-            User fred = SampleData.CreateFredFlintstone();
+            User user = SampleData.CreateBillyBob();
+            User user2 = SampleData.CreateFredFlintstone();
 
-            await service.InsertAsync(billy);
-            await service.InsertAsync(fred);
+            await service.InsertAsync(user);
+            await service.InsertAsync(user2);
 
             // Act
             using var dbContextFetch = new ApplicationDbContext(Options);
-            User billyFromDb = await dbContextFetch.Users.SingleAsync(item => item.Id == billy.Id);
+            User userFromDb = await dbContextFetch.Users.SingleAsync(item => item.Id == user.Id);
 
             const string updatedLastName = "Not Billy Bob at all";
-            billyFromDb.LastName = updatedLastName;
+            userFromDb.LastName = updatedLastName;
 
-            // Update Billy Bob using Fred Id.
-            await service.UpdateAsync(fred.Id!.Value, billyFromDb);
+            // Update user Id using user2 Id
+            await service.UpdateAsync(user2.Id!.Value, userFromDb);
+
+            using var dbContextAssert = new ApplicationDbContext(Options);
+            userFromDb = await dbContextAssert.Users.SingleAsync(item => item.Id == user.Id);
+            var userFromDb2 = await dbContextAssert.Users.SingleAsync(item => item.Id == 2);
 
             // Assert
+            Assert.AreEqual(("Billy", "Bob"), (userFromDb.FirstName, userFromDb.LastName));
+            Assert.AreNotEqual((userFromDb.FirstName, userFromDb.LastName), (userFromDb2.FirstName, userFromDb2.LastName));
+        }
+
+        [TestMethod]
+        public async Task Delete_SingleUserOnly_Success()
+        {
+            // Arrange
+            using var dbContext = new ApplicationDbContext(Options);
+            IUserService userService = new UserService(dbContext, Mapper);
+
+            var user = SampleData.CreateBillyBob();
+            var user2 = SampleData.CreateFredFlintstone();
+
+            await userService.InsertAsync(user);
+            await userService.InsertAsync(user2);
+
+            await dbContext.SaveChangesAsync();
+
+            // Act
+            bool deleted = await userService.DeleteAsync(user.Id!.Value);
             using var dbContextAssert = new ApplicationDbContext(Options);
-            billyFromDb = await dbContextAssert.Users.SingleAsync(item => item.Id == billy.Id);
-            var fredFromDb = await dbContextAssert.Users.SingleAsync(item => item.Id == 2);
+            User userFromDb = await dbContextAssert.Set<User>().SingleOrDefaultAsync(e => e.Id == user.Id);
+            User userFromDb2 = await dbContextAssert.Set<User>().SingleOrDefaultAsync(e => e.Id == user2.Id);
 
-
-            // I'm confused about how this test is supposed to work based off the lecture notes
-            //Assert.AreEqual(
-            //    (SampleData.Billy, updatedLastName), (fredFromDb.FirstName, fredFromDb.LastName));
-
-            //Assert.AreEqual(
-            //    (SampleData.Billy, SampleData.Bob), (billyFromDb.FirstName, billyFromDb.LastName));
+            // Assert
+            Assert.IsTrue(deleted);
+            Assert.IsNull(userFromDb);
+            Assert.AreEqual(user2.FirstName, userFromDb2.FirstName);
+            Assert.AreEqual(user2.LastName, userFromDb2.LastName);
+            Assert.AreEqual(user2.Id, userFromDb2.Id);
         }
     }
 }
