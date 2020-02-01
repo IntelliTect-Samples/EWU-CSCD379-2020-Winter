@@ -28,9 +28,9 @@ namespace SecretSanta.Data.Tests
                 var gifts = await dbContext.Gifts.ToListAsync();
 
                 Assert.AreEqual(1, gifts.Count);
-                Assert.AreEqual("Title", gifts[0].Title);
-                Assert.AreEqual("Description", gifts[0].Description);
-                Assert.AreEqual("www.website.com", gifts[0].Url);
+                Assert.AreEqual("Free money", gifts[0].Title);
+                Assert.AreEqual("The coolest gift", gifts[0].Description);
+                Assert.AreEqual("www.url.com", gifts[0].Url);
 
             }
         }

@@ -15,14 +15,12 @@ namespace SecretSanta.Business.Tests
     public class GiftServiceTests : TestBase
     {
         [TestMethod]
-        public async Task CreateGift_ShouldSaveIntoDatabase()
+        public async Task InsertAsync_Gift_Success()
         {
             // Arrange
             using var dbContext = new ApplicationDbContext(Options);
-
             IGiftService service = new GiftService(dbContext, Mapper);
 
-            var user = SampleData.CreateBillyBob();
             Gift gift = SampleData.CreateCrazyGift();
 
             // Act
@@ -30,9 +28,6 @@ namespace SecretSanta.Business.Tests
 
             // Assert
             Assert.IsNotNull(gift.Id);
-            Assert.IsNotNull(user.Id);
-            Assert.AreSame(gift.User, user);
-            Assert.AreEqual(user.Id, gift.User.Id);
         }
 
         [TestMethod]
@@ -74,7 +69,6 @@ namespace SecretSanta.Business.Tests
 
             IGiftService service = new GiftService(dbContext, Mapper);
 
-            var user = SampleData.CreateBillyBob();
             var gift = SampleData.CreateCrazyGift();
 
             // Act
@@ -95,7 +89,6 @@ namespace SecretSanta.Business.Tests
             using var dbContext = new ApplicationDbContext(Options);
 
             IGiftService giftService = new GiftService(dbContext, Mapper);
-            IUserService userService = new UserService(dbContext, Mapper);
 
             var gift = SampleData.CreateCrazyGift();
             var gift2 = SampleData.CreateCoolGift();

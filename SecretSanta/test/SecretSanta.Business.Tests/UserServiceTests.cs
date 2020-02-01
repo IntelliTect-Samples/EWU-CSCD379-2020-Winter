@@ -59,8 +59,8 @@ namespace SecretSanta.Business.Tests
             var userFromDb2 = await dbContextAssert.Users.SingleAsync(item => item.Id == 2);
 
             // Assert
-            Assert.AreEqual(("Billy", "Bob"), (userFromDb.FirstName, userFromDb.LastName));
-            Assert.AreNotEqual((userFromDb.FirstName, userFromDb.LastName), (userFromDb2.FirstName, userFromDb2.LastName));
+            Assert.AreEqual((SampleData.Billy, updatedLastName), (userFromDb.FirstName, userFromDb2.LastName));
+            Assert.AreEqual((SampleData.Billy, SampleData.Bob), (userFromDb.FirstName, userFromDb.LastName));
         }
 
         [TestMethod]

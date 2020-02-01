@@ -57,8 +57,7 @@ namespace SecretSanta.Business.Tests
             Assert.IsNotNull(groupFromDb.Title);
             Assert.IsNotNull(groupFromDb2.Title);
             Assert.AreEqual(SampleData.CoolGroupName, groupFromDb.Title);
-            Assert.AreEqual((SampleData.Billy, SampleData.Bob),
-                        (groupFromDb2.Title, groupFromDb2.Title));
+            Assert.AreEqual(SampleData.CrazyGroupName, groupFromDb2.Title);
         }
 
         [TestMethod]
@@ -99,8 +98,8 @@ namespace SecretSanta.Business.Tests
             using var dbContextFetch = new ApplicationDbContext(Options);
             Group crazyGroupFromDb = await dbContextFetch.Groups.SingleAsync(item => item.Id == crazyGroup.Id);
 
-            const string extremeTitle = "Extreme group";
-            crazyGroupFromDb.Title = extremeTitle;
+            const string updateTitle = "Extreme group";
+            crazyGroupFromDb.Title = updateTitle;
 
             // Update Crazy Group using the Cool Groups Id.
             await service.UpdateAsync(coolGroup.Id!.Value, crazyGroupFromDb);
@@ -110,8 +109,8 @@ namespace SecretSanta.Business.Tests
             crazyGroupFromDb = await dbContextAssert.Groups.SingleAsync(item => item.Id == crazyGroup.Id);
             Group coolGroupFromDb = await dbContextAssert.Groups.SingleAsync(item => item.Id == 2);
 
+            Assert.AreEqual(updateTitle, coolGroupFromDb.Title);
             Assert.AreEqual(SampleData.CrazyGroupName, crazyGroupFromDb.Title);
-            //Assert.AreEqual(extremeTitle, coolGroupFromDb.Title);
 
         }
 
