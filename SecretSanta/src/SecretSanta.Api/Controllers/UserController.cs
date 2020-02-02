@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SecretSanta.Business;
+using SecretSanta.Business.Services;
 using SecretSanta.Data;
 
 namespace SecretSanta.Api.Controllers
@@ -12,7 +12,7 @@ namespace SecretSanta.Api.Controllers
     //https://localhost/api/User
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController : ControllerBase, IController<User>
     {
         private IUserService UserService { get; }
 

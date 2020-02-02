@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SecretSanta.Business.Services;
 using SecretSanta.Data;
 using System.Collections.Generic;
 using System.Linq;

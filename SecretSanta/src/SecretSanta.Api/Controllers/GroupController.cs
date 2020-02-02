@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SecretSanta.Business;
+using SecretSanta.Business.Services;
 using SecretSanta.Data;
 
 namespace SecretSanta.Api.Controllers

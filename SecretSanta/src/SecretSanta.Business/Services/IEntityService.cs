@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-namespace SecretSanta.Business
+namespace SecretSanta.Business.Services
 {
     public interface IEntityService<TEntity> where TEntity : class
     {

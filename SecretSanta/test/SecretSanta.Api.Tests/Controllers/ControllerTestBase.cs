@@ -2,66 +2,108 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Threading.Tasks;
+using SecretSanta.Api.Controllers;
+using SecretSanta.Business.Services;
+using SecretSanta.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
     /* reference from Blod Engine
-    public class AuthorService : IAuthorService
+    
+    [TestClass]
+    public class AuthorControllerTests
     {
-        private Dictionary<int, Author> Items { get; } = new Dictionary<int, Author>();
-
-        public Task<bool> DeleteAsync(int id)
+        [TestMethod]
+        public void Create_AuthorController_Success()
         {
-            throw new NotImplementedException();
+            //Arrange
+            var service = new AuthorService();
+
+            //Act
+            _ = new AuthorController(service);
+
+            //Assert
         }
 
-        public Task<List<Author>> FetchAllAsync()
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Create_WithoutService_Fails()
         {
-            throw new NotImplementedException();
+            //Arrange
+            
+            //Act
+            _ = new AuthorController(null!);
+
+            //Assert
         }
 
-        public Task<Author?> FetchByIdAsync(int id)
+        [TestMethod]
+        public async Task GetById_WithExistingAuthor_Success()
         {
-            if(Items.TryGetValue(id, out Author? author))
-            {
-                Task<Author?> t1 = Task.FromResult<Author?>(author);
-                return t1;
-            }
-            Task<Author?> t2 =  Task.FromResult<Author?>(null);
-            return t2;
+            // Arrange
+            var service = new AuthorService();
+            Author author = SampleData.CreateInigoMontoya();
+            author = await service.InsertAsync(author);
+
+            var controller = new AuthorController(service);
+
+            // Act
+            ActionResult<Author> rv = await controller.Get(author.Id!.Value);
+
+            // Assert
+            Assert.IsTrue(rv.Result is OkObjectResult);
         }
 
-        public Task<Author> InsertAsync(Author entity)
-        {
-            int id = Items.Count + 1;
-            Items[id] = new TestAuthor(entity, id);
-            return Task.FromResult(Items[id]);
-        }
-
-        public Task<Author[]> InsertAsync(params Author[] entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Author?> UpdateAsync(int id, Author entity)
-        {
-            throw new NotImplementedException();
-        }
     }
-
-    public class  TestAuthor : Author
-    {
-        public TestAuthor(Author author, int id)
-            : base(author.FirstName, author.LastName, author.Email)
-        {
-            Id = id;
-        }
-    }
-}
      */
     [TestClass]
-    public abstract class ControllerTestBase<TService>
+    public abstract class ControllerTestBase<TController, TEntity> where TController : IController<TEntity> where TEntity : EntityBase
     {
-        protected abstract TService CreateService();
+        protected abstract IEntityService<TEntity> CreateService();
+        protected abstract TController CreateController(IEntityService<TEntity> service);
+
+        protected abstract TEntity CreateEntity();
+
+        [TestMethod]
+        public void Create_Controller_Success()
+        {
+            //Arrange
+
+            //Act
+            _ = CreateController(CreateService());
+
+            //Assert
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Create_WithoutService_Fails()
+        {
+            //Arrange
+
+            //Act
+            _ = CreateController(null!);
+
+            //Assert
+        }
+
+        [TestMethod]
+        public async Task GetById_WithExistingAuthor_Success()
+        {
+            // Arrange
+            var service = CreateService();
+            TEntity entity = CreateEntity();
+            entity = await service.InsertAsync(entity);
+
+            var controller = CreateController(service);
+
+            // Act
+            ActionResult<TEntity> rv = await controller.Get(entity.Id!.Value);
+
+            // Assert
+            Assert.IsTrue(rv.Result is OkObjectResult);
+        }
     }
 }

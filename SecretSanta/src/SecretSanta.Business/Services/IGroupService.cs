@@ -1,5 +1,5 @@
 ﻿using SecretSanta.Data;
-namespace SecretSanta.Business
+namespace SecretSanta.Business.Services
 {
     public interface IGroupService : IEntityService<Group>
     {
