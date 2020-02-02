@@ -9,6 +9,8 @@ namespace SecretSanta.Api.Tests.MockServices
 {
     public abstract class MockService<TEntity> : IEntityService<TEntity> where TEntity : EntityBase
     {
+        protected abstract TEntity MockEntity(TEntity entity, int id);
+        private Dictionary<int, TEntity> Items { get; } = new Dictionary<int, TEntity>();
         public Task<bool> DeleteAsync(int id)
         {
             throw new NotImplementedException();
@@ -21,15 +23,23 @@ namespace SecretSanta.Api.Tests.MockServices
 
         public Task<TEntity> FetchByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            if (Items.TryGetValue(id, out TEntity? entity))
+            {
+                Task<TEntity> t1 = Task.FromResult<TEntity>(entity);
+                return t1;
+            }
+            Task<TEntity> t2 = Task.FromResult<TEntity>(null!);
+            return t2;
         }
 
         public Task<TEntity> InsertAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            int id = Items.Count + 1;
+            Items[id] = MockEntity(entity, id);
+            return Task.FromResult(Items[id]);
         }
 
-        public Task<TEntity> UpdateAsync(int id, TEntity entity)
+        public Task<TEntity?> UpdateAsync(int id, TEntity entity)
         {
             throw new NotImplementedException();
         }

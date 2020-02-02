@@ -100,7 +100,7 @@ namespace SecretSanta.Api.Tests.Controllers
             var controller = CreateController(service);
 
             // Act
-            ActionResult<TEntity> rv = await controller.Get(entity.Id!.Value);
+            ActionResult<TEntity> rv = await controller.Get(entity.Id);
 
             // Assert
             Assert.IsTrue(rv.Result is OkObjectResult);
