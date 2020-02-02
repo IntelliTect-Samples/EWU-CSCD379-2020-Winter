@@ -21,7 +21,7 @@ namespace SecretSanta.Business.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            TEntity entity = await FetchByIdAsync(id);
+            TEntity? entity = await FetchByIdAsync(id);
             if (entity is { })
             {
                 DbContext.Remove(entity);
@@ -34,8 +34,8 @@ namespace SecretSanta.Business.Services
         public async Task<List<TEntity>> FetchAllAsync() =>
             await DbContext.Set<TEntity>().ToListAsync();
 
-        public async Task<TEntity> FetchByIdAsync(int id) =>
-            await DbContext.FindAsync<TEntity>(id);
+        public async Task<TEntity?> FetchByIdAsync(int id) =>
+            await DbContext.FindAsync<TEntity?>(id);
 
         public async Task<TEntity> InsertAsync(TEntity entity)
         {
