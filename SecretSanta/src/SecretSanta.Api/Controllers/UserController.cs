@@ -42,21 +42,35 @@ namespace SecretSanta.Api.Controllers
         }
 
         // POST: api/User
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost]
-        public void Post([FromBody] User value)
+        public async Task<ActionResult<User>> Post([FromBody] User value)
         {
+            return Ok(await UserService.InsertAsync(value));
         }
 
         // PUT: api/User/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] User value)
+        public async Task<ActionResult<User>> Put(int id, [FromBody] User value)
         {
+            if (await UserService.FetchByIdAsync(id) is { } user)
+                return Ok(await UserService.UpdateAsync(id, user));
+
+            return NotFound();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<bool>> Delete(int id)
         {
+            if (await UserService.FetchByIdAsync(id) is { } user)
+                return Ok(await UserService.DeleteAsync(id));
+
+            return NotFound();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace SecretSanta.Api.Controllers
     //https://localhost/api/Gift
     [Route("api/[controller]")]
     [ApiController]
-    public class GiftController : ControllerBase
+    public class GiftController : ControllerBase, IController<Gift>
     {
         private IGiftService GiftService { get; }
 
@@ -43,20 +43,34 @@ namespace SecretSanta.Api.Controllers
 
         // POST: api/Gift
         [HttpPost]
-        public void Post([FromBody] Gift value)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<Gift>> Post([FromBody] Gift value)
         {
+            return Ok(await GiftService.InsertAsync(value));
         }
 
         // PUT: api/Gift/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Gift value)
+        public async Task<ActionResult<Gift>> Put(int id, [FromBody] Gift value)
         {
+            if (await GiftService.FetchByIdAsync(id) is { } gift)
+                return Ok(await GiftService.UpdateAsync(id, gift));
+
+            return NotFound();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<bool>> Delete(int id)
         {
+            if (await GiftService.FetchByIdAsync(id) is { } gift)
+                return Ok(await GiftService.DeleteAsync(id));
+
+            return NotFound();
         }
     }
 }

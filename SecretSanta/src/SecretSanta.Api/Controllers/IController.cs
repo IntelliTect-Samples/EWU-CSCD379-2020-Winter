@@ -14,12 +14,12 @@ namespace SecretSanta.Api.Controllers
         public Task<ActionResult<TEntity>> Get(int id);
 
         [HttpPost]
-        public void Post([FromBody] TEntity value);
+        public Task<ActionResult<TEntity>> Post([FromBody] TEntity value);
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] TEntity value);
+        public Task<ActionResult<TEntity>> Put(int id, [FromBody] TEntity value);
 
         [HttpDelete("{id}")]
-        public void Delete(int id);
+        public Task<ActionResult<bool>> Delete(int id);
     }
 }

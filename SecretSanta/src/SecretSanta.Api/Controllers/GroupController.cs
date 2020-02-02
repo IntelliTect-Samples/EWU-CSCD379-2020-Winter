@@ -12,7 +12,7 @@ namespace SecretSanta.Api.Controllers
     //https://localhost/api/Group
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupController : ControllerBase
+    public class GroupController : ControllerBase, IController<Group>
     {
         private IGroupService GroupService { get; }
 
@@ -43,20 +43,34 @@ namespace SecretSanta.Api.Controllers
 
         // POST: api/Group
         [HttpPost]
-        public void Post([FromBody] Group value)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<Group>> Post([FromBody] Group value)
         {
+            return Ok(await GroupService.InsertAsync(value));
         }
 
         // PUT: api/Group/5
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Group value)
+        public async Task<ActionResult<Group>> Put(int id, [FromBody] Group value)
         {
+            if (await GroupService.FetchByIdAsync(id) is { } group)
+                return Ok(await GroupService.UpdateAsync(id, group));
+
+            return NotFound();
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<bool>> Delete(int id)
         {
+            if (await GroupService.FetchByIdAsync(id) is { } group)
+                return Ok(await GroupService.DeleteAsync(id));
+
+            return NotFound();
         }
     }
 }
