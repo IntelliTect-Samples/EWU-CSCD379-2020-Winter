@@ -95,8 +95,26 @@ namespace SecretSanta.Business.Tests
         }
 
         // Update
+        // trying to consider a way to generically test all...
 
         // Destroy
-        // skipped, not implemented in service and we didn't go over in class. I'll probably do it later to learn though
+        [TestMethod]
+        public async Task DeleteAsync_Entity_Success()
+        {
+            // Arrange
+            using var dbContext = new ApplicationDbContext(Options);
+            IEntityService<TEntity> service = GetService(dbContext, Mapper);
+
+            TEntity entity = CreateEntity();
+            dbContext.Add(entity);
+            dbContext.SaveChanges();
+
+            // Act
+            var id = (int) (entity.Id!);
+            bool resultTrue = await service.DeleteAsync(id);
+
+            // Assert
+            Assert.AreEqual(resultTrue, true);
+        }
     }
 }
