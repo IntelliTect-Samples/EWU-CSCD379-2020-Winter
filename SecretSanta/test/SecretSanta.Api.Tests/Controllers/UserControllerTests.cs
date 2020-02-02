@@ -10,7 +10,7 @@ using System.Text;
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public class UserControllerTest : ControllerTestBase<UserController, User>
+    public class UserControllerTests : ControllerTestBase<UserController, User>
     {
         protected override IEntityService<User> CreateService() => new MockUserService();
         protected override UserController CreateController(IEntityService<User> service)
