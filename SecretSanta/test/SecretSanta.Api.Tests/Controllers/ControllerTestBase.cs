@@ -90,7 +90,7 @@ namespace SecretSanta.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public async Task GetById_WithExistingAuthor_Success()
+        public async Task GetById_WithExistingEntity_Success()
         {
             // Arrange
             var service = CreateService();
@@ -101,6 +101,37 @@ namespace SecretSanta.Api.Tests.Controllers
 
             // Act
             ActionResult<TEntity> rv = await controller.Get(entity.Id);
+
+            // Assert
+            Assert.IsTrue(rv.Result is OkObjectResult);
+        }
+
+        [TestMethod]
+        public async Task PostEntity_Success()
+        {
+            // Arrange
+            var service = CreateService();
+            TEntity entity = CreateEntity();
+            var controller = CreateController(service);
+
+            // Act
+            ActionResult<TEntity> rv = await controller.Post(entity);
+
+            // Assert
+            Assert.IsTrue(rv.Result is OkObjectResult);
+        }
+
+        [TestMethod]
+        public async Task DeleteEntity_Success()
+        {
+            // Arrange
+            var service = CreateService();
+            TEntity entity = CreateEntity();
+            entity = await service.InsertAsync(entity);
+            var controller = CreateController(service);
+
+            // Act
+            ActionResult<bool> rv = await controller.Delete(entity.Id);
 
             // Assert
             Assert.IsTrue(rv.Result is OkObjectResult);

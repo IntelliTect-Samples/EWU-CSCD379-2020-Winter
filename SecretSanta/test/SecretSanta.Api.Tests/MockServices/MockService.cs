@@ -13,7 +13,8 @@ namespace SecretSanta.Api.Tests.MockServices
         private Dictionary<int, TEntity> Items { get; } = new Dictionary<int, TEntity>();
         public Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            Task<bool> rv = Task.FromResult<bool>(Items.Remove(id));
+            return rv;
         }
 
         public Task<List<TEntity>> FetchAllAsync()
