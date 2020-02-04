@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using SecretSanta.Business;
 using SecretSanta.Business.Services;
 using SecretSanta.Data;
+using AutoMapper;
 
 namespace SecretSanta.Api
 {
@@ -21,6 +22,12 @@ namespace SecretSanta.Api
             services.AddDbContext<ApplicationDbContext>();
 
             services.AddScoped<IGiftService, GiftService>();
+
+            System.Type profileType = typeof(AutomapperConfigurationProfile);
+            System.Reflection.Assembly assembly = profileType.Assembly;
+            services.AddAutoMapper(new[] { assembly });
+
+            services.AddMvc(opts => opts.EnableEndpointRouting = false);
 
             services.AddSwaggerDocument();
         }
