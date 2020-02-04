@@ -14,7 +14,7 @@ namespace SecretSanta.Api.Controllers
     [Route("api/[controller]")]
     public class GroupController : EntityController<Group>
     {
-        public GroupController(IGroupService groupService) : base(groupService)
+        public GroupController(IGroupService groupService) : base(groupService ?? throw new ArgumentNullException(nameof(groupService)))
         {
 
         }

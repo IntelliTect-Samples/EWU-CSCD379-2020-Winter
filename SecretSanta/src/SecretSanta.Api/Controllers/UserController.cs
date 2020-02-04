@@ -13,7 +13,7 @@ namespace SecretSanta.Api.Controllers
     [Route("api/[controller]")]
     public class UserController : EntityController<User>
     {
-       public UserController(IUserService userService) : base(userService)
+       public UserController(IUserService userService) : base(userService ?? throw new ArgumentNullException(nameof(userService)))
         {
 
         }

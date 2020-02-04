@@ -18,7 +18,7 @@ namespace SecretSanta.Api.Controllers
 
         public EntityController(IEntityService<TEntity> entityService)
         {
-            EntityService = entityService;
+            EntityService = entityService ?? throw new ArgumentNullException(nameof(entityService));
         }
 
         // GET: api/<controller>

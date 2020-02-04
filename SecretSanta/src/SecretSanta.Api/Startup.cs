@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Data.Sqlite;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace SecretSanta.Api
 {
@@ -37,7 +38,21 @@ namespace SecretSanta.Api
 
             services.AddMvc(opts => opts.EnableEndpointRouting = false);
 
-            services.AddSwaggerDocument();
+            services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Version = "vMoney";
+                    document.Info.Title = "Krusty Krab";
+                    document.Info.Description = "Assignment 4";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "Mr.Krabs",
+                        Email = "10ReasonsToSaveADime@gmail.com",
+                        Url = "https://spongebob.fandom.com/wiki/Eugene_H._Krabs"
+                    };
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,6 +68,10 @@ namespace SecretSanta.Api
             app.UseOpenApi();
 
             app.UseSwaggerUi3();
+
+            var option = new RewriteOptions();//code to redirect root to swagger taken from https://stackoverflow.com/questions/49290683/how-to-redirect-root-to-swagger-in-asp-net-core-2-x
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
 
             app.UseMvc();
         }

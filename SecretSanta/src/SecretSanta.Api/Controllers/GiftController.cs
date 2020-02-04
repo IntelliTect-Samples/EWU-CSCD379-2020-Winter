@@ -14,7 +14,7 @@ namespace SecretSanta.Api.Controllers
     [Route("api/[controller]")]
     public class GiftController : EntityController<Gift>
     {
-        public GiftController(IGiftService giftService) : base(giftService)
+        public GiftController(IGiftService giftService) : base(giftService ?? throw new ArgumentNullException(nameof(giftService)))
         {
 
         }
