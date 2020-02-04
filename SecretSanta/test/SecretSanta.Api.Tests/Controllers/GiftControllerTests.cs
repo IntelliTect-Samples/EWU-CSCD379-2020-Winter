@@ -17,6 +17,41 @@ namespace SecretSanta.Api.Tests.Controllers
 	public class GiftControllerTests
 	{
 		[TestMethod]
+		public async Task GiftController_Update_Success()
+		{
+			// Arrange
+			GiftTestService service = new GiftTestService();
+			Gift gift = SampleData.CreateGiftFTLDrive();
+			gift = await service.InsertAsync(gift);
+
+			var controller = new GiftController(service);
+
+			// Act
+			gift.Title = "FTL Drive V2";
+			ActionResult<Gift> rv = await controller.Put(gift.Id, gift);
+
+			// Assert
+			Assert.AreEqual("FTL Drive V2", rv.Value.Title);
+		}
+
+		[TestMethod]
+		public async Task GiftController_Delete_Success()
+		{
+			// Arrange
+			GiftTestService service = new GiftTestService();
+			Gift gift = SampleData.CreateGiftCylonDetector();
+			gift = await service.InsertAsync(gift);
+
+			var controller = new GiftController(service);
+
+			// Act
+			ActionResult<Gift> rv = await controller.Delete(gift.Id);
+
+			// Assert
+			Assert.IsTrue(rv.Result is OkResult);
+		}
+
+		[TestMethod]
 		public async Task GetById_WithExistingGift_Success()
 		{
 			// Arrange

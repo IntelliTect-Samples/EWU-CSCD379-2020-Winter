@@ -17,6 +17,41 @@ namespace SecretSanta.Api.Tests.Controllers
 	public class GroupControllerTests
 	{
 		[TestMethod]
+		public async Task GroupController_Update_Success()
+		{
+			// Arrange
+			GroupTestService service = new GroupTestService();
+			Group group = SampleData.CreateGroupCylonShip();
+			group = await service.InsertAsync(group);
+
+			var controller = new GroupController(service);
+
+			// Act
+			group.Title = "Colonial Ship";
+			ActionResult<Group> rv = await controller.Put(group.Id, group);
+
+			// Assert
+			Assert.AreEqual("Colonial Ship", rv.Value.Title);
+		}
+
+		[TestMethod]
+		public async Task GroupController_Delete_Success()
+		{
+			// Arrange
+			GroupTestService service = new GroupTestService();
+			Group group = SampleData.CreateGroupCylonShip();
+			group = await service.InsertAsync(group);
+
+			var controller = new GroupController(service);
+
+			// Act
+			ActionResult<Group> rv = await controller.Delete(group.Id);
+
+			// Assert
+			Assert.IsTrue(rv.Result is OkResult);
+		}
+
+		[TestMethod]
 		public async Task GroupController_GetByIdWithExistingGift_Success()
 		{
 			// Arrange

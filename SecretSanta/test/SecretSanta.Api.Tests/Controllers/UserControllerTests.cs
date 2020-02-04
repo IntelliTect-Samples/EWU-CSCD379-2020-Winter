@@ -16,6 +16,41 @@ namespace SecretSanta.Api.Tests.Controllers
 	public class UserControllerTests
 	{
 		[TestMethod]
+		public async Task UserController_Update_Success()
+		{
+			// Arrange
+			UserTestService service = new UserTestService();
+			User user = SampleData.CreateUserLauraRoslin();
+			user = await service.InsertAsync(user);
+
+			var controller = new UserController(service);
+
+			// Act
+			user.FirstName = "President";
+			ActionResult<User> rv = await controller.Put(user.Id, user);
+
+			// Assert
+			Assert.AreEqual("President", rv.Value.FirstName);
+		}
+
+		[TestMethod]
+		public async Task UserController_Delete_Success()
+		{
+			// Arrange
+			UserTestService service = new UserTestService();
+			User user = SampleData.CreateUserLauraRoslin();
+			user = await service.InsertAsync(user);
+
+			var controller = new UserController(service);
+
+			// Act
+			ActionResult<User> rv = await controller.Delete(user.Id);
+
+			// Assert
+			Assert.IsTrue(rv.Result is OkResult);
+		}
+
+		[TestMethod]
 		public async Task UserController_GetByIdWithExistingGift_Success()
 		{
 			// Arrange
