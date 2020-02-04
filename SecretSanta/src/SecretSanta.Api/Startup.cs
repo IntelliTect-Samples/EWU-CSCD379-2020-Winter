@@ -10,10 +10,7 @@ using AutoMapper;
 
 namespace SecretSanta.Api
 {
-    // Justification: Disable until ConfigureServices is added back.
-#pragma warning disable CA1052 // Static holder types should be Static or NotInheritable
     public class Startup
-    #pragma warning restore CA1052 // Static holder types should be Static or NotInheritable
     {
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -22,6 +19,8 @@ namespace SecretSanta.Api
             services.AddDbContext<ApplicationDbContext>();
 
             services.AddScoped<IGiftService, GiftService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IGroupService, GroupService>();
 
             System.Type profileType = typeof(AutomapperConfigurationProfile);
             System.Reflection.Assembly assembly = profileType.Assembly;
