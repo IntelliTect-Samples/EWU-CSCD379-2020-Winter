@@ -128,42 +128,42 @@ namespace SecretSanta.Business.Tests
             Assert.IsNotNull(assertContext.Set<TEntity>().Find(entity.Id));
         }
 
-        //[TestMethod]
-        //public async Task UpdateAsync_WithExistingItem_UpdatesItem()
-        //{
-        //    // Arrange
-        //    using var setupContext = new ApplicationDbContext(Options);
-        //    TEntity entity = CreateEntity();
-        //    setupContext.Set<TEntity>().Add(entity);
-        //    await setupContext.SaveChangesAsync();
+        [TestMethod]
+        public async Task UpdateAsync_WithExistingItem_UpdatesItem()
+        {
+            // Arrange
+            using var setupContext = new ApplicationDbContext(Options);
+            TEntity entity = CreateEntity();
+            setupContext.Set<TEntity>().Add(entity);
+            await setupContext.SaveChangesAsync();
 
-        //    using var dbContext = new ApplicationDbContext(Options);
-        //    IEntityService<TEntity> service = GetService(dbContext, Mapper);
+            using var dbContext = new ApplicationDbContext(Options);
+            IEntityService<TEntity> service = GetService(dbContext, Mapper);
 
-        //    TEntity newEntity = CreateEntity();
+            TEntity newEntity = CreateEntity();
 
-        //    // Act
-        //    TEntity? updated = await service.UpdateAsync(entity.Id, newEntity);
+            // Act
+            TEntity? updated = await service.UpdateAsync(entity.Id, newEntity);
 
-        //    // Assert
-        //    Assert.IsNotNull(updated);
-        //}
+            // Assert
+            Assert.IsNotNull(updated);
+        }
 
 
-        //[TestMethod]
-        //public async Task UpdateAsync_WithNoItem_ItReturnsNull()
-        //{
-        //    // Arrange
-        //    using var dbContext = new ApplicationDbContext(Options);
-        //    IEntityService<TEntity> service = GetService(dbContext, Mapper);
+        [TestMethod]
+        public async Task UpdateAsync_WithNoItem_ItReturnsNull()
+        {
+            // Arrange
+            using var dbContext = new ApplicationDbContext(Options);
+            IEntityService<TEntity> service = GetService(dbContext, Mapper);
 
-        //    TEntity newEntity = CreateEntity();
+            TEntity newEntity = CreateEntity();
 
-        //    // Act
-        //    TEntity? updated = await service.UpdateAsync(1, newEntity);
+            // Act
+            TEntity? updated = await service.UpdateAsync(1, newEntity);
 
-        //    // Assert
-        //    Assert.IsNull(updated);
-        //}
+            // Assert
+            Assert.IsNull(updated);
+        }
     }
 }

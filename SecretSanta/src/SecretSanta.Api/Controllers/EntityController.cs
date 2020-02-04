@@ -33,7 +33,7 @@ namespace SecretSanta.Api.Controllers
         {
             if (await EntityService.FetchByIdAsync(id) is TEntity entity)
             {
-                return entity;
+                return Ok(entity);
             }
             return NotFound();
         }
@@ -68,7 +68,7 @@ namespace SecretSanta.Api.Controllers
         {
             if (await EntityService.DeleteAsync(id))
             {
-                return true;
+                return Ok(true);
             }
             return NotFound();
         }
