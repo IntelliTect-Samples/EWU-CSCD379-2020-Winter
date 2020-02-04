@@ -22,7 +22,7 @@ namespace SecretSanta.Api.Controllers
 
         // GET: api/Gift
         [HttpGet]
-        public async Task<IEnumerable<Gift>> GetAsync()
+        public async Task<IEnumerable<Gift>> Get()
         {
             List<Gift> Gifts = await GiftService.FetchAllAsync();
             return Gifts;
@@ -33,7 +33,7 @@ namespace SecretSanta.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Gift>> GetAsync(int id)
+        public async Task<ActionResult<Gift>> Get(int id)
         {
             if (await GiftService.FetchByIdAsync(id) is Gift Gift)
             {
@@ -44,7 +44,7 @@ namespace SecretSanta.Api.Controllers
 
         // POST: api/Gift
         [HttpPost]
-        public async Task<Gift> PostAsync([FromBody] Gift value)
+        public async Task<Gift> Post([FromBody] Gift value)
         {
             return await GiftService.InsertAsync(value);
         }
@@ -54,7 +54,7 @@ namespace SecretSanta.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Gift>> PutAsync(int id, [FromBody] Gift value)
+        public async Task<ActionResult<Gift>> Put(int id, [FromBody] Gift value)
         {
             if (await GiftService.FetchByIdAsync(id) is Gift)
             {
@@ -65,7 +65,10 @@ namespace SecretSanta.Api.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<bool>> DeleteAsync(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> Delete(int id)
         {
             if (await GiftService.FetchByIdAsync(id) is Gift)
             {
