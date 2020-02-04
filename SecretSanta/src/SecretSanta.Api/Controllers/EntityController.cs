@@ -37,21 +37,13 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<T>> Post([FromBody] T value)
-        {
-            T? entity = await EntityService.InsertAsync(value);
-
-            if (entity is T e) return Ok(e);
-
-            return NotFound();
-        }
+        public async Task<T> Post([FromBody] T value) =>
+            await EntityService.InsertAsync(value);
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<T>> PutAsync(int id, [FromBody] T value)
+        public async Task<ActionResult<T>> Put(int id, [FromBody] T value)
         {
             T? entity = await EntityService.UpdateAsync(id, value);
 
@@ -63,7 +55,7 @@ namespace SecretSanta.Api.Controllers
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> DeleteAsync(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             bool success = await EntityService.DeleteAsync(id);
 
