@@ -15,8 +15,8 @@ namespace SecretSanta.Api.Tests
     [TestClass]
     public class EntityControllerTests
     {
-        private static MockEntity _MrKrabs = new MockEntity(1, "MrKrabs");
-        private static MockEntity _Spongebob = new MockEntity(2, "Spongebob");
+        private static readonly MockEntity _MrKrabs = new MockEntity(1, "MrKrabs");
+        private static readonly MockEntity _Spongebob = new MockEntity(2, "Spongebob");
         [TestMethod]
         public void Constructor_ValidParam_Success()
         {
@@ -112,7 +112,7 @@ namespace SecretSanta.Api.Tests
             public Task<bool> DeleteAsync(int id)
             {
                 int index = id - 1;
-                if(Database.ElementAt(index) is MockEntity entityToBeDeleted)
+                if (Database.ElementAt(index) is MockEntity)
                 {
                     Database.RemoveAt(index);
                     Task<bool> t1 = Task.FromResult<bool>(true);
@@ -150,7 +150,7 @@ namespace SecretSanta.Api.Tests
             public Task<MockEntity?> UpdateAsync(int id, MockEntity entity)
             {
                 int index = id - 1;
-                if(Database.ElementAt(index) is MockEntity entityToBeReplaced)
+                if (Database.ElementAt(index) is MockEntity)
                 {
                     MockEntity newEntity = new MockEntity(id, entity.Data);
                     Database[index] = newEntity;
