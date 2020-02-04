@@ -70,7 +70,7 @@ namespace SecretSanta.Api.Controllers
         {
             if(await EntityService.DeleteAsync(id) is true)
             {
-                return Ok();
+                return Ok(true);
             }
             return NotFound();
         }
