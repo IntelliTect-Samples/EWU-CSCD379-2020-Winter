@@ -42,7 +42,8 @@ namespace SecretSanta.Api.Tests.MockServices
 
         public Task<TEntity?> UpdateAsync(int id, TEntity entity)
         {
-            throw new NotImplementedException();
+            Items[id] = entity;
+            return Task.FromResult<TEntity?>(Items[id]);
         }
     }
 }

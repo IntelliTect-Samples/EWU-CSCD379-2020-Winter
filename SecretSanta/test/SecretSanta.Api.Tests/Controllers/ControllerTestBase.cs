@@ -7,6 +7,7 @@ using SecretSanta.Api.Controllers;
 using SecretSanta.Business.Services;
 using SecretSanta.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
@@ -89,6 +90,7 @@ namespace SecretSanta.Api.Tests.Controllers
             //Assert
         }
 
+        // Get from Id
         [TestMethod]
         public async Task GetById_WithExistingEntity_Success()
         {
@@ -106,6 +108,7 @@ namespace SecretSanta.Api.Tests.Controllers
             Assert.IsTrue(rv.Result is OkObjectResult);
         }
 
+        // Post
         [TestMethod]
         public async Task PostEntity_Success()
         {
@@ -121,6 +124,36 @@ namespace SecretSanta.Api.Tests.Controllers
             Assert.IsTrue(rv.Result is OkObjectResult);
         }
 
+        // Put
+        [TestMethod]
+        public async Task PutEntity_Success()
+        {
+            // Arrange
+            TEntity entity = CreateEntity();
+            var service = CreateService();
+            entity = await service.InsertAsync(entity);
+            var controller = CreateController(service);
+
+            // Act
+            PropertyInfo[] props = entity.GetType().GetProperties();
+            foreach (PropertyInfo prop in props)
+            {
+                if (prop.PropertyType == typeof(string))
+                    prop.SetValue(entity, "mew");
+            }
+
+            ActionResult<TEntity> rv = await controller.Put(entity.Id, entity);
+
+            // Assert
+            props = rv.Result.GetType().GetProperties();
+            foreach (PropertyInfo prop in props)
+            {
+                if (prop.PropertyType == typeof(string))
+                    Assert.AreEqual("mew", prop.GetValue(rv.Result));
+            }
+        }
+
+        // Delete
         [TestMethod]
         public async Task DeleteEntity_Success()
         {
