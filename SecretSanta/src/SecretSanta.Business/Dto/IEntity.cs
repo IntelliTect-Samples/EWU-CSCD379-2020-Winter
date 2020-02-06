@@ -4,8 +4,8 @@ using System.Text;
 
 namespace SecretSanta.Business.Dto
 {
-    public class IEntity
+    public interface IEntity
     {
-
+        int Id { get; }
     }
 }
