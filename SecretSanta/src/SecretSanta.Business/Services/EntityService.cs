@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace SecretSanta.Business.Services
 {
-    public abstract class EntityService<TDto, TInputDto, TEntity> : IEntityService<TDto, TInputDto> 
-        where TEntity : EntityBase 
-        where TDto : class, TInputDto 
+    public abstract class EntityService<TDto, TInputDto, TEntity> : IEntityService<TDto, TInputDto>
+        where TEntity : EntityBase
+        where TDto : class, TInputDto
         where TInputDto : class
     {
         protected ApplicationDbContext DbContext { get; }
-        
+
         protected IMapper Mapper { get; }
 
         protected virtual IQueryable<TEntity> Query => DbContext.Set<TEntity>();
-        
+
         public EntityService(ApplicationDbContext dbContext, IMapper mapper)
         {
             DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));

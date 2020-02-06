@@ -9,7 +9,8 @@ namespace SecretSanta.Business.Services
     {
         public GroupService(ApplicationDbContext dbContext, IMapper mapper)
             : base(dbContext, mapper)
-        { }
+        {
+        }
 
         protected override IQueryable<Group> Query => base.Query.Include(x => x.UserGroups);
     }

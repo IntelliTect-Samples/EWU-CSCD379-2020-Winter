@@ -18,9 +18,9 @@ namespace SecretSanta.Data
         public DbSet<UserGroup> UserGroups { get; set; }
         private IHttpContextAccessor HttpContextAccessor { get; set; }
 #nullable enable
-        
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContext) : base(dbContext) { }
-        
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> dbContext, IHttpContextAccessor httpContextAccessor) : base(dbContext)
         {
             HttpContextAccessor = httpContextAccessor;

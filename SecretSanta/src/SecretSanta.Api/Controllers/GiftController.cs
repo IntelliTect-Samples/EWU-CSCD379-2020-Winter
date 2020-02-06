@@ -9,7 +9,7 @@ namespace SecretSanta.Api.Controllers
     public class GiftController : BaseApiController<Gift>
     {
         public GiftController(IGiftService giftService)
-            : base (giftService)
+            : base(giftService)
         { }
     }
-}    
+}

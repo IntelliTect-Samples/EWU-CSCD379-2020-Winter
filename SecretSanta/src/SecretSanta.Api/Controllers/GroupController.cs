@@ -8,7 +8,7 @@ namespace SecretSanta.Api.Controllers
     [ApiController]
     public class GroupController : BaseApiController<Group>
     {
-        public GroupController(IGroupService groupService) 
+        public GroupController(IGroupService groupService)
             : base(groupService)
         { }
     }
