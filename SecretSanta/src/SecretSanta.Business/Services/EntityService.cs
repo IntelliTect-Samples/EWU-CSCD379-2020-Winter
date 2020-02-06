@@ -44,7 +44,7 @@ namespace SecretSanta.Business.Services
             return entity;
         }
 
-        public async Task<TEntity?> UpdateAsync(int id, TEntity entity)
+        public async Task<TEntity> UpdateAsync(int id, TEntity entity)
         {
             if (await DbContext.FindAsync<TEntity>(id) is { } result)
             {
