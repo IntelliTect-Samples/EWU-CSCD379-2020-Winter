@@ -1,6 +1,7 @@
-﻿namespace SecretSanta.Business.Services
+﻿using SecretSanta.Data;
+namespace SecretSanta.Business
 {
-    public interface IGiftService : IEntityService<Dto.Gift, Dto.GiftInput>
+    public interface IGiftService : IEntityService<Gift>
     {
 
     }

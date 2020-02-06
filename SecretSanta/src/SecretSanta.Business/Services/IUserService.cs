@@ -1,6 +1,7 @@
-﻿namespace SecretSanta.Business.Services
+﻿using SecretSanta.Data;
+namespace SecretSanta.Business
 {
-    public interface IUserService : IEntityService<Dto.User, Dto.UserInput>
+    public interface IUserService : IEntityService<User>
     {
 
     }

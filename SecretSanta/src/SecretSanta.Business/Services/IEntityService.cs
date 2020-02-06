@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-
-namespace SecretSanta.Business.Services
+namespace SecretSanta.Business
 {
-    public interface IEntityService<TDto, TInputDto>
-        where TInputDto : class
-        where TDto : class, TInputDto
+    public interface IEntityService<TEntity> where TEntity : class
     {
-        Task<List<TDto>> FetchAllAsync();
-        Task<TDto> FetchByIdAsync(int id);
-        Task<TDto> InsertAsync(TInputDto entity);
-        Task<TDto?> UpdateAsync(int id, TInputDto entity);
+        Task<List<TEntity>> FetchAllAsync();
+        Task<TEntity> FetchByIdAsync(int id);
+        Task<TEntity> InsertAsync(TEntity entity);
+        Task<TEntity?> UpdateAsync(int id, TEntity entity);
         Task<bool> DeleteAsync(int id);
     }
 }
