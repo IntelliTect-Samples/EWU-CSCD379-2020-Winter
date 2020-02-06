@@ -19,6 +19,10 @@ namespace SecretSanta.Data
             : this("", "", "", 0)
         { }
 
+        public Gift(int id)
+            : this("", "", "", id)
+        { }
+
         public Gift(string title, string url, string description, User user) : this(title, url, description,
             // Justification: There is no way to check for nullability with constructor chaining.
 #pragma warning disable CA1062 // Validate arguments of public methods          

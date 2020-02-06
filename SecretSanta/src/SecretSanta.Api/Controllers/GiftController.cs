@@ -12,4 +12,4 @@ namespace SecretSanta.Api.Controllers
             : base (giftService)
         { }
     }
-}
+}    

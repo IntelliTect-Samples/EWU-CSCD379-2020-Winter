@@ -1,7 +1,6 @@
-﻿using SecretSanta.Data;
-namespace SecretSanta.Business
+﻿namespace SecretSanta.Business.Services
 {
-    public interface IGroupService : IEntityService<Group>
+    public interface IGroupService : IEntityService<Dto.Group, Dto.GroupInput>
     {
 
     }

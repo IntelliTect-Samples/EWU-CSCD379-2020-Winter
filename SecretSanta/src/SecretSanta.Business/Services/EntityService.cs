@@ -3,15 +3,21 @@ using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Business.Services
 {
-    public abstract class EntityService<TEntity> : IEntityService<TEntity> where TEntity : EntityBase
+    public abstract class EntityService<TDto, TInputDto, TEntity> : IEntityService<TDto, TInputDto> 
+        where TEntity : EntityBase 
+        where TDto : class, TInputDto 
+        where TInputDto : class
     {
         protected ApplicationDbContext DbContext { get; }
         
         protected IMapper Mapper { get; }
+
+        protected virtual IQueryable<TEntity> Query => DbContext.Set<TEntity>();
         
         public EntityService(ApplicationDbContext dbContext, IMapper mapper)
         {
@@ -21,7 +27,7 @@ namespace SecretSanta.Business.Services
 
         public async Task<bool> DeleteAsync(int id)
         {
-            TEntity entity = await FetchByIdAsync(id);
+            TEntity entity = await Query.FirstOrDefaultAsync(x => x.Id == id);
             if (entity is { })
             {
                 DbContext.Remove(entity);
@@ -31,26 +37,31 @@ namespace SecretSanta.Business.Services
             return false;
         }
 
-        public async Task<List<TEntity>> FetchAllAsync() =>
-            await DbContext.Set<TEntity>().ToListAsync();
-
-        public async Task<TEntity> FetchByIdAsync(int id) =>
-            await DbContext.FindAsync<TEntity>(id);
-
-        public async Task<TEntity> InsertAsync(TEntity entity)
+        public virtual async Task<List<TDto>> FetchAllAsync()
         {
-            DbContext.Add(entity);
-            await DbContext.SaveChangesAsync();
-            return entity;
+            return Mapper.Map<List<TEntity>, List<TDto>>(await Query.ToListAsync());
         }
 
-        public async Task<TEntity> UpdateAsync(int id, TEntity entity)
+        public async Task<TDto> FetchByIdAsync(int id)
         {
-            if (await DbContext.FindAsync<TEntity>(id) is { } result)
+            return Mapper.Map<TEntity, TDto>(await Query.FirstOrDefaultAsync(x => x.Id == id));
+        }
+
+        public async Task<TDto> InsertAsync(TInputDto dto)
+        {
+            TEntity entity = Mapper.Map<TInputDto, TEntity>(dto);
+            DbContext.Add(entity);
+            await DbContext.SaveChangesAsync();
+            return Mapper.Map<TEntity, TDto>(entity);
+        }
+
+        public async Task<TDto?> UpdateAsync(int id, TInputDto entity)
+        {
+            if (await Query.FirstOrDefaultAsync(x => x.Id == id) is TEntity result)
             {
                 Mapper.Map(entity, result);
                 await DbContext.SaveChangesAsync();
-                return result;
+                return Mapper.Map<TEntity, TDto>(result);
             }
             return null;
         }

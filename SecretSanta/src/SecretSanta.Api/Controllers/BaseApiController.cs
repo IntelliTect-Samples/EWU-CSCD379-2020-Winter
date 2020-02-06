@@ -35,7 +35,7 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<TEntity> Put(int id, [FromBody] TEntity value)
+        public async Task<TEntity?> Put(int id, [FromBody] TEntity value)
         {
             return await Service.UpdateAsync(id, value);
         }
