@@ -10,7 +10,5 @@ namespace SecretSanta.Business.Dto
     {
         [Required]
         public string? Title { get; set; }
-        [Required]
-        public IList<UserGroup>? UserGroups { get; } = new List<UserGroup>();
     }
 }
