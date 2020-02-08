@@ -9,7 +9,7 @@ namespace SecretSanta.Api.Tests.Controllers
     [TestClass]
     public class GiftControllTests : BaseApiControllerTests<Gift, GiftInMemoryService>
     {
-        protected override BaseApiController<Gift> CreateController(GiftInMemoryService service)
+        protected override BaseApiController<Business.Dto.Gift,Business.Dto.GiftInput> CreateController(GiftInMemoryService service)
             => new GiftController(service);
 
         protected override Gift CreateEntity()

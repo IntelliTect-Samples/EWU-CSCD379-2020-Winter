@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SecretSanta.Business.Dto
 {
-    public class InputGift
+    public class GiftInput
     {
         [Required]
         public string? Title { get; set; }

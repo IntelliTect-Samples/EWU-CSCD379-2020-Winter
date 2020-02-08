@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SecretSanta.Business.Dto
 {
-    public class InputGroup
+    public class GroupInput
     {
         [Required]
         public string? Title { get; set; }

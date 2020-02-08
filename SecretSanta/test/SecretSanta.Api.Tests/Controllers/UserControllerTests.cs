@@ -9,7 +9,7 @@ namespace SecretSanta.Api.Tests.Controllers
     [TestClass]
     public class UserControllerTests : BaseApiControllerTests<User, UserInMemoryService>
     {
-        protected override BaseApiController<User> CreateController(UserInMemoryService service)
+        protected override BaseApiController<Business.Dto.User,Business.Dto.UserInput> CreateController(UserInMemoryService service)
             => new UserController(service);
 
         protected override User CreateEntity()

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SecretSanta.Business.Dto
 {
-    public class InputUser
+    public class UserInput
     {
         [Required]
         public string? FirstName { get; set; }

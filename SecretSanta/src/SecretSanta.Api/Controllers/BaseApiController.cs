@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 
 namespace SecretSanta.Api.Controllers
 {
-    public abstract class BaseApiController<TEntity, TDto, TInputDto> : ControllerBase
-        where TEntity : EntityBase
+    public abstract class BaseApiController<TDto, TInputDto> : ControllerBase
         where TDto : class, TInputDto
         where TInputDto : class
     {
