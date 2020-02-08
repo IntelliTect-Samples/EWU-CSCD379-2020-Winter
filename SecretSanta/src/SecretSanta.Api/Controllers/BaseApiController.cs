@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SecretSanta.Business;
+using SecretSanta.Business.Services;
 using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
@@ -8,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace SecretSanta.Api.Controllers
 {
-    public abstract class BaseApiController<TEntity> : ControllerBase where TEntity : EntityBase
+    public abstract class BaseApiController<TInputDto, TDto> : ControllerBase
+        where TInputDto : class
+        where TDto : class, TInputDto
     {
-        protected IEntityService<TEntity> Service { get; }
+        protected IEntityService<TDto, TInputDto> Service { get; }
 
-        protected BaseApiController(IEntityService<TEntity> service)
+        protected BaseApiController(IEntityService<TDto, TInputDto> service)
         {
             Service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
        [HttpGet]
-        public async Task<IEnumerable<TEntity>> Get() => await Service.FetchAllAsync();
+        public async Task<IEnumerable<TDto>> Get() => await Service.FetchAllAsync();
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -26,7 +28,7 @@ namespace SecretSanta.Api.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> Get(int id)
         {
-            TEntity entity = await Service.FetchByIdAsync(id);
+            TDto entity = await Service.FetchByIdAsync(id);
             if (entity is null)
             {
                 return NotFound();
@@ -35,13 +37,13 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<TEntity?> Put(int id, [FromBody] TEntity value)
+        public async Task<TDto?> Put(int id, [FromBody] TInputDto value)
         {
             return await Service.UpdateAsync(id, value);
         }
 
         [HttpPost]
-        public async Task<TEntity> Post(TEntity entity)
+        public async Task<TDto> Post(TInputDto entity)
         {
             return await Service.InsertAsync(entity);
         }
