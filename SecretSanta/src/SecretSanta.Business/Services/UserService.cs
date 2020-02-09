@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SecretSanta.Business.Services
 {
-    public class UserService : EntityService<Dto.User, Dto.UserInput, User>, IUserService
+    public class UserService : EntityService<Dto.User, Dto.UserInput, Data.User>, IUserService
     {
         public UserService(ApplicationDbContext dbContext, IMapper mapper)
             : base(dbContext, mapper)
