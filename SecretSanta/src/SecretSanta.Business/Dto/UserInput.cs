@@ -4,9 +4,11 @@ using System.Text;
 
 namespace SecretSanta.Business.Dto
 {
-    public class UserInput
+    public class UserInput : IEntity
     {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+
+        public int Id { get; set; }
     }
 }

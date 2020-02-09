@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Api.Controllers;
 using SecretSanta.Business.Services;
+using SecretSanta.Business.Dto;
 using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
@@ -12,13 +13,13 @@ namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
     public abstract class BaseApiControllerTests<TDto, TInputDto, TService> 
-        where TDto : class, TInputDto
+        where TDto : class, TInputDto, Business.Dto.IEntity
         where TInputDto : class
         where TService : InMemoryEntityService<TDto, TInputDto>, new()
     {
         protected abstract BaseApiController<TDto, TInputDto> CreateController(TService service);
 
-     //   protected abstract TEntity CreateEntity();
+      //  protected abstract TEntity CreateEntity();
         protected abstract TDto CreateDto();
 
         [TestMethod]
@@ -130,7 +131,7 @@ namespace SecretSanta.Api.Tests.Controllers
     }
 
     public class InMemoryEntityService<TDto, TInputDto> : IEntityService<TDto, TInputDto> where TInputDto : class
-        where TDto : class, TInputDto
+        where TDto : class, TInputDto, Business.Dto.IEntity
         
     {
         public IList<TDto> Items { get; } = new List<TDto>();

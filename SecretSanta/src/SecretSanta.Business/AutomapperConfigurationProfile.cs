@@ -20,7 +20,6 @@ namespace SecretSanta.Business
             CreateMap<Group, Dto.Group>();
             CreateMap<Dto.GroupInput, Group>();
 
-
         }
 
         public static IMapper CreateMapper()
