@@ -20,10 +20,11 @@ namespace SecretSanta.Api.Tests.Controllers
         where TService : InMemoryEntityService<TEntity,TDto,TInputDto>, new()
     {
         private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
-        protected abstract BaseApiController<TDto, TInputDto> CreateController();
+        protected abstract BaseApiController<TDto, TInputDto> CreateController(TService service);
         protected abstract TEntity CreateEntity();
         protected abstract TDto CreateDto();
         protected abstract TInputDto CreateInputDto();
+        protected abstract bool DTosAreEqual(TDto dto1, TDto dto2);
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -40,18 +41,19 @@ namespace SecretSanta.Api.Tests.Controllers
             service.Items.Add(CreateEntity());
             service.Items.Add(CreateEntity());
 
-            BaseApiController<TDto,TInputDto> controller = CreateController();
+            BaseApiController<TDto,TInputDto> controller = CreateController(service);
 
-            IEnumerable<TDto> items = await controller.Get();
-
-            CollectionAssert.AreEqual(service.Items.ToList(), items.ToList());
+            IEnumerable<TDto> itemsReturned = await controller.Get();
+            IEnumerable<TDto> items = Mapper.Map<List<TEntity>, List<TDto>>(service.Items.ToList());
+            bool DtosAreTheSame = Enumerable.SequenceEqual<TDto>(items, itemsReturned);
+            Assert.IsTrue(DtosAreTheSame);
         }
 
         [TestMethod]
         public async Task Get_WhenEntityDoesNotExist_ReturnsNotFound()
         {
             TService service = new TService();
-            BaseApiController<TDto,TInputDto> controller = CreateController();
+            BaseApiController<TDto,TInputDto> controller = CreateController(service);
 
             IActionResult result = await controller.Get(1);
 
@@ -65,13 +67,16 @@ namespace SecretSanta.Api.Tests.Controllers
             TService service = new TService();
             TEntity entity = CreateEntity();
             service.Items.Add(entity);
-            BaseApiController<TDto,TInputDto> controller = CreateController();
+            BaseApiController<TDto,TInputDto> controller = CreateController(service);
 
             IActionResult result = await controller.Get(entity.Id);
 
             var okResult = result as OkObjectResult;
-            
-            Assert.AreEqual(entity, okResult?.Value);
+
+            Assert.IsNotNull(okResult);
+            TDto? DtoResult = okResult!.Value as TDto;
+            Assert.IsNotNull(DtoResult);
+            Assert.AreEqual<TDto>(Mapper.Map<TEntity,TDto>(entity), DtoResult!);
         }
 
         [TestMethod]
@@ -81,15 +86,17 @@ namespace SecretSanta.Api.Tests.Controllers
             TEntity entity1 = CreateEntity();
             service.Items.Add(entity1);
             TInputDto entity2 = CreateInputDto();
-            BaseApiController<TDto,TInputDto> controller = CreateController();
+            BaseApiController<TDto,TInputDto> controller = CreateController(service);
 
             TDto? DtoResult = await controller.Put(entity1.Id, entity2);
             if (DtoResult is null)
                 Assert.Fail("Put returned null");
             TEntity result = Mapper.Map<TDto,TEntity>(DtoResult!);
 
-            Assert.AreEqual(entity2, result);
-            Assert.AreEqual(entity2, service.Items.Single());
+            TDto dto = Mapper.Map<TEntity, TDto>(Mapper.Map<TInputDto, TEntity>(entity2));
+            TDto resultDto = Mapper.Map<TEntity, TDto>(result);
+
+            Assert.AreEqual<TDto>(dto, resultDto);
         }
 
         [TestMethod]
@@ -97,19 +104,20 @@ namespace SecretSanta.Api.Tests.Controllers
         {
             TService service = new TService();
             TInputDto entity = CreateInputDto();
-            BaseApiController<TDto,TInputDto> controller = CreateController();
+            BaseApiController<TDto,TInputDto> controller = CreateController(service);
 
             TEntity? result = Mapper.Map<TDto,TEntity>(await controller.Post(entity));
 
-            Assert.AreEqual(entity, result);
-            Assert.AreEqual(entity, service.Items.Single());
+            TDto dto = Mapper.Map<TEntity,TDto>(Mapper.Map<TInputDto, TEntity>(entity));
+            TDto resultDto = Mapper.Map<TEntity, TDto>(result);
+            Assert.AreEqual<TDto>(dto, resultDto);
         }
 
         [TestMethod]
         public async Task Delete_WhenItemDoesNotExist_ReturnsNotFound()
         {
             TService service = new TService();
-            BaseApiController<TDto,TInputDto> controller = CreateController();
+            BaseApiController<TDto,TInputDto> controller = CreateController(service);
 
             IActionResult result = await controller.Delete(1);
 
@@ -122,7 +130,7 @@ namespace SecretSanta.Api.Tests.Controllers
             TService service = new TService();
             TEntity entity = CreateEntity();
             service.Items.Add(entity);
-            BaseApiController<TDto,TInputDto> controller = CreateController();
+            BaseApiController<TDto,TInputDto> controller = CreateController(service);
 
             IActionResult result = await controller.Delete(entity.Id);
 

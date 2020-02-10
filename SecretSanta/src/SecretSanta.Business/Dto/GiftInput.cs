@@ -15,5 +15,7 @@ namespace SecretSanta.Business.Dto
         public string? Url { get; set; }
         [Required]
         public int? UserId { get; set; }
+
+      
     }
 }
