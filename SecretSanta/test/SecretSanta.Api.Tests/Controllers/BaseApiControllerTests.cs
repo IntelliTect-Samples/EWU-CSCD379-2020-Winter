@@ -24,7 +24,6 @@ namespace SecretSanta.Api.Tests.Controllers
         protected abstract TEntity CreateEntity();
         protected abstract TDto CreateDto();
         protected abstract TInputDto CreateInputDto();
-        protected abstract bool DTosAreEqual(TDto dto1, TDto dto2);
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]

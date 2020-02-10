@@ -27,19 +27,6 @@ namespace SecretSanta.Api.Tests.Controllers
             return SampleData.CreateJellySpotters();
         }
 
-        protected override bool DTosAreEqual(Business.Dto.Group dto1, Business.Dto.Group dto2)
-        {
-            if (dto1 is null)
-                throw new ArgumentNullException(nameof(dto1));
-            if (dto2 is null)
-                throw new ArgumentNullException(nameof(dto2));
-            
-            if (dto1.Title is null || dto2.Title is null)
-                return false;
-            if (dto1.Title.CompareTo(dto2.Title) != 0)
-                return false;
-            return true;
-        }
     }
 
 

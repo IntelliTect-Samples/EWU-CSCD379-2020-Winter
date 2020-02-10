@@ -5,13 +5,18 @@ using SecretSanta.Business.Services;
 using SecretSanta.Business.Tests.Dto;
 using SecretSanta.Data;
 using System;
+using System.Net.Http;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public class GiftControllTests : BaseApiControllerTests<Data.Gift,Business.Dto.Gift,Business.Dto.GiftInput,GiftInMemoryService>
+    public class GiftControllTests : BaseApiControllerTests<Data.Gift, Business.Dto.Gift, Business.Dto.GiftInput, GiftInMemoryService>
     {
-        protected override BaseApiController<Business.Dto.Gift,Business.Dto.GiftInput> CreateController(GiftInMemoryService service)
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        private SecretSantaWebApplicationFactory Factory { get; set; }
+        private HttpClient Client { get; set; }
+#pragma warning restore CS8618 // Justification: Both client and Factory are initialized in the TestSetup method, which has the TestInitialize attribute
+        protected override BaseApiController<Business.Dto.Gift, Business.Dto.GiftInput> CreateController(GiftInMemoryService service)
             => new GiftController(service);
 
         protected override Business.Dto.Gift CreateDto()
@@ -27,22 +32,21 @@ namespace SecretSanta.Api.Tests.Controllers
         protected override Data.Gift CreateEntity()
             => new Data.Gift(SampleData._LeSpatulaTitle, SampleData._LeSpatulaUrl, SampleData._LeSpatulaDescription, new Data.User(SampleData._SpongebobFirstName, SampleData._SpongebobLastName));
 
-        protected override bool DTosAreEqual(Business.Dto.Gift dto1, Business.Dto.Gift dto2)
+        [TestInitialize]
+        public void TestSetup()
         {
-            if (dto1 is null)
-                throw new ArgumentNullException(nameof(dto1));
-            if (dto2 is null)
-                throw new ArgumentNullException(nameof(dto2));
-            if (dto1.Title is null || dto2.Title is null)
-                return false;
-            if (dto1.Description is null || dto2.Description is null)
-                return false;
+            Factory = new SecretSantaWebApplicationFactory();
 
-            if (dto1.Title.CompareTo(dto2.Title) != 0)
-                return false;
-            if (dto1.Description.CompareTo(dto2.Description) != 0)
-                return false;
-            return true;
+            using ApplicationDbContext context = Factory.GetDbContext();
+            context.Database.EnsureCreated();
+
+            Client = Factory.CreateClient();
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            Factory.Dispose();
         }
     }
 
