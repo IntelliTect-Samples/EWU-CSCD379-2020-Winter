@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SecretSanta.Business;
@@ -25,7 +26,9 @@ namespace SecretSanta.Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>();
 
-            services.AddDbContext<ApplicationDbContext>();
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.EnableSensitiveDataLogging()
+                       .UseSqlite("Data Source=SecretSanta.db"));
 
             services.AddAutoMapper(new[] { typeof(AutomapperConfigurationProfile).Assembly });
         }

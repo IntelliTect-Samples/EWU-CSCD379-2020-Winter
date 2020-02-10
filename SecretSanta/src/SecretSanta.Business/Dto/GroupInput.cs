@@ -2,10 +2,8 @@
 
 namespace SecretSanta.Business.Dto
 {
-    public class GroupInput : IEntity
+    public class GroupInput
     {
-        public int Id { get; }
-
         [Required]
         public string? Title { get; set; }
     }

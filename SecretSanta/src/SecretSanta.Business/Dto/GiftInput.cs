@@ -2,10 +2,8 @@
 
 namespace SecretSanta.Business.Dto
 {
-    public class GiftInput : IEntity
+    public class GiftInput
     {
-        public int Id { get; }
-
         [Required]
         public string? Title { get; set; }
 

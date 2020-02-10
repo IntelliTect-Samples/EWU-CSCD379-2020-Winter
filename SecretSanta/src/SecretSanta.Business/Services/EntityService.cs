@@ -10,7 +10,7 @@ namespace SecretSanta.Business.Services
 {
     public abstract class EntityService<TDto, TInputDto, TEntity> : IEntityService<TDto, TInputDto> 
         where TEntity : EntityBase 
-        where TDto : class, TInputDto 
+        where TDto : class, TInputDto
         where TInputDto : class
     {
         protected ApplicationDbContext DbContext { get; }

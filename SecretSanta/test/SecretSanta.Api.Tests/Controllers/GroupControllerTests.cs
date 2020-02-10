@@ -1,15 +1,16 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Api.Controllers;
-using SecretSanta.Business;
+using SecretSanta.Business.Services;
+using Dto = SecretSanta.Business.Dto;
 using SecretSanta.Data;
 using System;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public class GroupControllerTests : BaseApiControllerTests<Group, GroupInMemoryService>
+    public class GroupControllerTests : BaseApiControllerTests<Group, Dto.Group, Dto.GroupInput, GroupInMemoryService>
     {
-        protected override BaseApiController<Group> CreateController(GroupInMemoryService service)
+        protected override BaseApiController<Dto.Group, Dto.GroupInput> CreateController(GroupInMemoryService service)
             => new GroupController(service);
 
         protected override Group CreateEntity()
@@ -17,7 +18,7 @@ namespace SecretSanta.Api.Tests.Controllers
     }
 
 
-    public class GroupInMemoryService : InMemoryEntityService<Group>, IGroupService
+    public class GroupInMemoryService : InMemoryEntityService<Group, Dto.Group, Dto.GroupInput>, IGroupService
     {
 
     }
