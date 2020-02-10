@@ -58,6 +58,8 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Get_FetchesAllItems()
         {
+            using ApplicationDbContext context = Factory.GetDbContext();
+            
             TService service = new TService();
             service.Items.Add(CreateEntity());
             service.Items.Add(CreateEntity());
