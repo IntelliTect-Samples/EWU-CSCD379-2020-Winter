@@ -8,7 +8,7 @@ using System;
 namespace SecretSanta.Business.Tests
 {
     [TestClass]
-    public class GroupServiceTests : EntityServiceTests<Dto.Group, Dto.GroupInput, Data.Group>
+    public class GroupServiceTests : EntityServiceTests<Business.Dto.Group, Business.Dto.GroupInput, Data.Group>
     {
         protected override Data.Group CreateEntity() 
             => new Data.Group(Guid.NewGuid().ToString());
@@ -21,7 +21,7 @@ namespace SecretSanta.Business.Tests
             };
         }
 
-        protected override IEntityService<Dto.Group, Dto.GroupInput> GetService(ApplicationDbContext dbContext, IMapper mapper) 
+        protected override IEntityService<Business.Dto.Group, Business.Dto.GroupInput> GetService(ApplicationDbContext dbContext, IMapper mapper) 
             => new GroupService(dbContext, mapper);
     }
 }

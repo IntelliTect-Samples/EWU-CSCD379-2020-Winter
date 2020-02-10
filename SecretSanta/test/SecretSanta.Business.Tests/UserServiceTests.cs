@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SecretSanta.Business.Dto;
+using SecretSanta.Business;
 using SecretSanta.Business.Services;
 using SecretSanta.Data;
 using System;
@@ -8,23 +8,23 @@ using System;
 namespace SecretSanta.Business.Tests
 {
     [TestClass]
-    public class UserServiceTests : EntityServiceTests<Dto.User, Dto.UserInput, Data.User>
+    public class UserServiceTests : EntityServiceTests<Business.Dto.User, Business.Dto.UserInput, Data.User>
     {
         protected override Data.User CreateEntity()
             => new Data.User(
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString());
 
-        protected override UserInput CreateInputDto()
+        protected override Business.Dto.UserInput CreateInputDto()
         {
-            return new UserInput
+            return new Business.Dto.UserInput
             {
                 FirstName = Guid.NewGuid().ToString(),
                 LastName = Guid.NewGuid().ToString()
             };
         }
 
-        protected override IEntityService<Dto.User, Dto.UserInput> GetService(ApplicationDbContext dbContext, IMapper mapper)
+        protected override IEntityService<Business.Dto.User, Business.Dto.UserInput> GetService(ApplicationDbContext dbContext, IMapper mapper)
             => new UserService(dbContext, mapper);
     }
 }

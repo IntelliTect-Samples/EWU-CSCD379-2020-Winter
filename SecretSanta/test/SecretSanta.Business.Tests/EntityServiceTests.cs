@@ -12,7 +12,7 @@ namespace SecretSanta.Business.Tests
     [TestClass]
     public abstract class EntityServiceTests<TDto, TInputDto, TEntity> : TestBase
         where TEntity : EntityBase
-        where TDto : class, TInputDto, Dto.IEntity
+        where TDto : class, TInputDto, Business.Dto.IEntity
         where TInputDto : class
     {
         protected abstract IEntityService<TDto, TInputDto> GetService(ApplicationDbContext dbContext, IMapper mapper);

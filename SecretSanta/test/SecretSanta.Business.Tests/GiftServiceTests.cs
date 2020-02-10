@@ -8,7 +8,7 @@ using System;
 namespace SecretSanta.Business.Tests
 {
     [TestClass]
-    public class GiftServiceTests : EntityServiceTests<Dto.Gift, Dto.GiftInput, Data.Gift>
+    public class GiftServiceTests : EntityServiceTests<Business.Dto.Gift, Business.Dto.GiftInput, Data.Gift>
     {
         [TestInitialize]
         public void TestSetup()
@@ -36,7 +36,7 @@ namespace SecretSanta.Business.Tests
             };
         }
 
-        protected override IEntityService<Dto.Gift, Dto.GiftInput> GetService(ApplicationDbContext dbContext, IMapper mapper)
+        protected override IEntityService<Business.Dto.Gift, Business.Dto.GiftInput> GetService(ApplicationDbContext dbContext, IMapper mapper)
             => new GiftService(dbContext, mapper);
     }
 }
