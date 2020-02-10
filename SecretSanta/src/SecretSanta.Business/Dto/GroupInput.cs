@@ -2,7 +2,7 @@
 
 namespace SecretSanta.Business.Dto
 {
-    class GroupInput
+    public class GroupInput
     {
         [Required]
         public string? Title { get; set; }
