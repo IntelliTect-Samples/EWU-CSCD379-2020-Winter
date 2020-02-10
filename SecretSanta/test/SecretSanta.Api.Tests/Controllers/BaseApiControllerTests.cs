@@ -11,6 +11,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
 using AutoMapper;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
@@ -30,6 +33,18 @@ namespace SecretSanta.Api.Tests.Controllers
         protected abstract BaseApiController<TDto, TInputDto> CreateController(TService service);
 
         protected abstract TEntity CreateEntity();
+
+        private DbSet<TEntity> GetDbContextField(ApplicationDbContext context)
+        {
+            // hacky ass reflective way to generically get the appropriate field to add to
+            PropertyInfo[] props = typeof(ApplicationDbContext).GetProperties();
+            foreach (PropertyInfo prop in props)
+            {
+                if (prop.PropertyType == typeof(DbSet<TEntity>))
+                    return (DbSet<TEntity>) prop.GetValue(context);
+            }
+            return null!; // mandatory so "all paths return"
+        }
 
         [TestInitialize]
         public void TestSetup()
@@ -58,18 +73,39 @@ namespace SecretSanta.Api.Tests.Controllers
         [TestMethod]
         public async Task Get_FetchesAllItems()
         {
+            // Arrange
             using ApplicationDbContext context = Factory.GetDbContext();
-            
-            TService service = new TService();
-            service.Items.Add(CreateEntity());
-            service.Items.Add(CreateEntity());
-            service.Items.Add(CreateEntity());
 
+            GetDbContextField(context).Add(CreateEntity());
+            GetDbContextField(context).Add(CreateEntity());
+            GetDbContextField(context).Add(CreateEntity());
+            //TService service = new TService();
+
+            // Act
+            HttpResponseMessage response = await Client.GetAsync("api/"+nameof(TEntity));
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+
+            string jsonData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+
+            TDto[] items =
+                JsonSerializer.Deserialize<TDto[]>(jsonData, options);
+
+            Assert.AreEqual(3, items.Length);
+
+            /*
             BaseApiController<TDto, TInputDto> controller = CreateController(service);
 
             IEnumerable<TDto> items = await controller.Get();
 
             CollectionAssert.AreEqual(service.Items.ToList(), items.ToList());
+            */
         }
 
         [TestMethod]
