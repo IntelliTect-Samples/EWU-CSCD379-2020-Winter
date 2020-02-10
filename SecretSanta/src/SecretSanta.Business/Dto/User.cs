@@ -2,6 +2,5 @@
 {
     public class User : UserInput
     {
-        public int Id { get; set; }
     }
 }

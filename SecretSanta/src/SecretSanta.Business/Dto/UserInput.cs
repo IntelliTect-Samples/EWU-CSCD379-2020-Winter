@@ -2,8 +2,10 @@
 
 namespace SecretSanta.Business.Dto
 {
-    public class UserInput
+    public class UserInput : IEntity
     {
+        public int Id { get; }
+
         [Required]
         public string? FirstName { get; set; }
 

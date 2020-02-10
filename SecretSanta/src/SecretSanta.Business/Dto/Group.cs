@@ -2,6 +2,5 @@
 {
     public class Group : GroupInput
     {
-        public int Id { get; set; }
     }
 }
