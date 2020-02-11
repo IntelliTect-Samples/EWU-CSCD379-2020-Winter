@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Api.Controllers;
 using SecretSanta.Business;
+using SecretSanta.Business.Services;
 using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
@@ -11,13 +13,16 @@ using System.Threading.Tasks;
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public abstract class BaseApiControllerTests<TEntity, TService> 
+    public abstract class BaseApiControllerTests<TDto, TInputDto, TEntity, TService> 
         where TEntity : EntityBase
-        where TService : InMemoryEntityService<TEntity>, new()
+        where TInputDto : class
+        where TDto : class, TInputDto
+        where TService : InMemoryEntityService<TDto, TInputDto, TEntity>, new()
     {
-        protected abstract BaseApiController<TEntity> CreateController(TService service);
+        protected abstract BaseApiController<TDto, TInputDto, TEntity> CreateController(TService service);
 
         protected abstract TEntity CreateEntity();
+        private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -34,18 +39,22 @@ namespace SecretSanta.Api.Tests.Controllers
             service.Items.Add(CreateEntity());
             service.Items.Add(CreateEntity());
 
-            BaseApiController<TEntity> controller = CreateController(service);
+            BaseApiController<TDto, TInputDto, TEntity> controller = CreateController(service);
 
-            IEnumerable<TEntity> items = await controller.Get();
+            IEnumerable<TDto> items = await controller.Get();
+            List<TEntity> items2 = Mapper.Map<IEnumerable<TDto>, List<TEntity>>(items);
 
-            CollectionAssert.AreEqual(service.Items.ToList(), items.ToList());
+            Console.WriteLine("service.Items.Count: " + service.Items.Count + " items2.Count: " + items2.Count);
+            Assert.AreEqual(service.Items.Count, items2.Count);
+            //CollectionAssert.AreEqual(service.Items.ToList(), items2.ToList());
+
         }
 
         [TestMethod]
         public async Task Get_WhenEntityDoesNotExist_ReturnsNotFound()
         {
             TService service = new TService();
-            BaseApiController<TEntity> controller = CreateController(service);
+            BaseApiController<TDto, TInputDto, TEntity> controller = CreateController(service);
 
             IActionResult result = await controller.Get(1);
 
@@ -59,11 +68,12 @@ namespace SecretSanta.Api.Tests.Controllers
             TService service = new TService();
             TEntity entity = CreateEntity();
             service.Items.Add(entity);
-            BaseApiController<TEntity> controller = CreateController(service);
+            BaseApiController<TDto, TInputDto, TEntity> controller = CreateController(service);
 
             IActionResult result = await controller.Get(entity.Id);
 
             var okResult = result as OkObjectResult;
+
             
             Assert.AreEqual(entity, okResult?.Value);
         }
@@ -75,9 +85,11 @@ namespace SecretSanta.Api.Tests.Controllers
             TEntity entity1 = CreateEntity();
             service.Items.Add(entity1);
             TEntity entity2 = CreateEntity();
-            BaseApiController<TEntity> controller = CreateController(service);
+            BaseApiController<TDto, TInputDto, TEntity> controller = CreateController(service);
 
-            TEntity? result = await controller.Put(entity1.Id, entity2);
+
+            TInputDto item = Mapper.Map<TEntity, TInputDto>(entity2);
+            TDto? result = await controller.Put(entity1.Id, item);
 
             Assert.AreEqual(entity2, result);
             Assert.AreEqual(entity2, service.Items.Single());
@@ -88,9 +100,10 @@ namespace SecretSanta.Api.Tests.Controllers
         {
             TService service = new TService();
             TEntity entity = CreateEntity();
-            BaseApiController<TEntity> controller = CreateController(service);
+            BaseApiController<TDto, TInputDto, TEntity> controller = CreateController(service);
 
-            TEntity? result = await controller.Post(entity);
+            TInputDto item = Mapper.Map<TEntity, TInputDto>(entity);
+            TDto? result = await controller.Post(item);
 
             Assert.AreEqual(entity, result);
             Assert.AreEqual(entity, service.Items.Single());
@@ -100,7 +113,7 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Delete_WhenItemDoesNotExist_ReturnsNotFound()
         {
             TService service = new TService();
-            BaseApiController<TEntity> controller = CreateController(service);
+            BaseApiController<TDto, TInputDto, TEntity> controller = CreateController(service);
 
             IActionResult result = await controller.Delete(1);
 
@@ -113,23 +126,29 @@ namespace SecretSanta.Api.Tests.Controllers
             TService service = new TService();
             TEntity entity = CreateEntity();
             service.Items.Add(entity);
-            BaseApiController<TEntity> controller = CreateController(service);
+            BaseApiController<TDto, TInputDto, TEntity> controller = CreateController(service);
 
             IActionResult result = await controller.Delete(entity.Id);
 
             Assert.IsTrue(result is OkResult);
         }
 
-        private class ThrowingController : BaseApiController<TEntity>
+        private class ThrowingController : BaseApiController<TDto, TInputDto, TEntity>
         {
             public ThrowingController() : base(null!)
             { }
         }
     }
 
-    public class InMemoryEntityService<TEntity> : IEntityService<TEntity> where TEntity : EntityBase
+    public class InMemoryEntityService<TDto, TInputDto, TEntity> : IEntityService<TDto, TInputDto> 
+        where TEntity : EntityBase
+        where TInputDto : class
+        where TDto : class, TInputDto
+
     {
-        public IList<TEntity> Items { get; } = new List<TEntity>();
+        public List<TEntity> Items { get; } = new List<TEntity>();
+        private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
+
 
         public Task<bool> DeleteAsync(int id)
         {
@@ -140,30 +159,38 @@ namespace SecretSanta.Api.Tests.Controllers
             return Task.FromResult(false);
         }
 
-        public Task<List<TEntity>> FetchAllAsync()
+        public Task<List<TDto>> FetchAllAsync()
         {
-            return Task.FromResult(Items.ToList());
+            return Task.FromResult(Mapper.Map<List<TEntity>, List<TDto>>(Items));
+            //return Mapper.Map<List<TEntity>, List<TDto>>(Items.ToList());
+            //return Task.FromResult(Items.ToList());
         }
 
-        public Task<TEntity> FetchByIdAsync(int id)
+        public Task<TDto> FetchByIdAsync(int id)
         {
-            return Task.FromResult(Items.FirstOrDefault(x => x.Id == id));
+            return Task.FromResult(Mapper.Map<TEntity, TDto>(Items.FirstOrDefault(x => x.Id == id)));
+            //return Task.FromResult(Items.FirstOrDefault(x => x.Id == id));
         }
 
-        public Task<TEntity> InsertAsync(TEntity entity)
+        public Task<TDto> InsertAsync(TInputDto entity)
         {
-            Items.Add(entity);
-            return Task.FromResult(entity);
+            TEntity item = Mapper.Map<TInputDto, TEntity>(entity);
+            Items.Add(item);
+            return Task.FromResult(Mapper.Map<TEntity, TDto>(item));
         }
 
-        public Task<TEntity?> UpdateAsync(int id, TEntity entity)
+        public Task<TDto?> UpdateAsync(int id, TInputDto entity)
         {
+            TEntity item = Mapper.Map<TInputDto, TEntity>(entity);
+
             if (Items.FirstOrDefault(x => x.Id == id) is { } found)
             {
-                Items[Items.IndexOf(found)] = entity;
-                return Task.FromResult<TEntity?>(entity);
+                Mapper.Map(entity, found);
+                Items[Items.IndexOf(found)] = item;
+                return Task.FromResult(Mapper.Map<TEntity, TDto?>(item));
+                //return Task.FromResult<TEntity?>(item);
             }
-            return Task.FromResult(default(TEntity));
+            return Task.FromResult(default(TDto));
         }
     }
 }

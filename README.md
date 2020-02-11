@@ -1,4 +1,6 @@
-# Assignment
+[![Build Status](https://dev.azure.com/dsergio/CSCD379-2020-Winter/_apis/build/status/dsergio.EWU-CSCD379-2020-Winter?branchName=Assignment5)](https://dev.azure.com/dsergio/CSCD379-2020-Winter/_build/latest?definitionId=1&branchName=Assignment5)
+
+# Assignment 5
 
 For this assignment you will be completing the SecretSanta.Api project and startng work on the SecretSanta.Web project
 
