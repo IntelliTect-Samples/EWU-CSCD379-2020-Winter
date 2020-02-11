@@ -40,17 +40,9 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
-        public async Task<IActionResult> Put(int id, [FromBody] TInputDto value)
+        public async Task<TDto?> Put(int id, [FromBody] TInputDto value)
         {
-            if (await Service.UpdateAsync(id, value) is { } entity)
-            {
-                return Ok(entity);
-            }
-
-            return NotFound();
+            return await Service.UpdateAsync(id, value);
         }
 
         [HttpPost]
