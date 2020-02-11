@@ -1,26 +1,28 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SecretSanta.Api.Controllers;
-using SecretSanta.Business.Services;
 using SecretSanta.Data;
-using System;
+using SecretSanta.Data.Tests;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public class GiftControllerTests : BaseApiControllerTests<Gift, Business.Dto.Gift, Business.Dto.GiftInput, GiftInMemoryService>
+    public class GiftControllerTests : BaseContollerTests
     {
-        protected override BaseApiController<Business.Dto.GiftInput, Business.Dto.Gift> CreateController(GiftInMemoryService service)
-            => new GiftController(service);
+        [TestMethod]
+        public async Task Put_WithMissingId_NotFound()
+        {
+            Business.Dto.GiftInput gift = Mapper.Map<Gift, Business.Dto.GiftInput>(SampleData.Gift1);
+            string jsonData = JsonSerializer.Serialize(gift);
 
-        protected override Gift CreateEntity()
-            => new Gift(Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString(),
-                new User(Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
-    }
+            using StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
-    public class GiftInMemoryService : InMemoryEntityService<Gift, Business.Dto.GiftInput, Business.Dto.Gift>, IGiftService
-    {
+            HttpResponseMessage response = await Client.PutAsync("api/Author/42", stringContent);
 
+            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+        }
     }
 }

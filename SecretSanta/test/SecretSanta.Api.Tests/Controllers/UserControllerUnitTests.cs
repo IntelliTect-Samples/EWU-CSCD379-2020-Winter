@@ -7,7 +7,7 @@ using System;
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public class UserControllerTests : BaseApiControllerTests<User, Business.Dto.User, Business.Dto.UserInput, UserInMemoryService>
+    public class UserControllerUnitTests : BaseControllerUnitTests<User, Business.Dto.User, Business.Dto.UserInput, UserInMemoryService>
     {
         protected override BaseApiController<Business.Dto.UserInput, Business.Dto.User> CreateController(UserInMemoryService service)
             => new UserController(service);

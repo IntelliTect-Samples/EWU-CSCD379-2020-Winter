@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public abstract class BaseApiControllerTests<TEntity, TDto, TInputDto, TService> 
+    public abstract class BaseControllerUnitTests<TEntity, TDto, TInputDto, TService> 
         where TEntity : EntityBase
         where TInputDto : class
         where TDto : class, TInputDto, IEntity
@@ -57,7 +57,6 @@ namespace SecretSanta.Api.Tests.Controllers
 
             Assert.IsTrue(result is NotFoundResult);
         }
-
 
         [TestMethod]
         public async Task Get_WhenEntityExists_ReturnsItem()
