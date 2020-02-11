@@ -61,15 +61,16 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Get_WhenEntityExists_ReturnsItem()
         {
             Mock<TService> service = new Mock<TService>();
-            //TDto entity = CreateDto();
-            //service.Items.Add(entity);
+            TDto entity = CreateDto();
+            service.Setup(service => service.FetchByIdAsync(42))
+                .Returns(Task.FromResult(entity));
             BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-          //  IActionResult result = await controller.Get(entity.Id);
+            IActionResult result = await controller.Get(42);
 
-          //  var okResult = result as OkObjectResult;
+            var okResult = result as OkObjectResult;
             
-         //   Assert.AreEqual(entity, okResult?.Value);
+            Assert.AreEqual(entity, okResult?.Value);
         }
 
         [TestMethod]
@@ -97,12 +98,14 @@ namespace SecretSanta.Api.Tests.Controllers
         {
             Mock<TService> service = new Mock<TService>();
             TDto entity = CreateDto();
+            TInputDto entityInput = Mapper.Map<TDto, TInputDto>(entity);
+            service.Setup(service => service.InsertAsync(entityInput))
+                .Returns(Task.FromResult(entity));
             BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-            TDto? result = await controller.Post(entity);
+            TDto result = await controller.Post(entityInput);
 
             Assert.AreEqual(entity, result);
-           
         }
 
         [TestMethod]
@@ -120,13 +123,14 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Delete_WhenItemExists_ReturnsOk()
         {
             Mock<TService> service = new Mock<TService>();
-          //  TDto entity = CreateDto();
-           // service.Items.Add(entity);
+            TDto entity = CreateDto();
+            service.Setup(service => service.DeleteAsync(entity.Id))
+                .Returns(Task.FromResult(true));
             BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-          //  IActionResult result = await controller.Delete(entity.Id);
+            IActionResult result = await controller.Delete(entity.Id);
 
-         //   Assert.IsTrue(result is OkResult);
+            Assert.IsTrue(result is OkResult);
         }
 
         private class ThrowingController : BaseApiController<TDto, TInputDto>

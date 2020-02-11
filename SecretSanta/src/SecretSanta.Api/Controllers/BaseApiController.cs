@@ -51,7 +51,7 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<TDto> Post(TDto entity)
+        public async Task<TDto> Post(TInputDto entity)
         {
             return await Service.InsertAsync(entity);
         }

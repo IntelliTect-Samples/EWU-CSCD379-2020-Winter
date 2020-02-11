@@ -20,8 +20,10 @@ namespace SecretSanta.Api.Tests.Controllers
     [TestClass]
     public class GiftControllerTests 
     {
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         private SecretSantaWebApplicationFactory Factory { get; set; }
         private HttpClient Client { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
 
         [TestInitialize]
@@ -134,7 +136,6 @@ namespace SecretSanta.Api.Tests.Controllers
 
         [TestMethod]
         [DataRow(nameof(Business.Dto.GiftInput.Title))]
-      //  [DataRow(nameof(Business.Dto.GiftInput.Description))]
         public async Task Post_WithNullValues_BadResult(string propertyName)
         {
             Data.Gift entity = SampleData.CreateCoolGift();
