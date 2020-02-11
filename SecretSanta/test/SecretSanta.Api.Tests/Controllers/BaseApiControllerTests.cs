@@ -16,8 +16,8 @@ namespace SecretSanta.Api.Tests.Controllers
     [TestClass]
     public abstract class BaseApiControllerTests<TEntity, TDto, TInputDto, TService> 
         where TEntity : EntityBase
-        where TInputDto : class, IEntity
-        where TDto : class, TInputDto
+        where TInputDto : class
+        where TDto : class, TInputDto, IEntity
         where TService : InMemoryEntityService<TEntity, TInputDto, TDto>, new()
     {
         protected abstract BaseApiController<TInputDto, TDto> CreateController(TService service);
@@ -135,8 +135,8 @@ namespace SecretSanta.Api.Tests.Controllers
 
     public class InMemoryEntityService<TEntity, TInputDto, TDto> : IEntityService<TDto, TInputDto>
         where TEntity : EntityBase
-        where TInputDto : class, Business.Dto.IEntity
-        where TDto : class, TInputDto
+        where TInputDto : class
+        where TDto : class, TInputDto, IEntity
     {
         private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
 
