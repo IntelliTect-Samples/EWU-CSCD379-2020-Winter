@@ -9,25 +9,24 @@ using SecretSanta.Web.Api;
 
 namespace SecretSanta.Web.Controllers
 {
-    public class GiftController : Controller
+    public class UserController : Controller
     {
-
         public IHttpClientFactory ClientFactory { get; set; }
 
-        public GiftController(IHttpClientFactory clientFactory)
+        public UserController(IHttpClientFactory clientFactory)
         {
             ClientFactory = clientFactory ?? throw new ArgumentNullException(nameof(clientFactory));
         }
 
-
-        // GET: Gift
+        // GET: User
         public async Task<ActionResult> IndexAsync()
         {
             HttpClient httpClient = ClientFactory.CreateClient("SecretSanta");
-            var client = new GiftClient(httpClient);
-            ICollection<Gift> gifts = await client.GetAllAsync();
-            return View(gifts);
+            var client = new UserClient(httpClient);
+            ICollection<User> users = await client.GetAllAsync();
+            return View(users);
         }
 
+        
     }
 }
