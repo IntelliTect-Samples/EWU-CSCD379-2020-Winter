@@ -36,15 +36,15 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Get_FetchesAllItems()
         {
             TService service = new TService();
-            service.Items.Add(CreateEntity());
-            service.Items.Add(CreateEntity());
-            service.Items.Add(CreateEntity());
-
+            List<TEntity> entities = new List<TEntity> { CreateEntity(), CreateEntity(), CreateEntity() };
+            foreach (TEntity ent in entities) service.Items.Add(ent);
             BaseApiController<TInputDto, TDto> controller = CreateController(service);
 
             IEnumerable<TDto> items = await controller.Get();
 
-            CollectionAssert.AreEqual(Mapper.Map<List<TEntity>, List<TDto>>(service.Items.ToList()), items.ToList());
+            List<TDto> original = Mapper.Map<List<TEntity>, List<TDto>>(entities);
+            foreach (var (orig, ret) in original.Zip(items))
+                AssertEquality(orig, ret);
         }
 
         [TestMethod]
@@ -70,8 +70,11 @@ namespace SecretSanta.Api.Tests.Controllers
             IActionResult result = await controller.Get(entity.Id);
 
             var okResult = result as OkObjectResult;
-            
-            Assert.AreEqual(entity, okResult?.Value);
+
+            if (okResult?.Value is TDto dto)
+                AssertEquality(Mapper.Map<TEntity, TDto>(entity), dto);
+            else
+                Assert.Fail("Controller returned null");
         }
 
         [TestMethod]
@@ -85,8 +88,10 @@ namespace SecretSanta.Api.Tests.Controllers
 
             TDto? result = await controller.Put(entity1.Id, Mapper.Map<TEntity, TInputDto>(entity2));
 
-            Assert.AreEqual(entity2, result);
-            Assert.AreEqual(entity2, service.Items.Single());
+            if (result is TDto dto)
+                AssertEquality(Mapper.Map<TEntity, TDto>(entity2), dto);
+            else
+                Assert.Fail("Controller returned null");
         }
 
         [TestMethod]
@@ -98,8 +103,10 @@ namespace SecretSanta.Api.Tests.Controllers
 
             TDto? result = await controller.Post(Mapper.Map<TEntity, TInputDto>(entity));
 
-            Assert.AreEqual(entity, result);
-            Assert.AreEqual(entity, service.Items.Single());
+            if (result is TDto dto)
+                AssertEquality(Mapper.Map<TEntity, TDto>(entity), dto);
+            else
+                Assert.Fail("Controller returned null");
         }
 
         [TestMethod]
@@ -124,6 +131,12 @@ namespace SecretSanta.Api.Tests.Controllers
             IActionResult result = await controller.Delete(entity.Id);
 
             Assert.IsTrue(result is OkResult);
+        }
+
+        private static void AssertEquality(TDto dto1, TDto dto2)
+        {
+            foreach (var prop in dto1.GetType().GetProperties())
+                Assert.AreEqual(prop.GetValue(dto1), prop.GetValue(dto2));
         }
 
         private class ThrowingController : BaseApiController<TInputDto, TDto>
