@@ -60,7 +60,7 @@ namespace SecretSanta.Business.Tests.Dto
             {
                 Title = _LeSpatulaTitle,
                 Description = _LeSpatulaDescription,
-                Url = _LeSpatulaUrl
+                Url = _LeSpatulaUrl,
             };
         }
 

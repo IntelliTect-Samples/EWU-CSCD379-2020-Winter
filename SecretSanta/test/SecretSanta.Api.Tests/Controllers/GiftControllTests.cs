@@ -11,6 +11,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
+using AutoMapper;
+using System.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
@@ -25,6 +28,8 @@ namespace SecretSanta.Api.Tests.Controllers
         {
             PropertyNameCaseInsensitive = true
         };
+
+        private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
 
         protected override BaseApiController<Business.Dto.Gift, Business.Dto.GiftInput> CreateController(GiftInMemoryService service)
             => new GiftController(service);
@@ -58,8 +63,14 @@ namespace SecretSanta.Api.Tests.Controllers
         protected override Data.Gift CreateEntity()
             => new Data.Gift(SampleData._LeSpatulaTitle, SampleData._LeSpatulaUrl, SampleData._LeSpatulaDescription, new Data.User(SampleData._SpongebobFirstName, SampleData._SpongebobLastName));
 
-        private Data.Gift CreateDifferentEntity()
-            => new Data.Gift(SampleData._MoneyTitle, SampleData._MoneyUrl, SampleData._MoneyDescription, new Data.User(SampleData._MrKrabsFirstName, SampleData._MrKrabsLastName));
+        private Data.Gift CreateGiftWithUserID()
+        {
+            Data.User MrKrabs = new Data.User(SampleData._MrKrabsFirstName, SampleData._MrKrabsLastName);
+            using ApplicationDbContext dbContext = Factory.GetDbContext();
+            dbContext.Users.Add(MrKrabs);
+            dbContext.SaveChanges();
+            return new Data.Gift(SampleData._MoneyTitle, SampleData._MoneyUrl, SampleData._MoneyDescription,MrKrabs);
+        }
 
 
         private  bool DTosAreEqual(Business.Dto.Gift dto1, Business.Dto.Gift dto2)
@@ -138,10 +149,10 @@ namespace SecretSanta.Api.Tests.Controllers
         {
             //Arrange
             using ApplicationDbContext dbContext = Factory.GetDbContext();
-            Data.Gift entity = CreateDifferentEntity();
+            Data.Gift entity = CreateEntity();
             dbContext.Gifts.Add(entity);
             dbContext.SaveChanges();
-            Business.Dto.Gift expectedGift = CreateDifferentDto();
+            Business.Dto.Gift expectedGift = CreateDto();
             Uri uri = new Uri("api/Gift/6", UriKind.RelativeOrAbsolute);
             //Act
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -168,15 +179,89 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Post_ValidDtoInput_Success()
         {
             //Arrange
-            using ApplicationDbContext dbContext = Factory.GetDbContext();
-            Uri uri = new Uri("api/Gift", UriKind.RelativeOrAbsolute);
-            Business.Dto.GiftInput giftInput = CreateInputDto();
+            using ApplicationDbContext applicationDbContext = Factory.GetDbContext();
+            Data.Gift entity = CreateGiftWithUserID();
+            Business.Dto.GiftInput giftInput = Mapper.Map<Data.Gift, Business.Dto.GiftInput>(entity);
+            //giftInput.UserId = 1;
             string json = JsonSerializer.Serialize(giftInput);
             using StringContent stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+            Uri uri = new Uri("api/Gift/", UriKind.RelativeOrAbsolute);
             //Act
             HttpResponseMessage httpResponse = await Client.PostAsync(uri, stringContent);
             //Assert
             httpResponse.EnsureSuccessStatusCode();
+            string retunedJson = await httpResponse.Content.ReadAsStringAsync();
+            Business.Dto.Gift returnedDto = JsonSerializer.Deserialize<Business.Dto.Gift>(retunedJson,_JsonSerializerOptions);
+            Business.Dto.Gift expectedDto = Mapper.Map<Data.Gift, Business.Dto.Gift>(entity);
+            Business.Dto.Gift databseDto = Mapper.Map<Data.Gift,Business.Dto.Gift>(await applicationDbContext.Gifts.FindAsync(returnedDto.Id));
+            Assert.IsTrue(DTosAreEqual(expectedDto, returnedDto));
+            Assert.IsTrue(DTosAreEqual(expectedDto, databseDto));
+        }
+
+        [TestMethod]
+        public async Task Post_NullTitle_Failure()
+        {
+            //Arrange
+            using ApplicationDbContext dbContext = Factory.GetDbContext();
+            Data.Gift entity = CreateGiftWithUserID();
+            Business.Dto.GiftInput giftInput = Mapper.Map<Data.Gift, Business.Dto.Gift>(entity);
+            giftInput.Title = null;
+            string json = JsonSerializer.Serialize(giftInput);
+            using StringContent stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+            Uri uri = new Uri("api/Gift/", UriKind.RelativeOrAbsolute);
+            //Act
+            HttpResponseMessage httpResponse = await Client.PostAsync(uri, stringContent);
+            //Assert
+            Assert.AreEqual<HttpStatusCode>(HttpStatusCode.BadRequest, httpResponse.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task Put_ValidDtoInput_Success()
+        {
+            //Arrange
+            using ApplicationDbContext applicationDbContext = Factory.GetDbContext();
+            Data.Gift entity = CreateGiftWithUserID();
+            Business.Dto.GiftInput giftInput = Mapper.Map<Data.Gift, Business.Dto.GiftInput>(entity);
+            string json = JsonSerializer.Serialize(giftInput);
+            using StringContent stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+            Uri uri = new Uri("api/Gift/1", UriKind.RelativeOrAbsolute);
+            //Act
+            HttpResponseMessage httpResponse = await Client.PutAsync(uri, stringContent);
+            //Assert
+            httpResponse.EnsureSuccessStatusCode();
+            string retunedJson = await httpResponse.Content.ReadAsStringAsync();
+            Business.Dto.Gift returnedDto = JsonSerializer.Deserialize<Business.Dto.Gift>(retunedJson, _JsonSerializerOptions);
+            Business.Dto.Gift expectedDto = Mapper.Map<Data.Gift, Business.Dto.Gift>(entity);
+            Business.Dto.Gift databseDto = Mapper.Map<Data.Gift, Business.Dto.Gift>(await applicationDbContext.Gifts.FindAsync(returnedDto.Id));
+            Assert.IsTrue(DTosAreEqual(expectedDto, returnedDto));
+            Assert.IsTrue(DTosAreEqual(expectedDto, databseDto));
+        }
+
+        [TestMethod]
+        public async Task Delete_ValidID_Success()
+        {
+            //Arrange
+            using ApplicationDbContext dbContext = Factory.GetDbContext();
+            Data.Gift giftToBeDelete = await dbContext.Gifts.FindAsync(1);
+            Uri uri = new Uri("api/Gift/1", UriKind.RelativeOrAbsolute);
+            //Act
+            HttpResponseMessage response = await Client.DeleteAsync(uri);
+            //Assert
+            response.EnsureSuccessStatusCode();
+            int GiftsInDatabase = (await dbContext.Gifts.ToListAsync()).Count;
+            Assert.AreEqual<int>(4, GiftsInDatabase);
+        }
+
+        [TestMethod]
+        public async Task Delete_InvalidID_Failure()
+        {
+            //Arrange
+            using ApplicationDbContext dbContext = Factory.GetDbContext();
+            Uri uri = new Uri("api/Gift/6", UriKind.RelativeOrAbsolute);
+            //Act
+            HttpResponseMessage response = await Client.DeleteAsync(uri);
+            //Assert
+            Assert.AreEqual<HttpStatusCode>(HttpStatusCode.NotFound, response.StatusCode);
         }
     }
 

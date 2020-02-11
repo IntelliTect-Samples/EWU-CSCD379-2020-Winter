@@ -10,6 +10,7 @@ namespace SecretSanta.Business
         {
             CreateMap<Gift, Dto.Gift>();
             CreateMap<Dto.GiftInput, Gift>();
+            CreateMap<Gift, Dto.GiftInput>();
 
             CreateMap<User, Dto.User>();
             CreateMap<Dto.UserInput, User>();

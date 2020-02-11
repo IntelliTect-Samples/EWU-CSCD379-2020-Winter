@@ -20,19 +20,20 @@ namespace SecretSanta.Api
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-               options.EnableSensitiveDataLogging()
-                      .UseSqlite("Data Source=Blog.db"));
-
-            services.AddMvc(options => options.EnableEndpointRouting = false);
-            services.AddSwaggerDocument();
+                options.EnableSensitiveDataLogging()
+                       .UseSqlite("Data Source=SecretSanta.db"));
 
             services.AddScoped<IGiftService, GiftService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IGroupService, GroupService>();
 
-            services.AddDbContext<ApplicationDbContext>();
+            System.Type profileType = typeof(AutomapperConfigurationProfile);
+            System.Reflection.Assembly assembly = profileType.Assembly;
+            services.AddAutoMapper(new[] { assembly });
 
-            services.AddAutoMapper(new[] { typeof(AutomapperConfigurationProfile).Assembly });
+            services.AddMvc(opts => opts.EnableEndpointRouting = false);
+
+            services.AddSwaggerDocument();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,9 +44,9 @@ namespace SecretSanta.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseRouting();
             app.UseOpenApi();
             app.UseSwaggerUi3();
-
             app.UseMvc();
         }
     }
