@@ -87,7 +87,7 @@ namespace SecretSanta.Api.Tests.Controllers
             using StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             // Act
-            //Justification: URL is type string, not type URI in this project
+            // Justification: Url's are strings in this project. We aren't using uri objects
 #pragma warning disable CA2234 // Pass system uri objects instead of strings
             HttpResponseMessage response = await Client.PutAsync($"api/Gift/{ring.Id}", stringContent);
 #pragma warning restore CA2234 // Pass system uri objects instead of strings
@@ -126,7 +126,7 @@ namespace SecretSanta.Api.Tests.Controllers
             using StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             // Act
-            //Justification: URL is type string, not type URI in this project
+            // Justification: Url's are strings in this project. We aren't using uri objects
 #pragma warning disable CA2234 // Pass system uri objects instead of strings
             HttpResponseMessage response = await Client.PutAsync($"api/Gift/{arduino.Id}", stringContent);
 #pragma warning restore CA2234 // Pass system uri objects instead of strings
