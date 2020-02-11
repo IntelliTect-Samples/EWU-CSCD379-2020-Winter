@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SecretSanta.Business;
+using SecretSanta.Business.Dto;
 using SecretSanta.Business.Services;
-using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -38,14 +37,15 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put(int id, [FromBody] TInputDto value)
         {
-            TDto entity = await Service.UpdateAsync(id, value);
-            if (entity is null)
+            if (await Service.UpdateAsync(id, value) is Gift entity)
             {
-                return NotFound();
+                return Ok(entity);
             }
-            return Ok(entity);
+            return NotFound();
         }
 
         [HttpPost]
