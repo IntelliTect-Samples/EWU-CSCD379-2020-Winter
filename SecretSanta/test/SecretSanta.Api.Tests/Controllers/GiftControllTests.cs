@@ -9,6 +9,8 @@ using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Text;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
@@ -160,6 +162,21 @@ namespace SecretSanta.Api.Tests.Controllers
             HttpResponseMessage response = await Client.GetAsync(uri);
             //Assert
             Assert.AreEqual<System.Net.HttpStatusCode>(System.Net.HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [TestMethod]
+        public async Task Post_ValidDtoInput_Success()
+        {
+            //Arrange
+            using ApplicationDbContext dbContext = Factory.GetDbContext();
+            Uri uri = new Uri("api/Gift", UriKind.RelativeOrAbsolute);
+            Business.Dto.GiftInput giftInput = CreateInputDto();
+            string json = JsonSerializer.Serialize(giftInput);
+            using StringContent stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+            //Act
+            HttpResponseMessage httpResponse = await Client.PostAsync(uri, stringContent);
+            //Assert
+            httpResponse.EnsureSuccessStatusCode();
         }
     }
 
