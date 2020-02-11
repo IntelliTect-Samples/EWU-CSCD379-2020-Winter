@@ -139,21 +139,17 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Post_WithNullValues_BadResult(string propertyName)
         {
             Data.Gift entity = SampleData.CreateCoolGift();
-
             GiftInput gift = Mapper.Map<Data.Gift, Business.Dto.Gift>(entity);
             Type inputType = typeof(GiftInput);
             System.Reflection.PropertyInfo? propInfo = inputType.GetProperty(propertyName);
             propInfo!.SetValue(gift, null);
             var uri = new Uri("api/Gift/", UriKind.RelativeOrAbsolute);
-
             string jsonData = JsonSerializer.Serialize(gift);
-
             using StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await Client.PostAsync(uri, stringContent);
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
-
         }
 
         [TestMethod]
@@ -204,7 +200,6 @@ namespace SecretSanta.Api.Tests.Controllers
             HttpResponseMessage response = await Client.DeleteAsync(uri);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-
         }
 
         [TestMethod]
