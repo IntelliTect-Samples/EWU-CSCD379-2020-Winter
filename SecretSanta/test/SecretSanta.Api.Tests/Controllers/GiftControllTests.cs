@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Api.Controllers;
 using SecretSanta.Business;
 using SecretSanta.Business.Services;
@@ -18,6 +19,11 @@ namespace SecretSanta.Api.Tests.Controllers
         private SecretSantaWebApplicationFactory Factory { get; set; }
         private HttpClient Client { get; set; }
 #pragma warning restore CS8618 // Justification: Both client and Factory are initialized in the TestSetup method, which has the TestInitialize attribute
+        private readonly JsonSerializerOptions _JsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         protected override BaseApiController<Business.Dto.Gift, Business.Dto.GiftInput> CreateController(GiftInMemoryService service)
             => new GiftController(service);
 
@@ -31,6 +37,17 @@ namespace SecretSanta.Api.Tests.Controllers
             };
         }
 
+        private Business.Dto.Gift CreateDifferentDto()
+        {
+            return new Business.Dto.Gift()
+            {
+                Title = SampleData._MoneyTitle,
+                Description = SampleData._MoneyDescription,
+                Url = SampleData._MoneyUrl
+            };
+        }
+           
+
         protected override Business.Dto.GiftInput CreateInputDto()
         {
             return SampleData.CreateLeSpatula();
@@ -38,6 +55,10 @@ namespace SecretSanta.Api.Tests.Controllers
 
         protected override Data.Gift CreateEntity()
             => new Data.Gift(SampleData._LeSpatulaTitle, SampleData._LeSpatulaUrl, SampleData._LeSpatulaDescription, new Data.User(SampleData._SpongebobFirstName, SampleData._SpongebobLastName));
+
+        private Data.Gift CreateDifferentEntity()
+            => new Data.Gift(SampleData._MoneyTitle, SampleData._MoneyUrl, SampleData._MoneyDescription, new Data.User(SampleData._MrKrabsFirstName, SampleData._MrKrabsLastName));
+
 
         private  bool DTosAreEqual(Business.Dto.Gift dto1, Business.Dto.Gift dto2)
         {
@@ -95,23 +116,50 @@ namespace SecretSanta.Api.Tests.Controllers
             //Arrange
             using ApplicationDbContext dbContext = Factory.GetDbContext();
             Business.Dto.Gift excpectedGift = CreateDto();
-            //Act
             Uri uri = new Uri("api/Gift", UriKind.RelativeOrAbsolute);
+            //Act
             HttpResponseMessage response = await Client.GetAsync(uri);
             //Assert
             response.EnsureSuccessStatusCode();
             string json = await response.Content.ReadAsStringAsync();
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            };
-            Business.Dto.Gift[] gifts = JsonSerializer.Deserialize<Business.Dto.Gift[]>(json, options);
+            Business.Dto.Gift[] gifts = JsonSerializer.Deserialize<Business.Dto.Gift[]>(json, _JsonSerializerOptions);
             Assert.AreEqual<int>(5, gifts.Length);
             Assert.IsTrue(DTosAreEqual(excpectedGift, gifts[0]));
             Assert.IsTrue(DTosAreEqual(excpectedGift, gifts[1]));
             Assert.IsTrue(DTosAreEqual(excpectedGift, gifts[2]));
             Assert.IsTrue(DTosAreEqual(excpectedGift, gifts[3]));
             Assert.IsTrue(DTosAreEqual(excpectedGift, gifts[4]));
+        }
+
+        [TestMethod]
+        public async Task Get_ByID_Success()
+        {
+            //Arrange
+            using ApplicationDbContext dbContext = Factory.GetDbContext();
+            Data.Gift entity = CreateDifferentEntity();
+            dbContext.Gifts.Add(entity);
+            dbContext.SaveChanges();
+            Business.Dto.Gift expectedGift = CreateDifferentDto();
+            Uri uri = new Uri("api/Gift/6", UriKind.RelativeOrAbsolute);
+            //Act
+            HttpResponseMessage response = await Client.GetAsync(uri);
+            //Assert
+            response.EnsureSuccessStatusCode();
+            string json = await response.Content.ReadAsStringAsync();
+            Business.Dto.Gift gift = JsonSerializer.Deserialize<Business.Dto.Gift>(json, _JsonSerializerOptions);
+            Assert.IsTrue(DTosAreEqual(expectedGift,gift));
+        }
+
+        [TestMethod]
+        public async Task Get_ByIDDoesntExist_Failure()
+        {
+            //Arrange
+            using ApplicationDbContext dbContext = Factory.GetDbContext();
+            Uri uri = new Uri("api/Gift/6", UriKind.RelativeOrAbsolute);
+            //Act
+            HttpResponseMessage response = await Client.GetAsync(uri);
+            //Assert
+            Assert.AreEqual<System.Net.HttpStatusCode>(System.Net.HttpStatusCode.NotFound, response.StatusCode);
         }
     }
 
