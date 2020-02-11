@@ -1,24 +1,27 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Api.Controllers;
-using SecretSanta.Business;
-using SecretSanta.Data;
+using SecretSanta.Business.Dto;
 using System;
+using SecretSanta.Business.Services;
+using AutoMapper;
+using Group = SecretSanta.Business.Dto.Group;
+using SecretSanta.Business;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
     [TestClass]
-    public class GroupControllerTests : BaseApiControllerTests<Group, GroupInMemoryService>
+    public class GroupControllerTests : BaseApiControllerTests<Group, GroupInput, IGroupService>
     {
-        protected override BaseApiController<Group> CreateController(GroupInMemoryService service)
+
+       // private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
+        protected override BaseApiController<Group, GroupInput> CreateController(IGroupService service)
             => new GroupController(service);
 
-        protected override Group CreateEntity()
-            => new Group(Guid.NewGuid().ToString());
-    }
-
-
-    public class GroupInMemoryService : InMemoryEntityService<Group>, IGroupService
-    {
-
+        protected override Group CreateDto() => new Group
+        {
+            Title = Guid.NewGuid().ToString(),
+            Id = new Random().Next()
+        };
+           
     }
 }

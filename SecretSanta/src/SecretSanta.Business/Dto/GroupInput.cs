@@ -4,10 +4,8 @@ using System.Text;
 
 namespace SecretSanta.Business.Dto
 {
-    public class GroupInput : IEntity
+    public class GroupInput 
     {
         public string? Title { get; set; }
-
-        public int Id { get; set; }
     }
 }

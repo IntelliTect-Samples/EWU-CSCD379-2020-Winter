@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SecretSanta.Business.Dto
 {
-    public class GiftInput : IEntity
+    public class GiftInput 
     {
         [Required]
         public int? UserId { get; set; }
         [Required]
         public string? Title { get; set; }
-        public string? Url { get; set; }
         public string? Description { get; set; }
+        public string? Url { get; set; }
 
-        public int Id { get; set; }
+
     }
 }
