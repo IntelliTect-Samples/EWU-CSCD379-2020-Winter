@@ -6,6 +6,6 @@ namespace SecretSanta.Business.Dto
     public class GroupInput
     {
         [Required]
-        public string? GroupTitle { get; set; }
+        public string? Title { get; set; }
     }
 }
