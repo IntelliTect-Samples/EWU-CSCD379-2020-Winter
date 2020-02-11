@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SecretSanta.Api.Controllers;
-using SecretSanta.Business;
 using SecretSanta.Business.Dto;
 using SecretSanta.Business.Services;
 using System;
@@ -12,7 +10,6 @@ namespace SecretSanta.Api.Tests.Controllers
     [TestClass]
     public class UserControllerTests : BaseApiControllerTests<User, UserInput, IUserService>
     {
-       // private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
         protected override BaseApiController<User, UserInput> CreateController(IUserService service)
             => new UserController(service);
 
@@ -23,7 +20,5 @@ namespace SecretSanta.Api.Tests.Controllers
                 Id = new Random().Next(),
                 SantaId = new Random().Next()
             };
-
     }
-
 }

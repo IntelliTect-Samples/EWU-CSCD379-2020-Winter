@@ -52,6 +52,10 @@ namespace SecretSanta.Api.Tests.Controllers
             context.Gifts.Add(gift);
             context.SaveChanges();
             var uri = new Uri("api/Gift", UriKind.RelativeOrAbsolute);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
 
             // Act
             HttpResponseMessage response = await Client.GetAsync(uri);
@@ -60,10 +64,6 @@ namespace SecretSanta.Api.Tests.Controllers
             response.EnsureSuccessStatusCode(); // Status Code 200-299
             string jsonData = await response.Content.ReadAsStringAsync();
 
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-            };
             Business.Dto.Gift[] gifts =
                 JsonSerializer.Deserialize<Business.Dto.Gift[]>(jsonData, options);
             Assert.AreEqual(1, gifts.Length);
@@ -129,19 +129,19 @@ namespace SecretSanta.Api.Tests.Controllers
 
             Gift returnedGift = JsonSerializer.Deserialize<Gift>(returnedJson, options);
 
-             Assert.AreEqual(returnedGift.Title, gift.Title);
-             Assert.AreEqual(returnedGift.Description, gift.Description);
+            Assert.AreEqual(returnedGift.Title, gift.Title);
+            Assert.AreEqual(returnedGift.Description, gift.Description);
 
         }
 
         [TestMethod]
-        [DataRow(nameof(Business.Dto.GiftInput.Title))]
+        [DataRow(nameof(GiftInput.Title))]
         public async Task Post_WithNullValues_BadResult(string propertyName)
         {
             Data.Gift entity = SampleData.CreateCoolGift();
 
-            Business.Dto.GiftInput gift = Mapper.Map<Data.Gift, Business.Dto.Gift>(entity);
-            System.Type inputType = typeof(Business.Dto.GiftInput);
+            GiftInput gift = Mapper.Map<Data.Gift, Business.Dto.Gift>(entity);
+            Type inputType = typeof(GiftInput);
             System.Reflection.PropertyInfo? propInfo = inputType.GetProperty(propertyName);
             propInfo!.SetValue(gift, null);
             var uri = new Uri("api/Gift/", UriKind.RelativeOrAbsolute);

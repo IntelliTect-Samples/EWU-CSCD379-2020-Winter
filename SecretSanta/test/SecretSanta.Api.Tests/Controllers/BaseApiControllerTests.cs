@@ -20,7 +20,7 @@ namespace SecretSanta.Api.Tests.Controllers
     {
         protected abstract BaseApiController<TDto, TInputDto> CreateController(TService service);
         private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
-      //  protected abstract TDto CreateEntity();
+
         protected abstract TDto CreateDto();
 
         [TestMethod]
@@ -34,15 +34,21 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Get_FetchesAllItems()
         {
             Mock<TService> service = new Mock<TService>();
-            //service.Items.Add(CreateDto());
-            //service.Items.Add(CreateDto());
-            //service.Items.Add(CreateDto());
+
+            List<TDto> items = new List<TDto>();
+            items.Add(CreateDto());
+            items.Add(CreateDto());
+
+            service.Setup(service => service.FetchAllAsync())
+                .Returns(Task.FromResult(items));
 
             BaseApiController<TDto, TInputDto> controller = CreateController(service.Object);
 
-            IEnumerable<TDto> items = await controller.Get();
+            IEnumerable<TDto> itemsReturned = await controller.Get();
 
-          //  CollectionAssert.AreEqual(service.Items.ToList(), items.ToList());
+            Assert.IsNotNull(itemsReturned);
+            Assert.IsNotNull(items);
+            CollectionAssert.AreEqual(items.ToList(), itemsReturned.ToList());
         }
 
         [TestMethod]
@@ -139,52 +145,4 @@ namespace SecretSanta.Api.Tests.Controllers
             { }
         }
     }
-
-//    public class InMemoryEntityService<TEntity> : IEntityService<TEntity> where TEntity : EntityBase
-        
-
-//    {
-//        public IList<TEntity> Items { get; } = new List<TEntity>();
-
-//        public Task<bool> DeleteAsync(int id)
-//        {
-//            if (Items.FirstOrDefault(x => x.Id == id) is { } found)
-//            {
-//                return Task.FromResult(Items.Remove(found));
-//            }
-//            return Task.FromResult(false);
-//        }
-
-//        public Task<List<TDto>> FetchAllAsync()
-//        {
-//            return Task.FromResult(Items.ToList());
-//        }
-
-//        public Task<TDto> FetchByIdAsync(int id)
-//        {
-//            return Task.FromResult(Items.FirstOrDefault(x => x.Id == id));
-//        }
-
-//        public Task<TDto> InsertAsync(TInputDto entityInput)
-//        {
-//            TEntity entity = Mapper.Map<TInputDto, TEntity>(entityInput);
-//            Items.Add(entity);
-//            return Task.FromResult(Mapper.Map<TEntity, TDto>(entity));
-//        }
-
-//public Task<TDto?> UpdateAsync(int id, TInputDto entity)
-//{
-//    if (Items.FirstOrDefault(x => x.Id == id) is { } found)
-//    {
-//        Items[Items.IndexOf(found)] = entity;
-//        return Task.FromResult<TDto?>(entity);
-//    }
-//    return Task.FromResult(default(TDto));
-//}
-
-//public Task<TDto> UpdateAsync(int id, TInputDto entity)
-//{
-//    throw new NotImplementedException();
-//}
-//      }
 }
