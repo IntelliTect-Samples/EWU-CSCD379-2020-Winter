@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using SecretSanta.Business;
 using SecretSanta.Business.Services;
 using SecretSanta.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace SecretSanta.Api
 {
@@ -20,6 +21,7 @@ namespace SecretSanta.Api
         public static void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options => options.EnableEndpointRouting = false);
+            //services.AddControllers();
             services.AddSwaggerDocument();
 
             services.AddScoped<IGiftService, GiftService>();
@@ -43,6 +45,10 @@ namespace SecretSanta.Api
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
+
+            /*app.UseEndpoints(enpdoint => {
+                enpdoint.MapDefaultControllerRoute();
+            });*/
 
             app.UseMvc();
         }

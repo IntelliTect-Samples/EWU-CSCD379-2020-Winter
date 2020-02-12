@@ -7,6 +7,7 @@ using System;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
+    /* disabled cause not required
     [TestClass]
     public class GroupControllerTests : BaseApiControllerTests<Group, Dto.Group, Dto.GroupInput, GroupInMemoryService>
     {
@@ -22,4 +23,5 @@ namespace SecretSanta.Api.Tests.Controllers
     {
 
     }
+    */
 }

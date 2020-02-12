@@ -4,6 +4,11 @@ using SecretSanta.Business.Services;
 using Dto = SecretSanta.Business.Dto;
 using SecretSanta.Data;
 using System;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Text.Json;
+using System.Collections.Generic;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
@@ -18,6 +23,12 @@ namespace SecretSanta.Api.Tests.Controllers
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 new User(Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
+
+        [TestMethod]
+        public async Task Get_FetchesAllItems()
+        {
+
+        }
     }
 
     public class GiftInMemoryService : InMemoryEntityService<Gift, Dto.Gift, Dto.GiftInput>, IGiftService
