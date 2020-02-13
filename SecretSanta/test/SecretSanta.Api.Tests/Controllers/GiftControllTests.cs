@@ -62,7 +62,8 @@ namespace SecretSanta.Api.Tests.Controllers
         public async Task Put_WithMissingId_NotFound()
         {
             // Arrange
-            Dto.GiftInput item = Mapper.Map<Gift, Dto.Gift>(CreateEntity());
+            var e = CreateEntity();
+            Dto.GiftInput? item = Mapper.Map<Gift, Dto.Gift>(e);
             string jsonData = JsonSerializer.Serialize(item);
 
             using StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
@@ -101,7 +102,8 @@ namespace SecretSanta.Api.Tests.Controllers
             using StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             // Act
-            HttpResponseMessage response = await Client.PutAsync($"api/Gift/{entity.Id}", stringContent);
+            var uri = new Uri($"api/Gift/{entity.Id}", UriKind.RelativeOrAbsolute);
+            HttpResponseMessage response = await Client.PutAsync(uri, stringContent);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -140,7 +142,8 @@ namespace SecretSanta.Api.Tests.Controllers
             using StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             // Act
-            HttpResponseMessage response = await Client.PostAsync($"api/Author/{entity.Id}", stringContent);
+            var uri = new Uri($"api/Author/{entity.Id}", UriKind.RelativeOrAbsolute);
+            HttpResponseMessage response = await Client.PostAsync(uri, stringContent);
 
             // Assert
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
