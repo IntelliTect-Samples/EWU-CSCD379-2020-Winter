@@ -63,11 +63,11 @@ namespace SecretSanta.Api.Tests.Controllers
         {
             // Arrange
             var e = CreateEntity();
-            Dto.GiftInput? item = Mapper.Map<Gift, Dto.Gift>(e);
+            Dto.GiftInput item = Mapper.Map<Gift, Dto.Gift>(e);
             string jsonData = JsonSerializer.Serialize(item);
 
             using StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            var uri = new Uri("api/Author/42", UriKind.RelativeOrAbsolute);
+            var uri = new Uri("api/Gift/42", UriKind.RelativeOrAbsolute);
 
             // Act
             HttpResponseMessage response = await Client.PutAsync(uri, stringContent);
@@ -126,7 +126,7 @@ namespace SecretSanta.Api.Tests.Controllers
         [DataRow(nameof(Dto.GiftInput.Title))]
         [DataRow(nameof(Dto.GiftInput.Description))]
         [DataRow(nameof(Dto.GiftInput.Url))]
-        public async Task Post_WithoutFirstName_BadResult(string propertyName)
+        public async Task Post_WithoutRequiredField_BadResult(string propertyName)
         {
             // Arrange
             Gift entity = CreateEntity();
@@ -142,7 +142,7 @@ namespace SecretSanta.Api.Tests.Controllers
             using StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
 
             // Act
-            var uri = new Uri($"api/Author/{entity.Id}", UriKind.RelativeOrAbsolute);
+            var uri = new Uri($"api/Gift/{entity.Id}", UriKind.RelativeOrAbsolute);
             HttpResponseMessage response = await Client.PostAsync(uri, stringContent);
 
             // Assert

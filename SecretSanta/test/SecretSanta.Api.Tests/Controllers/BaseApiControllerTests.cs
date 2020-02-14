@@ -27,7 +27,7 @@ namespace SecretSanta.Api.Tests.Controllers
 #nullable disable // this sucks... but must be done cause test setup does them
         protected SecretSantaWebApplicationFactory Factory { get; set; }
         protected HttpClient Client { get; set; }
-        protected IMapper Mapper { get; set; }
+        protected IMapper Mapper { get; set; } = AutomapperConfigurationProfile.CreateMapper();
 #nullable enable
 
         protected abstract BaseApiController<TDto, TInputDto> CreateController(TService service);
