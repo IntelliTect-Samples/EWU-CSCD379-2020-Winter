@@ -8,6 +8,6 @@ namespace SecretSanta.Business.Dto
 	public interface IEntity
 	{
 		[Required]
-		public int Id { get; set; }
+		public int Id { get; }
 	}
 }

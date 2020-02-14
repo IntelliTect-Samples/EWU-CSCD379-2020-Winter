@@ -8,6 +8,7 @@ using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Api.Tests.Controllers
@@ -21,8 +22,36 @@ namespace SecretSanta.Api.Tests.Controllers
     {
         protected abstract BaseApiController<TDto, TInputDto, TEntity> CreateController(TService service);
 
+        protected abstract TDto CreateDto();
+        protected abstract TInputDto CreateInput();
         protected abstract TEntity CreateEntity();
-        private IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
+        protected IMapper Mapper { get; } = AutomapperConfigurationProfile.CreateMapper();
+        protected SecretSantaWebApplicationFactory Factory { get; set; }
+        protected HttpClient Client { get; set; }
+        
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            Factory = new SecretSantaWebApplicationFactory();
+            Client = Factory.CreateClient();
+
+            using ApplicationDbContext context = Factory.GetDbContext();
+            context.Database.EnsureCreated();
+
+            TEntity entity1 = CreateEntity();
+            TEntity entity2 = CreateEntity();
+            context.Add(entity1);
+            context.Add(entity2);
+            context.SaveChanges();
+
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            Factory.Dispose();
+        }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -31,6 +60,8 @@ namespace SecretSanta.Api.Tests.Controllers
             new ThrowingController();
         }
 
+
+        /*
         [TestMethod]
         public async Task Get_FetchesAllItems()
         {
@@ -132,6 +163,7 @@ namespace SecretSanta.Api.Tests.Controllers
 
             Assert.IsTrue(result is OkResult);
         }
+        */
 
         private class ThrowingController : BaseApiController<TDto, TInputDto, TEntity>
         {

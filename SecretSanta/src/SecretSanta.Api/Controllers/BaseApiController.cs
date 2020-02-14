@@ -39,12 +39,20 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<TDto?> Put(int id, [FromBody] TInputDto value)
+        public async Task<IActionResult> Put(int id, [FromBody] TInputDto value)
         {
-            return await Service.UpdateAsync(id, value);
+            
+            TDto? entity = await Service.UpdateAsync(id, value);
+            if (entity is null)
+            {
+                return NotFound();
+            }
+            return Ok(entity);
+            //return await Service.UpdateAsync(id, value);
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<TDto> Post(TInputDto entity)
         {
             return await Service.InsertAsync(entity);
