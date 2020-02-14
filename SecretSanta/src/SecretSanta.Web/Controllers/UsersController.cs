@@ -25,5 +25,17 @@ namespace SecretSanta.Web.Controllers
             ICollection<User> users = await Client.GetAllAsync();
             return View(users);
         }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(User user)
+        {
+            var createdGift = await Client.PostAsync(user);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

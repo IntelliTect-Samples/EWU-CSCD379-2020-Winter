@@ -25,5 +25,17 @@ namespace SecretSanta.Web.Controllers
             ICollection<Group> groups = await Client.GetAllAsync();
             return View(groups);
         }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(Group group)
+        {
+            var CreatedGroup = await Client.PostAsync(group);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
