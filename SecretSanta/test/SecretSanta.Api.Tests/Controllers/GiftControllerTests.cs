@@ -68,11 +68,7 @@ namespace SecretSanta.Api.Tests.Controllers
                 JsonSerializer.Deserialize<Business.Dto.Gift[]>(jsonData, options);
             Assert.AreEqual(1, gifts.Length);
 
-            Assert.AreEqual(gift.Id, gifts[0].Id);
-            Assert.AreEqual(gift.Title, gifts[0].Title);
-            Assert.AreEqual(gift.Description, gifts[0].Description);
-            Assert.AreEqual(gift.Url, gifts[0].Url);
-            Assert.AreEqual(gift.UserId, gifts[0].UserId);
+            Assert.IsTrue(GiftEquality(gift, gifts[0]));
         }
 
         [TestMethod]
@@ -99,11 +95,7 @@ namespace SecretSanta.Api.Tests.Controllers
             Business.Dto.Gift giftAssert =
                 JsonSerializer.Deserialize<Business.Dto.Gift>(jsonData, options);
 
-            Assert.AreEqual(gift.Id, giftAssert.Id);
-            Assert.AreEqual(gift.Title, giftAssert.Title);
-            Assert.AreEqual(gift.Description, giftAssert.Description);
-            Assert.AreEqual(gift.Url, giftAssert.Url);
-            Assert.AreEqual(gift.UserId, giftAssert.UserId);
+            Assert.IsTrue(GiftEquality(gift, giftAssert));
         }
 
         [TestMethod]
@@ -168,19 +160,12 @@ namespace SecretSanta.Api.Tests.Controllers
             };
             Business.Dto.Gift giftAssert = JsonSerializer.Deserialize<Business.Dto.Gift>(jsonDataAssert, options);
 
-            Assert.AreEqual(giftInput.Title, giftAssert.Title);
-            Assert.AreEqual(giftInput.Description, giftAssert.Description);
-            Assert.AreEqual(giftInput.Url, giftAssert.Url);
-            Assert.AreEqual(giftInput.UserId, giftAssert.UserId);
+            Assert.IsTrue(GiftInputEquality(giftInput, giftAssert));
 
             using ApplicationDbContext assertContext = Factory.GetDbContext();
             gift = assertContext.Gifts.Find(gift.Id);
 
-            Assert.AreEqual(giftAssert.Id, gift.Id);
-            Assert.AreEqual(giftAssert.Title, gift.Title);
-            Assert.AreEqual(giftAssert.Description, gift.Description);
-            Assert.AreEqual(giftAssert.Url, gift.Url);
-            Assert.AreEqual(giftAssert.UserId, gift.UserId);
+            Assert.IsTrue(GiftEquality(gift, giftAssert));
         }
 
         [TestMethod]
@@ -239,19 +224,12 @@ namespace SecretSanta.Api.Tests.Controllers
             };
             Business.Dto.Gift giftAssert = JsonSerializer.Deserialize<Business.Dto.Gift>(jsonDataAssert, options);
 
-            Assert.AreEqual(giftInput.Title, giftAssert.Title);
-            Assert.AreEqual(giftInput.Description, giftAssert.Description);
-            Assert.AreEqual(giftInput.Url, giftAssert.Url);
-            Assert.AreEqual(giftInput.UserId, giftAssert.UserId);
+            Assert.IsTrue(GiftInputEquality(giftInput, giftAssert));
 
             using ApplicationDbContext assertContext = Factory.GetDbContext();
             gift = assertContext.Gifts.Find(1);
 
-            Assert.AreEqual(giftAssert.Id, gift.Id);
-            Assert.AreEqual(giftAssert.Title, gift.Title);
-            Assert.AreEqual(giftAssert.Description, gift.Description);
-            Assert.AreEqual(giftAssert.Url, gift.Url);
-            Assert.AreEqual(giftAssert.UserId, gift.UserId);
+            Assert.IsTrue(GiftEquality(gift, giftAssert));
         }
 
         [TestMethod]
@@ -287,6 +265,23 @@ namespace SecretSanta.Api.Tests.Controllers
             List<Data.Gift> gifts = await assertContext.Gifts.ToListAsync();
 
             Assert.AreEqual(0, gifts.Count);
+        }
+
+        private bool GiftEquality(Data.Gift expected, Business.Dto.Gift actual)
+        {
+            return (expected.Id == actual.Id &&
+                    expected.Title == actual.Title && 
+                    expected.Description == actual.Description &&
+                    expected.Url == actual.Url && 
+                    expected.UserId == actual.UserId);
+        }
+
+        private bool GiftInputEquality(Business.Dto.GiftInput expected, Business.Dto.Gift actual)
+        {
+            return (expected.Title == actual.Title &&
+                    expected.Description == actual.Description &&
+                    expected.Url == actual.Url &&
+                    expected.UserId == actual.UserId);
         }
     }
 }
