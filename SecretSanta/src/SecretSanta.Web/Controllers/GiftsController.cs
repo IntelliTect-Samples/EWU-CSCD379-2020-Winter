@@ -34,5 +34,18 @@ namespace SecretSanta.Web.Controllers
             var createdGift = await Client.PostAsync(gift);
             return RedirectToAction(nameof(Index)); 
         }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            var returnedGift = await Client.GetAsync(id);
+            return View(returnedGift);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(int id, GiftInput giftInput)
+        {
+            var updatedGift = await Client.PutAsync(id, giftInput);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

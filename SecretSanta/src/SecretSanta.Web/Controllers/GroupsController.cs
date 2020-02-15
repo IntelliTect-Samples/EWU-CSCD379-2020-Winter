@@ -37,5 +37,18 @@ namespace SecretSanta.Web.Controllers
             var CreatedGroup = await Client.PostAsync(group);
             return RedirectToAction(nameof(Index));
         }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            var returnedGroup = await Client.GetAsync(id);
+            return View(returnedGroup);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(int id, GroupInput groupInput)
+        {
+            var updatedGroup = await Client.PutAsync(id, groupInput);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -1,0 +1,37 @@
+﻿@model Gift
+
+<form asp-route="Edit">
+    <input type="hidden" asp-for="Id"/>
+    <div class="field">
+        <label class="label" asp-for="Title">Title</label>
+        <div class="control">
+            <input class="input" type="text" asp-for="Title" />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label" asp-for="Description">Description</label>
+        <div class="control">
+            <input class="input" type="text" asp-for="Description" />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label" asp-for="Url">Url</label>
+        <div class="control">
+            <input class="input" type="text" asp-for="Url" />
+        </div>
+    </div>
+    <div class="field">
+        <label class="label" asp-for="UserId">UserId</label>
+        <div class="control">
+            <input class="input" type="text" asp-for="UserId" />
+        </div>
+    </div>
+    <div class="field is-grouped">
+        <div class="control">
+            <button id="submit" class="button is-primary">Submit</button>
+        </div>
+        <div class="control">
+            <a asp-action="Index" class="button is-light">Cancel</a>
+        </div>
+    </div>
+</form> 
