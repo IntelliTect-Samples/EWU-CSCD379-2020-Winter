@@ -36,6 +36,9 @@ namespace SecretSanta.Api.Controllers
         }
 
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<TDto?>> Put(int id, [FromBody] TInputDto value)
         {
             if (await Service.UpdateAsync(id, value) is TDto dto)

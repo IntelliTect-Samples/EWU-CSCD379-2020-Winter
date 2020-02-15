@@ -62,6 +62,110 @@ namespace SecretSanta.Api.Tests.Controllers
         {
             Factory.Dispose();
         }
+
+        /*[TestMethod]
+        public async Task Get_FetchesAllItems()
+        {
+            TService service = new TService();
+            service.Items.Add(CreateEntity());
+            service.Items.Add(CreateEntity());
+            service.Items.Add(CreateEntity());
+
+            BaseApiController<TDto, TInputDto> controller = CreateController(service);
+
+            IEnumerable<TDto> items = await controller.Get();
+            CollectionAssert.AreEqual(service.Items.ToList(), items.ToList());
+        }*/
+
+        [TestMethod]
+        public async Task Get_WhenEntityDoesNotExist_ReturnsNotFound()
+        {
+            TService service = new TService();
+            BaseApiController<TDto, TInputDto> controller = CreateController(service);
+
+            IActionResult result = await controller.Get(1);
+
+            Assert.IsTrue(result is NotFoundResult);
+        }
+
+
+        [TestMethod]
+        public async Task Get_WhenEntityExists_ReturnsItem()
+        {
+            TService service = new TService();
+            TEntity entity = CreateEntity();
+            service.Items.Add(entity);
+            BaseApiController<TDto, TInputDto> controller = CreateController(service);
+
+            IActionResult result = await controller.Get(entity.Id);
+
+            var okResult = result as OkObjectResult;
+            var entityDto = Mapper.Map<TEntity, TDto>(entity);
+
+            PropertyInfo[] props = typeof(TDto).GetProperties();
+            foreach (PropertyInfo prop in props)
+            {
+                Assert.AreEqual(prop.GetValue(entityDto), prop.GetValue(okResult?.Value));
+            }
+        }
+
+        [TestMethod]
+        public async Task Put_UpdatesItem()
+        {
+            TService service = new TService();
+            TEntity entity1 = CreateEntity();
+            service.Items.Add(entity1);
+            TEntity entity2 = CreateEntity();
+            BaseApiController<TDto, TInputDto> controller = CreateController(service);
+            TDto dto = Mapper.Map<TEntity, TDto>(entity2);
+
+            ActionResult<TDto?> result = await controller.Put(entity1.Id, dto);
+
+            PropertyInfo[] props = typeof(TDto).GetProperties();
+            foreach (PropertyInfo prop in props)
+            {
+                Assert.AreEqual(prop.GetValue(dto), prop.GetValue(result?.Value));
+            }
+            // will look back into. with all this DTo stuff I need to decide what to check
+            //Assert.AreEqual(entity2, service.Items.Single());
+        }
+
+        /*[TestMethod]
+        public async Task Post_InsertsItem()
+        {
+            TService service = new TService();
+            TEntity entity = CreateEntity();
+            BaseApiController<TDto, TInputDto> controller = CreateController(service);
+
+            TEntity? result = await controller.Post(entity);
+
+            Assert.AreEqual(entity, result);
+            Assert.AreEqual(entity, service.Items.Single());
+        }*/
+
+        [TestMethod]
+        public async Task Delete_WhenItemDoesNotExist_ReturnsNotFound()
+        {
+            TService service = new TService();
+            BaseApiController<TDto, TInputDto> controller = CreateController(service);
+
+            IActionResult result = await controller.Delete(1);
+
+            Assert.IsTrue(result is NotFoundResult);
+        }
+
+        [TestMethod]
+        public async Task Delete_WhenItemExists_ReturnsOk()
+        {
+            TService service = new TService();
+            TEntity entity = CreateEntity();
+            service.Items.Add(entity);
+            BaseApiController<TDto, TInputDto> controller = CreateController(service);
+
+            IActionResult result = await controller.Delete(entity.Id);
+
+            Assert.IsTrue(result is OkResult);
+        }
     }
 
     public class InMemoryEntityService<TEntity, TDto, TInputDto>
