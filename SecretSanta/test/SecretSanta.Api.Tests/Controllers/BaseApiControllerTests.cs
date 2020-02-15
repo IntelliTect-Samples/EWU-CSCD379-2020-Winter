@@ -130,18 +130,24 @@ namespace SecretSanta.Api.Tests.Controllers
             //Assert.AreEqual(entity2, service.Items.Single());
         }
 
-        /*[TestMethod]
+        [TestMethod]
         public async Task Post_InsertsItem()
         {
             TService service = new TService();
             TEntity entity = CreateEntity();
+            TDto dto = Mapper.Map<TEntity, TDto>(entity);
             BaseApiController<TDto, TInputDto> controller = CreateController(service);
 
-            TEntity? result = await controller.Post(entity);
+            TDto result = await controller.Post(dto);
 
-            Assert.AreEqual(entity, result);
-            Assert.AreEqual(entity, service.Items.Single());
-        }*/
+            PropertyInfo[] props = typeof(TDto).GetProperties();
+            foreach (PropertyInfo prop in props)
+            {
+                Assert.AreEqual(prop.GetValue(dto), prop.GetValue(result));
+            }
+            // will look back into. with all this DTo stuff I need to decide what to check
+            //Assert.AreEqual(entity, service.Items.Single());
+        }
 
         [TestMethod]
         public async Task Delete_WhenItemDoesNotExist_ReturnsNotFound()
