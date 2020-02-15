@@ -34,17 +34,17 @@ namespace SecretSanta.Api.Tests.Controllers
 
         protected abstract TEntity CreateEntity();
 
-        /*protected DbSet<TEntity> GetDbContextField(ApplicationDbContext context)
+        protected DbSet<TEntity> GetDbContextField(ApplicationDbContext context)
         {
             // hacky ass reflective way to generically get the appropriate field to add to
             PropertyInfo[] props = typeof(ApplicationDbContext).GetProperties();
             foreach (PropertyInfo prop in props)
             {
                 if (prop.PropertyType == typeof(DbSet<TEntity>))
-                    return (DbSet<TEntity>) prop.GetValue(context);
+                    return (DbSet<TEntity>) prop.GetValue(context)!; // should always work... so dealing with warning
             }
             return null!; // mandatory so "all paths return"
-        }*/
+        }
 
         [TestInitialize]
         public void TestSetup()
@@ -63,19 +63,38 @@ namespace SecretSanta.Api.Tests.Controllers
             Factory.Dispose();
         }
 
-        /*[TestMethod]
+        [TestMethod]
         public async Task Get_FetchesAllItems()
         {
-            TService service = new TService();
-            service.Items.Add(CreateEntity());
-            service.Items.Add(CreateEntity());
-            service.Items.Add(CreateEntity());
+            // Arrange
+            using ApplicationDbContext context = Factory.GetDbContext();
+            TEntity item = CreateEntity();
+            string name = typeof(TEntity).Name;
+            GetDbContextField(context).Add(item);
+            context.SaveChanges();
 
-            BaseApiController<TDto, TInputDto> controller = CreateController(service);
+            // Act
+            var uri = new Uri($"api/{name}", UriKind.RelativeOrAbsolute);
+            HttpResponseMessage response = await Client.GetAsync(uri);
 
-            IEnumerable<TDto> items = await controller.Get();
-            CollectionAssert.AreEqual(service.Items.ToList(), items.ToList());
-        }*/
+            // Assert
+            response.EnsureSuccessStatusCode(); // Status Code 200-299
+            string jsonData = await response.Content.ReadAsStringAsync();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
+            TDto[] dtos =
+                JsonSerializer.Deserialize<TDto[]>(jsonData, options);
+            Assert.AreEqual(1, dtos.Length);
+
+            PropertyInfo[] props = typeof(TDto).GetProperties();
+            foreach (PropertyInfo prop in props)
+            {
+                Assert.AreEqual(prop.GetValue(Mapper.Map<TEntity, TDto>(item)), prop.GetValue(dtos[0]));
+            }
+        }
 
         [TestMethod]
         public async Task Get_WhenEntityDoesNotExist_ReturnsNotFound()

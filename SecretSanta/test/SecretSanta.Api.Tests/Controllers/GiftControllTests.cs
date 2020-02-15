@@ -26,10 +26,10 @@ namespace SecretSanta.Api.Tests.Controllers
                 Guid.NewGuid().ToString(),
                 new User(Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
 
-        [TestMethod]
+        // now implemented generically for all!
+        /*[TestMethod]
         public async Task Get_FetchesAllItems()
         {
-
             // Arrange
             using ApplicationDbContext context = Factory.GetDbContext();
             Data.Gift item = CreateEntity();
@@ -56,7 +56,7 @@ namespace SecretSanta.Api.Tests.Controllers
             Assert.AreEqual(item.Title, gifts[0].Title);
             Assert.AreEqual(item.Description, gifts[0].Description);
             Assert.AreEqual(item.Url, gifts[0].Url);
-        }
+        }*/
 
         [TestMethod]
         public async Task Put_WithMissingId_NotFound()
