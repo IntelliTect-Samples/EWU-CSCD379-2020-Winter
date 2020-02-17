@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SecretSanta.Web.Api.User>
+﻿@model IEnumerable<User>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -9,6 +9,7 @@
             <th asp-display-name-for="ToList()[0].Id"></th>
             <th asp-display-name-for="ToList()[0].FirstName"></th>
             <th asp-display-name-for="ToList()[0].LastName"></th>
+            <th asp-display-name-for="ToList()[0].SantaId"></th>
             <th></th>
         </tr>
     </thead>
@@ -19,10 +20,11 @@
                 <td asp-display-for="@item.Id"></td>
                 <td asp-display-for="@item.FirstName"></td>
                 <td asp-display-for="@item.LastName"></td>
+                <td asp-display-for="@item.SantaId"></td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

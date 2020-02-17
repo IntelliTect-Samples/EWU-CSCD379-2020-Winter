@@ -25,5 +25,46 @@ namespace SecretSanta.Web.Controllers
             ICollection<User> users = await Client.GetAllAsync();
             return View(users);
         }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(UserInput userInput)
+        {
+            if (ModelState.IsValid)
+            {
+                await Client.PostAsync(userInput);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(userInput);
+        }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            var fetchedUser = await Client.GetAsync(id);
+            return View(fetchedUser);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(int id, UserInput userInput)
+        {
+            if (ModelState.IsValid)
+            {
+                await Client.PutAsync(id, userInput);
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View();
+        }
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            await Client.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
