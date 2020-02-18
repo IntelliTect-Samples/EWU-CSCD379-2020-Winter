@@ -18,5 +18,8 @@ namespace SecretSanta.Web.Api
 
         [Display(Name = "URL")]
         public string Url { get; set; }
+
+        [Display(Name = "User ID")]
+        public string UserId { get; set; }
     }
 }
