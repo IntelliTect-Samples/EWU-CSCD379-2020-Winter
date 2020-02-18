@@ -25,5 +25,7 @@ namespace SecretSanta.Web.Controllers
             ICollection<Group> groups = await Client.GetAllAsync();
             return View(groups);
         }
+
+
     }
 }
