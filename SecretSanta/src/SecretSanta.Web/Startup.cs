@@ -13,7 +13,7 @@ namespace SecretSanta.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public static void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllersWithViews();
             services.AddHttpClient("SecretSantaApi");
         }
 

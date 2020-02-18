@@ -1,4 +1,5 @@
 using AutoMapper;
+using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ namespace SecretSanta.Api
         }
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-        public static void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
             services.AddSwaggerDocument();
@@ -35,7 +36,7 @@ namespace SecretSanta.Api
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.EnableSensitiveDataLogging()
-                       .UseSqlite(Configuration.GetConnectionString("DefaultConnection"));
+                       .UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutoMapper(new[] { typeof(AutomapperConfigurationProfile).Assembly });
         }
