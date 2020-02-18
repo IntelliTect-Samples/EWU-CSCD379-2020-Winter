@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SecretSanta.Data;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 namespace SecretSanta.Api
 {
@@ -16,7 +17,7 @@ namespace SecretSanta.Api
             {
                 IServiceProvider services = scope.ServiceProvider;
                 using var context = services.GetRequiredService<ApplicationDbContext>();
-                context.Database.EnsureCreated();
+                context.Database.Migrate();
             }
 
             host.Run();

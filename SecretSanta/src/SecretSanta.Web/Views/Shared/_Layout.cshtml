@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width"/>
+    <title>@ViewBag.Title</title>
+    <!-- Stylesheets -->
+
+
+    <!-- End Stylesheets -->
+    <style>
+        input.input-validation-error {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li>
+                <a asp-action="Index" asp-controller="Home">Home</a>
+
+            </li>
+            <li>
+                <a asp-controller="Users" asp-action="Index">Users</a>
+            </li>
+            <li>
+                <a asp-controller="Gifts" asp-action="Index">Gifts</a>
+            </li>
+            <li>
+                <a asp-controller="Groups" asp-action="Index">Groups</a>
+            </li>
+        </ul>
+    </nav>
+    <hr>
+</header>
+<div>
+    @RenderBody()
+</div>
+<!-- Scripts -->
+
+
+<!-- End Scripts -->
+@RenderSection("scripts", required: false)
+</body>
+</html>
