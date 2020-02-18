@@ -20,10 +20,62 @@ namespace SecretSanta.Web.Controllers
 
         private GroupClient Client { get; }
 
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult> Index()
         {
             ICollection<Group> groups = await Client.GetAllAsync();
             return View(groups);
+        }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(GroupInput groupInput)
+        {
+            ActionResult result = View(groupInput);
+
+            if (ModelState.IsValid)
+            {
+                await Client.PostAsync(groupInput);
+                result = RedirectToAction(nameof(Index));
+            }
+
+            return result;
+        }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            ActionResult result = View(id);
+
+            if (ModelState.IsValid)
+            {
+                Group retrievedGroup = await Client.GetAsync(id);
+                result = View(retrievedGroup);
+            }
+
+            return result;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(int id, GroupInput groupInput)
+        {
+            ActionResult result = View();
+
+            if (ModelState.IsValid)
+            {
+                await Client.PutAsync(id, groupInput);
+                result = RedirectToAction(nameof(Index));
+            }
+
+            return result;
+        }
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            await Client.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

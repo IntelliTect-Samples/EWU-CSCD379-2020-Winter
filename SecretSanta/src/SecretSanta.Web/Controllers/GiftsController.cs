@@ -9,13 +9,10 @@ namespace SecretSanta.Web.Controllers
 {
     public class GiftsController : Controller
     {
-        public IHttpClientFactory ClientFactory { get; }
-
         public GiftsController(IHttpClientFactory clientFactory)
         {
             HttpClient httpClient = clientFactory?.CreateClient("SecretSantaApi") ?? throw new ArgumentNullException(nameof(clientFactory));
             Client = new GiftClient(httpClient);
-            ClientFactory = clientFactory;
         }
 
         private GiftClient Client { get; }
@@ -24,12 +21,6 @@ namespace SecretSanta.Web.Controllers
         {
             ICollection<Gift> gifts = await Client.GetAllAsync();
             return View(gifts);
-
-            //HttpClient httpClient = ClientFactory.CreateClient("BlogApi");
-
-            //var client = new GiftClient(httpClient);
-            //ICollection<Gift> authors = await client.GetAllAsync();
-            //return View(authors);
         }
 
         public ActionResult Create()
@@ -82,12 +73,6 @@ namespace SecretSanta.Web.Controllers
         {
             await Client.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<ActionResult> Details(int id)
-        {
-            Gift retrievedGift = await Client.GetAsync(id);
-            return View(retrievedGift);
         }
     }
 }
