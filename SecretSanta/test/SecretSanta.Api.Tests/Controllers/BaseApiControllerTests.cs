@@ -48,7 +48,7 @@ namespace SecretSanta.Api.Tests.Controllers
             TService service = new TService();
             BaseApiController<TDto, TInputDto> controller = CreateController(service);
 
-            IActionResult result = await controller.Get(1);
+            var result = await controller.Get(1);
 
             Assert.IsTrue(result is NotFoundResult);
         }
@@ -61,7 +61,7 @@ namespace SecretSanta.Api.Tests.Controllers
             service.Items.Add(entity);
             BaseApiController<TDto, TInputDto> controller = CreateController(service);
 
-            IActionResult result = await controller.Get(entity.Id);
+            var result = await controller.Get(entity.Id);
 
             var okResult = result as OkObjectResult;
             

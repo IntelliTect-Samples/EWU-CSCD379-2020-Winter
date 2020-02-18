@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <!-- Stylesheets -->
-    
-    <link href="~/css/main.b7200922e19b2a09b57a.css" rel="stylesheet" />
-    
+    <% for (var filename in htmlWebpackPlugin.files.css) { %>
+    <link href="~<%= htmlWebpackPlugin.files.css[filename] %>" rel="stylesheet" />
+    <% } %>
     <!-- End Stylesheets -->
     <style>
         input.input-validation-error {
@@ -29,9 +29,9 @@
         @RenderBody()
     </div>
     <!-- Scripts -->
-    
-    <script src="~/js/main.b7200922e19b2a09b57a.js"></script>
-    
+    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+    <script src="~<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+    <% } %>
     <!-- End Scripts -->
     @RenderSection("scripts", required: false)
 </body>

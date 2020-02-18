@@ -32,10 +32,15 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Group group)
+        public async Task<ActionResult> Create(GroupInput groupInput)
         {
-            var CreatedGroup = await Client.PostAsync(group);
-            return RedirectToAction(nameof(Index));
+            ActionResult result = View(groupInput);
+            if (ModelState.IsValid)
+            {
+                var createdGroup = await Client.PostAsync(groupInput);
+                result = RedirectToAction(nameof(Index));
+            }
+            return result;
         }
 
         public async Task<ActionResult> Edit(int id)
@@ -47,7 +52,19 @@ namespace SecretSanta.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(int id, GroupInput groupInput)
         {
-            var updatedGroup = await Client.PutAsync(id, groupInput);
+            ActionResult result = View(groupInput);
+            if (ModelState.IsValid)
+            {
+                var createdGroup = await Client.PutAsync(id,groupInput);
+                result = RedirectToAction(nameof(Index));
+            }
+            return result;
+        }
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            await Client.DeleteAsync(id);
+
             return RedirectToAction(nameof(Index));
         }
     }

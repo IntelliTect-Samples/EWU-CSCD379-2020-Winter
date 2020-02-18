@@ -29,10 +29,15 @@ namespace SecretSanta.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Gift gift)
+        public async Task<ActionResult> Create(GiftInput giftInput)
         {
-            var createdGift = await Client.PostAsync(gift);
-            return RedirectToAction(nameof(Index)); 
+            ActionResult result = View(giftInput);
+            if (ModelState.IsValid)
+            {
+                var createdGift = await Client.PostAsync(giftInput);
+                result = RedirectToAction(nameof(Index));
+            }
+            return result;
         }
 
         public async Task<ActionResult> Edit(int id)
@@ -44,7 +49,19 @@ namespace SecretSanta.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(int id, GiftInput giftInput)
         {
-            var updatedGift = await Client.PutAsync(id, giftInput);
+            ActionResult result = View(giftInput);
+            if (ModelState.IsValid)
+            {
+                var createdGift = await Client.PutAsync(id,giftInput);
+                result = RedirectToAction(nameof(Index));
+            }
+            return result;
+        }
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            await Client.DeleteAsync(id);
+
             return RedirectToAction(nameof(Index));
         }
     }
