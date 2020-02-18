@@ -44,7 +44,7 @@ namespace SecretSanta.Api
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseRouting();
             app.UseOpenApi();
             app.UseSwaggerUi3();
             app.UseMvc();
