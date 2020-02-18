@@ -1,13 +1,13 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
 
-    
-    <link href="~/css/main.cd79b16550d512ef27ca.css" rel="stylesheet" />
-    
+    <% for (var filename in htmlWebpackPlugin.files.css) { %>
+    <link href="~<%= htmlWebpackPlugin.files.css[filename] %>" rel="stylesheet" />
+    <% } %>
     <style>
         input.input-validation-error {
             border-color: red;
@@ -28,9 +28,9 @@
         @RenderBody()
     </div>
     <!-- Scripts -->
-    
-    <script src="~/js/main.cd79b16550d512ef27ca.js"></script>
-    
+    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+    <script src="~<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+    <% } %>
     <!-- End Scripts -->
 
 </body>

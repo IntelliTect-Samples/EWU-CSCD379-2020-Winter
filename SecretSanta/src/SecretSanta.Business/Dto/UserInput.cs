@@ -6,6 +6,7 @@ namespace SecretSanta.Business.Dto
     {
         [Required]
         public string? FirstName { get; set; }
+        [Required]
         public string? LastName { get; set; }
         public int? SantaId { get; set; }
     }

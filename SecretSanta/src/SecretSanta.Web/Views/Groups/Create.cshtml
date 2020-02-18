@@ -1,4 +1,4 @@
-﻿@model GiftInput
+﻿@model GroupInput
 
 <form asp-route="Create">
     <div asp-validation-summary="All"></div>
@@ -7,20 +7,6 @@
         <div class="control">
             <input class="input" type="text" asp-for="Title" />
             <span asp-validation-for="Title"></span>
-        </div>
-    </div>
-    <div class="field">
-        <label class="label" asp-for="Description"></label>
-        <div class="control">
-            <input class="input" type="text" asp-for="Description" />
-            <span asp-validation-for="Description"></span>
-        </div>
-    </div>
-    <div class="field">
-        <label class="label" asp-for="Url"></label>
-        <div class="control">
-            <input class="input" type="text" asp-for="Url" />
-            <span asp-validation-for="Url"></span>
         </div>
     </div>
     <div class="field is-grouped">
@@ -32,4 +18,3 @@
         </div>
     </div>
 </form>
-

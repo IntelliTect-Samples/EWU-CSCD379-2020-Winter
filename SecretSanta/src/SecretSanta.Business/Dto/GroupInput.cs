@@ -6,6 +6,5 @@ namespace SecretSanta.Business.Dto
     {
         [Required]
         public string? Title { get; set; }
-
     }
 }
