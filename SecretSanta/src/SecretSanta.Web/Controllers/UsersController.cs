@@ -63,5 +63,20 @@ namespace SecretSanta.Web.Controllers
 
             return result;
         }
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            var fetchedUser = await Client.GetAsync(id);
+
+            return View(fetchedUser);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+
+            await Client.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
