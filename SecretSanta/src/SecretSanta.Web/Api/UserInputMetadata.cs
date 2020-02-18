@@ -17,9 +17,11 @@ namespace SecretSanta.Web.Api
         public string? FirstName { get; set; }
 
         [Display(Name = "Last Name")]
+        [Required]
         public string? LastName { get; set; }
 
         [Display(Name = "Santa Id")]
+        [Required]
         public int? SantaId { get; set; }
 
     }
