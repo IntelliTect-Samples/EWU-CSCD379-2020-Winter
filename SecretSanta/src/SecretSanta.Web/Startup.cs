@@ -23,7 +23,7 @@ namespace SecretSanta.Web
             services.AddControllersWithViews();
             services.AddHttpClient("SecretSantaApi", options =>
             {
-                options.BaseAddress = new Uri(Configuration["ApiUrl"]);
+                //options.BaseAddress = new Uri(Configuration["ApiUrl"]);
             });
         }
 
