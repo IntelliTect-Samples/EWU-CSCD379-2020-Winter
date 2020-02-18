@@ -30,7 +30,9 @@ namespace SecretSanta.Api.Tests.Controllers
             return new Gift
             {
                 Id = NextId++,
+#pragma warning disable CA1062 // Validate arguments of public methods
                 Description = dto.Description,
+#pragma warning restore CA1062 // Validate arguments of public methods
                 Title = dto.Title,
                 Url = dto.Url,
                 UserId = dto.UserId

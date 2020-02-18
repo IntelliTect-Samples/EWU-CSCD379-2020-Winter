@@ -12,18 +12,70 @@ namespace SecretSanta.Web.Controllers
 {
     public class UsersController : Controller
     {
+        public IHttpClientFactory ClientFactory { get; }    
+        private UserClient Client { get; }
         public UsersController(IHttpClientFactory clientFactory)
         {
             HttpClient httpClient = clientFactory?.CreateClient("SecretSantaApi") ?? throw new ArgumentNullException(nameof(clientFactory));
             Client = new UserClient(httpClient);
+            ClientFactory = clientFactory;
         }
-
-        private UserClient Client { get; }
 
         public async Task<IActionResult> Index()
         {
             ICollection<User> users = await Client.GetAllAsync();
             return View(users);
+        }
+
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(UserInput userInput)
+        {
+            ActionResult result = View(userInput);
+            if (ModelState.IsValid)
+            {
+                await Client.PostAsync(userInput);
+            }
+            return result;
+        }
+
+        public async Task<ActionResult> Edit(int id)
+        {
+            ActionResult result = View(id);
+            if (ModelState.IsValid)
+            {
+                User user = await Client.GetAsync(id);
+                result = View(user);
+            }
+            return result;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(int id, UserInput userInput)
+        {
+            ActionResult result = View();
+            if (ModelState.IsValid)
+            {
+                await Client.PutAsync(id, userInput);
+                result = RedirectToAction(nameof(Index));
+            }
+            return result;
+        }
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            await Client.DeleteAsync(id);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> Details(int id)
+        {
+            User user = await Client.GetAsync(id);
+            return View(user);
         }
     }
 }
