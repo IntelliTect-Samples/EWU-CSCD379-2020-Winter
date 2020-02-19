@@ -60,16 +60,9 @@ namespace SecretSanta.Web.Controllers
             HttpClient httpClient = ClientFactory.CreateClient("SecretSantaApi");
 
             var client = new GroupClient(httpClient);
+            var fetchedGroup = await client.GetAsync(id);
 
-            ActionResult result = View(id);
-
-            //if (ModelState.IsValid)
-            //{
-            //    var fetchedGift = await client.GetAsync(id);
-            //    result = View(fetchedGift);
-            //}
-
-            return result;
+            return View(fetchedGroup);
         }
 
         [HttpPost]
@@ -80,6 +73,16 @@ namespace SecretSanta.Web.Controllers
             var client = new GroupClient(httpClient);
             var updatedGroup = await client.PutAsync(id, groupInput);
 
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> Delete(int id)
+        {
+            HttpClient httpClient = ClientFactory.CreateClient("SecretSantaApi");
+
+            var client = new GroupClient(httpClient);
+
+            await client.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
     }
