@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -11,6 +12,30 @@ namespace BlogEngine.Data.Tests
     [TestClass]
     public class AuthorTests : TestBase
     {
+        [NotNull]
+        [DisallowNull]
+        public TestContext? TestContext { get; set; }
+
+        bool TryParse(int number,[NotNullWhen(true)] out string? digitName)
+        {
+            if (TryParse(4, out string? digitText))
+            {
+
+            }
+
+            
+        }
+
+        Author? GetAuthor(int id)
+        {
+            if(GetAuthor(42) is Author author)
+            {
+                // use author;
+            }
+            return null;
+        }
+
+
         [TestMethod]
         public async Task CreateAuthor_ShouldSaveIntoDatabase()
         {

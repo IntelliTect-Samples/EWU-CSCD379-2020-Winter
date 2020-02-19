@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <None Remove="scripts\main.ts" />
+    <None Remove="scripts\page.spec.ts" />
+    <None Remove="scripts\page.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="scripts\page.ts" />
+    <TypeScriptCompile Include="scripts\page.spec.ts" />
     <TypeScriptCompile Include="scripts\main.ts" />
   </ItemGroup>
 

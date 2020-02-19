@@ -3,18 +3,23 @@ using System.Collections.Generic;
 
 namespace BlogEngine.Data
 {
+#nullable enable
     public class Author : FingerPrintEntityBase
     {
-        private string _FirstName = null!;
+        private string? _FirstName;
         public string FirstName
         {
-            get { return _FirstName; }
+            get { return _FirstName!; }
             set 
             {
                 AssertIsNotNullOrWhitespace(value);
                 _FirstName = value;
             }
         }
+
+
+
+
 
         private string _LastName = null!;
         public string LastName
@@ -39,8 +44,10 @@ namespace BlogEngine.Data
 
         public List<Post> Posts { get; } = new List<Post>();
 
-        public Author(string firstName, string lastName, string email)
+        public string FingerCount { get; }
+        public Author(string firstName, string lastName, string email, string fingerCount)
         {
+            FingerCount = fingerCount ?? throw new ArgumentNullException(nameof(fingerCount));
             FirstName = firstName;
             LastName = lastName;
             Email = email;
