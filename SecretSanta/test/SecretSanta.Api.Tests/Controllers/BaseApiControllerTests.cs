@@ -50,7 +50,7 @@ namespace SecretSanta.Api.Tests.Controllers
 
             var result = await controller.Get(1);
 
-            Assert.IsTrue(result is NotFoundResult);
+            Assert.IsNull(result.Value);
         }
 
         [TestMethod]
