@@ -7,7 +7,15 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-export class AuthorClient {
+export interface IAuthorClient {
+    getAll(): Promise<Author[]>;
+    post(entity: AuthorInput): Promise<Author>;
+    get(id: number): Promise<void>;
+    put(id: number, value: AuthorInput): Promise<Author>;
+    delete(id: number): Promise<void>;
+}
+
+export class AuthorClient implements IAuthorClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -228,7 +236,15 @@ export class AuthorClient {
     }
 }
 
-export class PostClient {
+export interface IPostClient {
+    getAll(): Promise<Post[]>;
+    post(entity: PostInput): Promise<Post>;
+    get(id: number): Promise<void>;
+    put(id: number, value: PostInput): Promise<Post>;
+    delete(id: number): Promise<void>;
+}
+
+export class PostClient implements IPostClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;

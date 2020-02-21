@@ -16,16 +16,6 @@ namespace BlogEngine.Data.Tests
         [DisallowNull]
         public TestContext? TestContext { get; set; }
 
-        bool TryParse(int number,[NotNullWhen(true)] out string? digitName)
-        {
-            if (TryParse(4, out string? digitText))
-            {
-
-            }
-
-            
-        }
-
         Author? GetAuthor(int id)
         {
             if(GetAuthor(42) is Author author)

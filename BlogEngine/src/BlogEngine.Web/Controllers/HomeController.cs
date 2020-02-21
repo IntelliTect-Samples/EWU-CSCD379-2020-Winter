@@ -13,7 +13,7 @@ namespace BlogEngine.Web.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View();
+            return View("~/Views/Post/Index.cshtml");
         }
 
         public IActionResult Html()

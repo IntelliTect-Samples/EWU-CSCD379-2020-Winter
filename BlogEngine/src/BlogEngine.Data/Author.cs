@@ -44,10 +44,8 @@ namespace BlogEngine.Data
 
         public List<Post> Posts { get; } = new List<Post>();
 
-        public string FingerCount { get; }
-        public Author(string firstName, string lastName, string email, string fingerCount)
+        public Author(string firstName, string lastName, string email)
         {
-            FingerCount = fingerCount ?? throw new ArgumentNullException(nameof(fingerCount));
             FirstName = firstName;
             LastName = lastName;
             Email = email;

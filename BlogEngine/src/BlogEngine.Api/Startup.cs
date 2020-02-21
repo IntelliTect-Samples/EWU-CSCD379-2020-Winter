@@ -33,9 +33,21 @@ namespace BlogEngine.Api
             System.Reflection.Assembly assembly = profileType.Assembly;
             services.AddAutoMapper(new[] { assembly });
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
+
             services.AddControllers();
 
             services.AddSwaggerDocument();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,7 +65,7 @@ namespace BlogEngine.Api
             app.UseOpenApi();
             //http://localhost/swagger
             app.UseSwaggerUi3();
-
+            app.UseCors();
             app.UseEndpoints(endpoint =>
             {
                 endpoint.MapDefaultControllerRoute();
