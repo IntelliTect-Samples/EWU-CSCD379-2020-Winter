@@ -50,7 +50,7 @@ namespace SecretSanta.Api.Tests.Controllers
 
             var result = await controller.Get(1);
 
-            Assert.IsNull(result.Value);
+            Assert.IsTrue(result.Result is NotFoundResult);
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace SecretSanta.Api.Tests.Controllers
 
             var result = await controller.Get(entity.Id);
 
-            var okResult = result as OkObjectResult;
+            var okResult = result.Result as OkObjectResult;
             
             Assert.AreEqual(entity, okResult?.Value);
         }
