@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SecretSanta.Business.Dto;
+﻿using SecretSanta.Business.Dto;
 using SecretSanta.Business.Services;
 
 namespace SecretSanta.Api.Controllers

@@ -7,7 +7,9 @@ namespace SecretSanta.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+#pragma warning disable CA1062 // Auto-generated code
             migrationBuilder.CreateTable(
+#pragma warning restore CA1062
                 name: "Groups",
                 columns: table => new
                 {
@@ -117,7 +119,9 @@ namespace SecretSanta.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+#pragma warning disable CA1062 // Auto-generated code
             migrationBuilder.DropTable(
+#pragma warning restore CA1062
                 name: "Gifts");
 
             migrationBuilder.DropTable(

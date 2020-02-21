@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SecretSanta.Business.Services;
-using SecretSanta.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
