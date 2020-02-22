@@ -6,10 +6,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th asp-display-name-for="ToList()[0].Id"></th>
-            <th asp-display-name-for="ToList()[0].Title"></th>
-            <th asp-display-name-for="ToList()[0].Description"></th>
-            <th asp-display-name-for="ToList()[0].Url"></th>
+            <th asp-display-name-for="@Model.ToList()[0].Id"></th>
+            <th asp-display-name-for="@Model.ToList()[0].Title"></th>
+            <th asp-display-name-for="@Model.ToList()[0].Description"></th>
+            <th asp-display-name-for="@Model.ToList()[0].Url"></th>
             <th></th>
         </tr>
     </thead>

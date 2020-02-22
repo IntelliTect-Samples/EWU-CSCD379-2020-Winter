@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 using SecretSanta.Data;
 using System;
 
@@ -16,7 +17,7 @@ namespace SecretSanta.Api
             {
                 IServiceProvider services = scope.ServiceProvider;
                 using var context = services.GetRequiredService<ApplicationDbContext>();
-                context.Database.EnsureCreated();
+                context.Database.Migrate();
             }
 
             host.Run();
