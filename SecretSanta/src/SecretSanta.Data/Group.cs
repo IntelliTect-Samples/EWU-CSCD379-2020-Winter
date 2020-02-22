@@ -5,12 +5,14 @@ namespace SecretSanta.Data
 {
     public class Group : FingerPrintEntityBase
     {
-        public string Title { get; set; }
+        private string? _Title;
+
+        public string Title { get => _Title!; set => _Title = value ?? throw new ArgumentNullException(nameof(value)); }
         public IList<UserGroup> UserGroups { get; } = new List<UserGroup>();
 
         public Group(string title)
         {
-            Title = title ?? throw new ArgumentNullException(nameof(title));
+            Title = title;
         }
     }
 }
