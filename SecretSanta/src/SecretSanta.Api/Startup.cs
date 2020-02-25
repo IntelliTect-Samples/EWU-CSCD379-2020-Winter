@@ -58,6 +58,7 @@ namespace SecretSanta.Api
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
