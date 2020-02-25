@@ -1,6 +1,6 @@
 ﻿import '../styles/site.scss';
 
-import { App } from './listGifts'
+import { App } from './list-Gifts'
 
 let app = new App();
 
