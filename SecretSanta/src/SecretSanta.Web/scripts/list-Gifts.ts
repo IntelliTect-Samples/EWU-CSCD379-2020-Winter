@@ -17,6 +17,30 @@ export class GiftLister {
         }
     }
 
+    async addGifts() {
+        var num = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
+
+        var user = new User({
+            firstName: "Inigo",
+            lastName: "Montoya",
+            santaId: null,
+            gifts: null,
+            groups: null,
+            id: 1});
+
+        for (let index = 0; index < num; index++) {
+            var gift = new Gift({
+                title: "gift title",
+                description: "gift description",
+                url: "url!",
+                userId: 1,
+                id: index
+            });
+
+            this.client.post(gift);
+        }
+    }
+
     async renderGifts() {
         var gifts = await this.getAllGifts();
         const itemList = document.getElementById("GiftLister");
