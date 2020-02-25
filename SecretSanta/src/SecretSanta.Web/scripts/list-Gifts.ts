@@ -9,6 +9,14 @@ export class GiftLister {
         this.client = client;
     }
 
+    async deleteAllGifts() {
+        var gifts = await this.client.getAll();
+        for (let index = 0; index < gifts.length; index++) {
+            const gift = gifts[index];
+            this.client.delete(gift.id);
+        }
+    }
+
     async renderGifts() {
         var gifts = await this.getAllGifts();
         const itemList = document.getElementById("GiftLister");
