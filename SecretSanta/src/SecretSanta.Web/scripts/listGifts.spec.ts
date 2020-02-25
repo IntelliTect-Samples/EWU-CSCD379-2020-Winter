@@ -9,7 +9,7 @@ import {
     Gift,
     GiftInput,
     User
-} from "./secretsanta-engine-api.client";
+} from "./secretsanta-client";
 
 describe("RetrieveAllGifts", () => {
     it("return all gifts", async () => {
