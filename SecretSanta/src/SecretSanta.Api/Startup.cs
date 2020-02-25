@@ -34,6 +34,8 @@ namespace SecretSanta.Api
                        .UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutoMapper(new[] { typeof(AutomapperConfigurationProfile).Assembly });
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +46,8 @@ namespace SecretSanta.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             app.UseRouting();
 
             app.UseOpenApi();
@@ -53,6 +57,8 @@ namespace SecretSanta.Api
             {
                 endpoints.MapDefaultControllerRoute();
             });
+
+            
         }
     }
 }

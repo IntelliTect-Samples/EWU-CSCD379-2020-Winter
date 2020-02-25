@@ -25,6 +25,7 @@ namespace SecretSanta.Web
             {
                 options.BaseAddress = new Uri(Configuration["ApiUrl"]);
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +46,7 @@ namespace SecretSanta.Web
             {
                 endpoints.MapDefaultControllerRoute();
             });
+
         }
     }
 }
