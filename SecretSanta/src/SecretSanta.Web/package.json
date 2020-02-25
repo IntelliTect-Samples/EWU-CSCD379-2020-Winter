@@ -7,7 +7,8 @@
     "build:prod": "webpack --mode production"
   },
   "dependencies": {
-    "bulma": "0.8.0"
+    "bulma": "0.8.0",
+    "ts-loader": "^6.2.1"
   },
   "devDependencies": {
     "autoprefixer": "9.7.3",
@@ -28,6 +29,8 @@
     "stylelint-declaration-block-no-ignored-properties": "2.2.0",
     "stylelint-order": "3.1.1",
     "stylelint-scss": "3.13.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10"
   }
