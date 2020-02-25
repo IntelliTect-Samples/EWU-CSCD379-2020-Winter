@@ -15,7 +15,7 @@ class MockGiftClient implements IGiftClient {
         });
         let gifts: Gift[];
         for (var i = 0; i < 5; i++) {
-            Gift[i] = new Gift({
+            gifts[i] = new Gift({
                 title: "LeSpatula",
                 description: "Le Spatula 3000",
                 id: i + 1,
