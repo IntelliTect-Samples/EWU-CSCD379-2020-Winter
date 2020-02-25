@@ -28,6 +28,11 @@ module.exports = (env, argv) => {
             publicPath: '/'
         },
 
+        resolve: {
+            extensions: [".ts", ".js", ".json"]
+        },
+
+
         module: {
             rules: [
                 {
@@ -44,6 +49,13 @@ module.exports = (env, argv) => {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]?[hash]'
+                    }
+                },
+                {
+                    test: /\.(png|jpg|gif|svg)$/,
+                    loader: "file-loader",
+                    options: {
+                        name: "[name].[ext]?[hash]"
                     }
                 }
             ]
