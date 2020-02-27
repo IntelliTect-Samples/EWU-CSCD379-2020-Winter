@@ -3,6 +3,7 @@ using SecretSanta.Api.Controllers;
 using SecretSanta.Business.Dto;
 using SecretSanta.Business.Services;
 using System;
+using System.Threading.Tasks;
 
 namespace SecretSanta.Api.Tests.Controllers
 {
@@ -24,7 +25,13 @@ namespace SecretSanta.Api.Tests.Controllers
 
     public class GiftInMemoryService : InMemoryEntityService<Gift, GiftInput>, IGiftService
     {
-        private int NextId { get; set; } 
+        private int NextId { get; set; }
+
+        public Task<Gift> FetchBySearchTermAsync(string searchTerm)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override Gift Convert(GiftInput dto)
         {
             return new Gift
