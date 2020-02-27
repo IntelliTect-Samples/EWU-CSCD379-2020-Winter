@@ -11,9 +11,7 @@ export class GiftLister {
 
     async deleteAllGifts() {
         var gifts = await this.client.getAll();
-        for (let index = 0; index < gifts.length; index++) {
-            await this.client.delete(gifts[index].id);
-        }
+        gifts.forEach(async gift => await this.client.delete(gift.id));
     }
 
     async getUser() {
