@@ -17,6 +17,52 @@ export class GiftClient {
         this.baseUrl = baseUrl ? baseUrl : "https://localhost:44388";
     }
 
+    search(searchTerm: string | null): Promise<Gift> {
+        let url_ = this.baseUrl + "/api/Gift/search/{searchTerm}";
+        if (searchTerm === undefined || searchTerm === null)
+            throw new Error("The parameter 'searchTerm' must be defined.");
+        url_ = url_.replace("{searchTerm}", encodeURIComponent("" + searchTerm));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_ = <RequestInit>{
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSearch(_response);
+        });
+    }
+
+    protected processSearch(response: Response): Promise<Gift> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+                let result200: any = null;
+                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result200 = Gift.fromJS(resultData200);
+                return result200;
+            });
+        } else if (status === 404) {
+            return response.text().then((_responseText) => {
+                let result404: any = null;
+                let resultData404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                result404 = ProblemDetails.fromJS(resultData404);
+                return throwException("A server side error occurred.", status, _responseText, _headers, result404);
+            });
+        } else {
+            return response.text().then((_responseText) => {
+                let resultdefault: any = null;
+                let resultDatadefault = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+                resultdefault = ProblemDetails.fromJS(resultDatadefault);
+                return throwException("A server side error occurred.", status, _responseText, _headers, resultdefault);
+            });
+        }
+    }
+
     getAll(): Promise<Gift[]> {
         let url_ = this.baseUrl + "/api/Gift";
         url_ = url_.replace(/[?&]$/, "");

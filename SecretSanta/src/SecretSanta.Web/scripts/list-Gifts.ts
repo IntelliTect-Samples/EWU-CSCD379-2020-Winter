@@ -9,6 +9,13 @@ export class App {
         return gifts;
     }
 
+    async searchGifts(searchTerm) {
+        var client = new GiftClient();
+        var gifts = await client.search(searchTerm);
+        //var gifts = await client.getAll();
+        return gifts;
+    }
+
     async getGift(id) {
         var client = new GiftClient();
         return await client.get(id);
@@ -46,7 +53,7 @@ export class App {
         for (var i = 0; i < n; i++) {
             await client.post(gift);
         }
-        
+
     }
 
     async createGiftCylonDetector(userId) {
@@ -86,8 +93,42 @@ export class App {
 }
 
 var app = new App();
-
 var listId = "list-Gifts";
+
+document.getElementById("giftSearchButton").addEventListener("click", function (e) {
+    var searchTerm = (<HTMLInputElement>document.getElementById("giftSearchText")).value;
+    console.log("searchTerm: " + searchTerm);
+
+    document.getElementById(listId).innerHTML = "";
+    var loadingItem = document.createElement("li");
+    loadingItem.textContent = "Loading...";
+    document.getElementById(listId).appendChild(loadingItem);
+
+    app.searchGifts(searchTerm).then(function (value) {
+
+        console.log("gifts: ", value);
+        if (document.getElementById(listId) != null) {
+            document.getElementById(listId).removeChild(loadingItem);
+        }
+
+
+        if (document.getElementById(listId) != null) {
+            var listItem = document.createElement("li");
+            listItem.textContent = value.title + " " + value.description + " " + value.url;
+            document.getElementById(listId).appendChild(listItem);
+        }
+
+
+
+    }).catch(function () {
+        if (document.getElementById(listId) != null) {
+            document.getElementById(listId).removeChild(loadingItem);
+        }
+    });
+})
+
+
+
 if (document.getElementById(listId) != null) {
     var loadingItem = document.createElement("li");
     loadingItem.textContent = "Loading...";
@@ -106,7 +147,7 @@ app.deleteAllGifts().then(function () {
         user = value;
         app.createGiftsCylonDetectors(value.id, 5).then(function () {
             app.getAllGifts().then(function (value) {
-                
+
                 console.log("gifts: ", value);
                 if (document.getElementById(listId) != null) {
                     document.getElementById(listId).removeChild(loadingItem);
@@ -118,7 +159,7 @@ app.deleteAllGifts().then(function () {
                         listItem.textContent = value[j].title + " " + value[j].description + " " + value[j].url + " user: " + user.firstName + " " + user.lastName;
                         document.getElementById(listId).appendChild(listItem);
                     }
-                    
+
                 }
             });
         })
