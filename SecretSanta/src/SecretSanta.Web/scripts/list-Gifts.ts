@@ -39,7 +39,7 @@ export class GiftLister {
     }
 
     async addGifts() {
-        var num = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
+        var num = Math.floor(Math.random() * (10 - 5 + 1)) + 5;
 
         var user = await this.getUser();
 
