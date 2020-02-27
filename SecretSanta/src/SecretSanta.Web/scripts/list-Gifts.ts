@@ -60,12 +60,11 @@ export class GiftLister {
         var gifts = await this.getAllGifts();
         const itemList = document.getElementById("GiftLister");
 
-        for (let index = 0; index < gifts.length; index++) {
-            const gift = gifts[index];
+        gifts.forEach(gift => {
             const listItem = document.createElement("li");
             listItem.textContent = `${gift.id}:${gift.title}:${gift.description}:${gift.url}`;
             itemList.append(listItem);
-        }
+        });
     }
 
     async getAllGifts() {
