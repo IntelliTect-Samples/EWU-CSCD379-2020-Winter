@@ -1,5 +1,5 @@
 ﻿import {
-    IGiftClient, GiftClient, Gift, User
+    IGiftClient, GiftClient, Gift, User, IUserClient
 } from "./secretsanta-client";
 
 export class GiftLister {
@@ -10,10 +10,11 @@ export class GiftLister {
     }
 
     async deleteAllGifts() {
+        document.write("purging gifts\n");
         var gifts = await this.client.getAll();
         for (let index = 0; index < gifts.length; index++) {
-            const gift = gifts[index];
-            this.client.delete(gift.id);
+            document.write(`erasing gift index: ${index}`);
+            await this.client.delete(gifts[index].id);
         }
     }
 

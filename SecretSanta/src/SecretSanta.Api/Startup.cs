@@ -22,8 +22,6 @@ namespace SecretSanta.Api
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-            services.AddSwaggerDocument();
 
             services.AddScoped<IGiftService, GiftService>();
             services.AddScoped<IUserService, UserService>();
@@ -34,6 +32,19 @@ namespace SecretSanta.Api
                        .UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddAutoMapper(new[] { typeof(AutomapperConfigurationProfile).Assembly });
+
+            services.AddControllers();
+            services.AddSwaggerDocument();
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +59,8 @@ namespace SecretSanta.Api
 
             app.UseOpenApi();
             app.UseSwaggerUi3();
+
+            app.UseCors();
 
             app.UseEndpoints(endpoints =>
             {
