@@ -18,10 +18,8 @@ export class App {
     }
 
     giftClient: IGiftClient;
-    userClient: IUserClient;
     constructor(giftClient: IGiftClient = new GiftClient()) {
         this.giftClient = giftClient;
-        this.userClient = new UserClient();
     }
 
     async getAllGifts() {
@@ -33,7 +31,8 @@ export class App {
         await this.deleteGifts();
         await this.createUser();
 
-        var users = await this.userClient.getAll();
+        var userClient = new UserClient();
+        var users = await userClient.getAll();
 
         for (var i = 0; i < 5; i++) {
             var gift = new Gift({
@@ -67,15 +66,17 @@ export class App {
             id: 42
         });
 
-        await this.userClient.post(user);
+        var userClient = new UserClient();
+        await userClient.post(user);
 
     }
 
     async deleteUsers() {
-        var users = await this.userClient.getAll();
+        var userClient = new UserClient();
+        var users = await userClient.getAll();
 
         for (var i = 0; i < users.length; i++) {
-            await this.userClient.delete(users[i].id);
+            await userClient.delete(users[i].id);
         }
     }
 }
