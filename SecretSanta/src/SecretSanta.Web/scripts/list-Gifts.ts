@@ -1,5 +1,5 @@
 ﻿import {
-    IGiftClient, GiftClient, Gift, User, IUserClient
+    IGiftClient, GiftClient, Gift, User, IUserClient, UserClient
 } from "./secretsanta-client";
 
 export class GiftLister {
@@ -10,17 +10,13 @@ export class GiftLister {
     }
 
     async deleteAllGifts() {
-        document.write("purging gifts\n");
         var gifts = await this.client.getAll();
         for (let index = 0; index < gifts.length; index++) {
-            document.write(`erasing gift index: ${index}`);
             await this.client.delete(gifts[index].id);
         }
     }
 
-    async addGifts() {
-        var num = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
-
+    async getUser() {
         var user = new User({
             firstName: "Inigo",
             lastName: "Montoya",
@@ -29,12 +25,30 @@ export class GiftLister {
             groups: null,
             id: 1});
 
+        var userClient = new UserClient();
+        var users = await userClient.getAll();
+
+        if (users.length > 0) {
+            user = users[0];
+        }
+        else {
+            user = await userClient.post(user);
+        }
+
+        return user;
+    }
+
+    async addGifts() {
+        var num = Math.floor(Math.random() * (20 - 10 + 1)) + 10;
+
+        var user = await this.getUser();
+
         for (let index = 0; index < num; index++) {
             var gift = new Gift({
                 title: "gift title",
                 description: "gift description",
-                url: "url!",
-                userId: 1,
+                url: "http://www.google.com",
+                userId: user.id,
                 id: index
             });
 
@@ -43,9 +57,10 @@ export class GiftLister {
     }
 
     async renderGifts() {
+        await this.deleteAllGifts();
+        await this.addGifts();
         var gifts = await this.getAllGifts();
         const itemList = document.getElementById("GiftLister");
-        document.write("Hello World");
 
         for (let index = 0; index < gifts.length; index++) {
             const gift = gifts[index];
