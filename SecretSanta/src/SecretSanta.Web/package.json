@@ -8,8 +8,7 @@
     "test": "mocha -r ts-node/register scripts/**/*.spec.ts"
   },
   "dependencies": {
-    "bulma": "0.8.0",
-    "ts-loader": "^6.2.1"
+    "bulma": "0.8.0"
   },
   "devDependencies": {
     "@types/chai": "^4.2.9",
@@ -34,6 +33,7 @@
     "stylelint-declaration-block-no-ignored-properties": "2.2.0",
     "stylelint-order": "3.1.1",
     "stylelint-scss": "3.13.0",
+    "ts-loader": "^6.2.1",
     "ts-node": "^8.6.2",
     "typescript": "^3.8.2",
     "webpack": "4.41.2",

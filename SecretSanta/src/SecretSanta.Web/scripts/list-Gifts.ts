@@ -1,4 +1,4 @@
-﻿import { IGiftClient, GiftClient, Gift, User } from "./secretsanta-client"
+﻿import { IGiftClient, GiftClient, Gift, User, UserClient, IUserClient } from "./secretsanta-client"
 
 export const hello = () => 'Hello world!';
 
@@ -11,15 +11,17 @@ export class App {
         for (let index = 0; index < gifts.length; index++) {
             const gift = gifts[index];
             //document.write("Hello World");
-            const listGift = document.createElement("li");
-            listGift.textContent = `${gift.id}:${gift.title}:${gift.description}:${gift.url}`;
-            giftList.append(listGift);
+            const listItem = document.createElement("li");
+            listItem.textContent = `${gift.id}:${gift.title}:${gift.description}:${gift.url}`;
+            giftList.append(listItem);
         }
     }
 
     giftClient: IGiftClient;
+    userClient: IUserClient;
     constructor(giftClient: IGiftClient = new GiftClient()) {
         this.giftClient = giftClient;
+        this.userClient = new UserClient();
     }
 
     async getAllGifts() {
@@ -29,13 +31,16 @@ export class App {
 
     async generateGifts() {
         await this.deleteGifts();
+        await this.createUser();
+
+        var users = await this.userClient.getAll();
 
         for (var i = 0; i < 5; i++) {
             var gift = new Gift({
                 title: "Title",
                 description: "Description",
                 url: "www.Test.com",
-                userId: 1,
+                userId: users[0].id,
                 id: i
             });
 
@@ -48,6 +53,29 @@ export class App {
 
         for (var i = 0; i < gifts.length; i++) {
             await this.giftClient.delete(gifts[i].id);
+        }
+    }
+
+    async createUser() {
+        await this.deleteUsers();
+
+        var user = new User({
+            firstName: "Inigo",
+            lastName: "Montoya",
+            gifts: null,
+            groups: null,
+            id: 42
+        });
+
+        await this.userClient.post(user);
+
+    }
+
+    async deleteUsers() {
+        var users = await this.userClient.getAll();
+
+        for (var i = 0; i < users.length; i++) {
+            await this.userClient.delete(users[i].id);
         }
     }
 }
