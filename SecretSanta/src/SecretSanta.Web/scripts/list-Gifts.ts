@@ -2,10 +2,13 @@
     IGiftClient,
     GiftClient,
     Gift,
-    User
+    User,
+    UserClient,
+    IUserClient
 } from "./secretsanta-client"
 
 export class App {
+    createdUser: User;
     async displayGifts() {
         var gifts = await this.getAllGifts();
         const list = document.getElementById("giftList");
@@ -17,21 +20,14 @@ export class App {
     }
 
     giftClient: IGiftClient;
-    constructor(giftClient: IGiftClient = new GiftClient()) {
+    userClient: IUserClient;
+    constructor(giftClient: IGiftClient = new GiftClient(), userClient: IUserClient = new UserClient()) {
         this.giftClient = giftClient;
+        this.userClient = userClient;
     }
 
     async createGiftList() {
         await this.deleteGifts();
-        var newUser = new User({
-            firstName: "Jerett",
-            lastName: "Latimer",
-            gifts: null,
-            groups: null,
-            santaId: null,
-            id: 1
-        });
-
         let gifts: Gift[];
         for (var i = 0; i < 5; i++) {
             var newGift = new Gift({
@@ -44,6 +40,13 @@ export class App {
         }
 
         this.giftClient.post(newGift);
+    }
+
+    async createUser() {
+        this.createdUser = new User();
+        this.createdUser.firstName = "Inigo";
+        this.createdUser.lastName = "Montoya";
+        await this.userClient.post(this.createdUser);
     }
 
     async getAllGifts() {

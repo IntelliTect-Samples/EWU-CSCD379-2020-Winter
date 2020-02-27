@@ -29,7 +29,7 @@ module.exports = (env, argv) => {
         },
 
         resolve: {
-            extension: [".ts", ".js", ".json"]
+            extensions: [".ts", ".js", ".json"]
         },
 
         module: {
