@@ -50,7 +50,7 @@ export class GiftLister {
                 id: index
             });
 
-            this.client.post(gift);
+            await this.client.post(gift);
         }
     }
 
