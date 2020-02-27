@@ -44,7 +44,7 @@ export class GiftLister {
     async renderGifts() {
         var gifts = await this.getAllGifts();
         const itemList = document.getElementById("GiftLister");
-        //document.write("Hello World");
+        document.write("Hello World");
 
         for (let index = 0; index < gifts.length; index++) {
             const gift = gifts[index];
