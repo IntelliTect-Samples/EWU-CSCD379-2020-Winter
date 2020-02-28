@@ -27,6 +27,9 @@ module.exports = (env, argv) => {
             path: distPath,
             publicPath: '/'
         },
+        resolve: {
+            extensions: [".ts", ".js", ".json"]
+        },
 
         module: {
             rules: [
@@ -45,6 +48,11 @@ module.exports = (env, argv) => {
                     options: {
                         name: '[name].[ext]?[hash]'
                     }
+                },
+                {
+                    test: /\.tsx?$/,
+                    loader: "ts-loader",
+                    exclude: /node_modules/
                 }
             ]
         },

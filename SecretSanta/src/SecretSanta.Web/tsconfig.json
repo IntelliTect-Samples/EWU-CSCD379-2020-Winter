@@ -1,0 +1,13 @@
+﻿{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "noImplicitAny": true
+  },
+  "include": [
+    "./scripts/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "wwwroot"
+  ]
+}
