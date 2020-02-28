@@ -2,13 +2,13 @@
 
 To create a web page that uses TypeScript to retrieve the list of Gifts from the Api project and display them in an html page.
 
-- Create an `ListGifts.html` page in the `Views` directory that lists the Gifts. ✔❌
-- Use NSwag to generate an `secretsanta-client.ts` file against the API project. ✔❌
-- Create a `list-Gifts.ts` file that: ✔❌
-  - Invokes the secretsanta-client API to delete all existing Gifts and then create a hard coded list of 5-10 Gifts when the page loads. ✔❌
-  - Invokes the secretsanta-client API to retrieve a list of Gifts as part of the page load. ✔❌
-- Populate the `ListGifts.html` page leveraging list-Gifts api to retrieve a list of Gifts. ✔❌
-- Set the default start page when the Web project runs to be the ListGifts.html page. ✔❌
+- //Create an `ListGifts.html` page in the `Views` directory that lists the Gifts. ✔❌
+- //Use NSwag to generate an `secretsanta-client.ts` file against the API project. ✔❌
+- //Create a `list-Gifts.ts` file that: ✔❌
+  - //Invokes the secretsanta-client API to delete all existing Gifts and then create a hard coded list of 5-10 Gifts when the page loads. ✔❌
+  - //Invokes the secretsanta-client API to retrieve a list of Gifts as part of the page load. ✔❌
+-// Populate the `ListGifts.html` page leveraging list-Gifts api to retrieve a list of Gifts. ✔❌
+- //Set the default start page when the Web project runs to be the ListGifts.html page. ✔❌
 
 ## Extra Credit
 
