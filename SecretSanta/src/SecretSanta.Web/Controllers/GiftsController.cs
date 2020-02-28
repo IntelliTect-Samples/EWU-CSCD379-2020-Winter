@@ -24,6 +24,13 @@ namespace SecretSanta.Web.Controllers
             return View(gifts);
         }
 
+        public async Task<ActionResult> Details(int id)
+        {
+            Gift gift = await Client.GetAsync(id);
+
+            return View(gift);
+        }
+
         public ActionResult Create()
         {
             return View();

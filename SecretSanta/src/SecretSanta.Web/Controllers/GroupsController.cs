@@ -26,6 +26,13 @@ namespace SecretSanta.Web.Controllers
             return View(groups);
         }
 
+        public async Task<ActionResult> Details(int id)
+        {
+            Group group = await Client.GetAsync(id);
+
+            return View(group);
+        }
+
         public ActionResult Create()
         {
             return View();
