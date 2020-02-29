@@ -45,13 +45,22 @@ class MockGiftClient implements IGiftClient {
             id: 1
         });
         this.gifts = [];
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < 5; i++) {
             this.gifts.push(new Gift({
                 title: "Viper",
                 description: "Fast Spaceship",
                 url: "www.vipers.com",
                 userId: this.user.id,
                 id: i
+            }));
+        }
+        for (var i = 0; i < 5; i++) {
+            this.gifts.push(new Gift({
+                title: "Cylon Detector",
+                description: "Version 1",
+                url: "www.findacylon.com",
+                userId: this.user.id,
+                id: i + 5
             }));
         }
     }

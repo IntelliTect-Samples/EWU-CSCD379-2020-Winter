@@ -49,8 +49,17 @@ export class App {
         gift.url = "www.find-a-cylon.com";
         gift.userId = userId;
 
+        var gift2 = new GiftInput();
+        gift2.title = "FTL Drive";
+        gift2.description = "FTL";
+        gift2.url = "www.ftl.com";
+        gift2.userId = userId;
+
         for (var i = 0; i < n; i++) {
             await this.giftClient.post(gift);
+        }
+        for (var i = 0; i < n; i++) {
+            await this.giftClient.post(gift2);
         }
 
     }
