@@ -7,7 +7,16 @@
 //----------------------
 // ReSharper disable InconsistentNaming
 
-export class GiftClient {
+export interface IGiftClient {
+    search(searchTerm: string | null): Promise<Gift>;
+    getAll(): Promise<Gift[]>;
+    post(entity: GiftInput): Promise<Gift>;
+    get(id: number): Promise<Gift>;
+    put(id: number, value: GiftInput): Promise<Gift>;
+    delete(id: number): Promise<void>;
+}
+
+export class GiftClient implements IGiftClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -269,7 +278,15 @@ export class GiftClient {
     }
 }
 
-export class GroupClient {
+export interface IGroupClient {
+    getAll(): Promise<Group[]>;
+    post(entity: GroupInput): Promise<Group>;
+    get(id: number): Promise<Group>;
+    put(id: number, value: GroupInput): Promise<Group>;
+    delete(id: number): Promise<void>;
+}
+
+export class GroupClient implements IGroupClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
@@ -485,7 +502,15 @@ export class GroupClient {
     }
 }
 
-export class UserClient {
+export interface IUserClient {
+    getAll(): Promise<User[]>;
+    post(entity: UserInput): Promise<User>;
+    get(id: number): Promise<User>;
+    put(id: number, value: UserInput): Promise<User>;
+    delete(id: number): Promise<void>;
+}
+
+export class UserClient implements IUserClient {
     private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;

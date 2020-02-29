@@ -4,20 +4,28 @@
   "private": true,
   "scripts": {
     "build:dev": "webpack --mode development --watch",
-    "build:prod": "webpack --mode production"
+    "build:prod": "webpack --mode production",
+    "test": "mocha -r ts-node/register -r ignore-styles -r jsdom-global/register scripts/**/*.spec.ts"
   },
   "dependencies": {
     "bulma": "0.8.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.2.9",
+    "@types/mocha": "^7.0.1",
     "autoprefixer": "9.7.3",
+    "chai": "^4.2.0",
     "clean-webpack-plugin": "3.0.0",
     "copy-webpack-plugin": "5.1.0",
     "css-loader": "3.2.0",
     "expose-loader": "0.7.5",
     "fibers": "4.0.2",
     "html-webpack-plugin": "3.2.0",
+    "ignore-styles": "^5.0.1",
+    "jsdom": "^16.2.0",
+    "jsdom-global": "^3.0.2",
     "mini-css-extract-plugin": "0.8.0",
+    "mocha": "^7.1.0",
     "postcss-loader": "3.0.0",
     "sass": "1.23.7",
     "sass-loader": "8.0.0",
@@ -29,6 +37,7 @@
     "stylelint-order": "3.1.1",
     "stylelint-scss": "3.13.0",
     "ts-loader": "^6.2.1",
+    "ts-node": "^8.6.2",
     "typescript": "^3.8.2",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10"
