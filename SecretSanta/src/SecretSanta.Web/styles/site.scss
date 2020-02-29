@@ -1,3 +1,29 @@
 ﻿@charset "utf-8";
 
+//Set Brand Colors
+$dark-purple: #805acb;
+$purple: #b388ff;
+$light-purple: #e7b9ff;
+
+
+
+// Update Bulma's global variables
+$grey-dark: $dark-purple;
+$grey-light: $light-purple;
+$primary: $purple;
+$link: $light-purple;
+
+// Update some of Bulma's component variables
+$control-border-width: 2px;
+$input-background-color: $light-purple;
+$input-border-color: transparent;
+$input-shadow: none;
+
+//Set some more specifics
+$link: $light-purple;
+$button: $purple;
+$navbar-item-hover-background-color: $purple;
+$navbar-item-hover-color: $light-purple;
+$navbar-item-color: $dark-purple;
+
 @import "~bulma/bulma";
