@@ -1,4 +1,4 @@
-﻿import { IGiftClient, GiftClient, Gift, User } from "./secretsanta-api.client"
+﻿import { IGiftClient, GiftClient, Gift, User, IUserClient, UserClient, UserInput } from "./secretsanta-api.client"
 
 export class App
 {
@@ -15,17 +15,26 @@ export class App
         })
     }
 
-
     giftClient: IGiftClient;
-    constructor(giftClient: IGiftClient = new GiftClient())
+    userClient: IUserClient;
+    constructor(giftClient: IGiftClient = new GiftClient(), userClient: IUserClient = new UserClient())
     {
         this.giftClient = giftClient;
+        this.userClient = userClient;
     }
 
     async getAllGifts()
     {
         var gifts = await this.giftClient.getAll();
         return gifts;
+    }
+
+    async generateUser()
+    {
+        let userPosted: User;
+        userPosted.firstName = "Inigo";
+        userPosted.lastName = "Montoya";
+        await this.userClient.post(userPosted);
     }
 
     async generateGiftList()
