@@ -110,18 +110,25 @@ export class App {
                     }
 
 
-                    if (document.getElementById(listId) != null) {
-                        var listItem = document.createElement("li");
-                        listItem.textContent = value.title + " " + value.description + " " + value.url;
-                        document.getElementById(listId).appendChild(listItem);
+                    //if (document.getElementById(listId) != null) {
+                    //    var listItem = document.createElement("li");
+                    //    listItem.textContent = value.title + " " + value.description + " " + value.url;
+                    //    document.getElementById(listId).appendChild(listItem);
+                    //}
+                    for (var j in value) {
+
+                        if (document.getElementById(listId) != null) {
+                            var listItem = document.createElement("li");
+                            listItem.textContent = value[j].title + " " + value[j].description + " " + value[j].url;
+                            document.getElementById(listId).appendChild(listItem);
+                        }
+
                     }
 
 
 
                 }).catch(function () {
-                    if (document.getElementById(listId) != null) {
-                        document.getElementById(listId).removeChild(loadingItem);
-                    }
+                    document.getElementById(listId).innerHTML = "";
                 });
             });
         }

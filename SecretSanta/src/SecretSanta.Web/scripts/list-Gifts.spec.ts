@@ -56,7 +56,7 @@ class MockGiftClient implements IGiftClient {
         }
     }
 
-    search(searchTerm: string): Promise<Gift> {
+    search(searchTerm: string): Promise<Gift[]> {
         throw new Error("Method not implemented.");
     }
     async getAll(): Promise<Gift[]> {

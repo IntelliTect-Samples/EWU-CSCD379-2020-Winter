@@ -3,6 +3,7 @@ using SecretSanta.Api.Controllers;
 using SecretSanta.Business.Dto;
 using SecretSanta.Business.Services;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Api.Tests.Controllers
@@ -27,7 +28,7 @@ namespace SecretSanta.Api.Tests.Controllers
     {
         private int NextId { get; set; }
 
-        public Task<Gift> FetchBySearchTermAsync(string searchTerm)
+        public Task<IEnumerable<Gift>> FetchBySearchTermAsync(string searchTerm)
         {
             throw new NotImplementedException();
         }

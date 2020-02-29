@@ -8,7 +8,7 @@
 // ReSharper disable InconsistentNaming
 
 export interface IGiftClient {
-    search(searchTerm: string | null): Promise<Gift>;
+    search(searchTerm: string | null): Promise<Gift[]>;
     getAll(): Promise<Gift[]>;
     post(entity: GiftInput): Promise<Gift>;
     get(id: number): Promise<Gift>;
@@ -26,7 +26,7 @@ export class GiftClient implements IGiftClient {
         this.baseUrl = baseUrl ? baseUrl : "https://localhost:44388";
     }
 
-    search(searchTerm: string | null): Promise<Gift> {
+    search(searchTerm: string | null): Promise<Gift[]> {
         let url_ = this.baseUrl + "/api/Gift/search/{searchTerm}";
         if (searchTerm === undefined || searchTerm === null)
             throw new Error("The parameter 'searchTerm' must be defined.");
@@ -45,14 +45,18 @@ export class GiftClient implements IGiftClient {
         });
     }
 
-    protected processSearch(response: Response): Promise<Gift> {
+    protected processSearch(response: Response): Promise<Gift[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
                 let result200: any = null;
                 let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = Gift.fromJS(resultData200);
+                if (Array.isArray(resultData200)) {
+                    result200 = [] as any;
+                    for (let item of resultData200)
+                        result200!.push(Gift.fromJS(item));
+                }
                 return result200;
             });
         } else if (status === 404) {

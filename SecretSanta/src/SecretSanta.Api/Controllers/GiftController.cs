@@ -17,16 +17,14 @@ namespace SecretSanta.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Gift>> Search(string searchTerm)
-        //public async Task<IActionResult> Get(int id)
+        public async Task<ActionResult<IEnumerable<Gift>>> Search(string searchTerm)
         {
-            Gift entity = await ((IGiftService)Service).FetchBySearchTermAsync(searchTerm);
-            if (entity is null)
+            IEnumerable<Gift> entities = await ((IGiftService)Service).FetchBySearchTermAsync(searchTerm);
+            if (entities is null)
             {
                 return NotFound();
             }
-            List<Gift> entities = new List<Gift>();
-            return Ok(entity);
+            return Ok(entities);
         }
     }
 }
