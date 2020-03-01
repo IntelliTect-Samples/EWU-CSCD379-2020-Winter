@@ -1,3 +1,12 @@
 ﻿@charset "utf-8";
 
+$blue: #4f96e8;
+$pink: #b6628e;
+
+$navbar-background-color: $blue;
+$navbar-item-color: $pink;
+$navbar-item-hover-background-color: black;
+
+$link: red;
+
 @import "~bulma/bulma";
