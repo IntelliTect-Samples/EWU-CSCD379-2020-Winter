@@ -1,4 +1,4 @@
-﻿import { IGiftClient, GiftClient,Gift,User } from "./secret-santa-api.client"
+﻿import { IGiftClient, GiftClient, Gift, IUserClient, UserClient, User } from "./secret-santa-api.client"
 
 export class App
 {
@@ -23,6 +23,8 @@ export class App
             groups:  null,
             santaId: null
         });
+        await this.userClient.post(Spongebob);
+
 
         for (var i = 1; i < 6; i++) {
             var gift = new Gift({
@@ -37,8 +39,10 @@ export class App
     }
 
     giftClient: IGiftClient;
-    constructor(giftClient: IGiftClient = new GiftClient()) {
+    userClient: IUserClient;
+    constructor(giftClient: IGiftClient = new GiftClient(), userClient: IUserClient = new UserClient()) {
         this.giftClient = giftClient;
+        this.userClient = userClient;
     }
 
     async getAllGifts() {
