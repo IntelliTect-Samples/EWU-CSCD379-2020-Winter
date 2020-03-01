@@ -16,5 +16,15 @@ namespace SecretSanta.Web.Controllers
             //return RedirectToAction("ListGifts", "Gifts");
             return View();
         }
+
+        public IActionResult Html()
+        {
+            return View();
+        }
+
+        public IActionResult Details(int id)
+        {
+            return View();
+        }
     }
 }
