@@ -1,6 +1,6 @@
 ﻿import '../styles/site.scss';
 import { App } from './app';
-import { Gift } from './secretsanta-client';
+import { Gift } from './secretsanta-client.g';
 
 document.addEventListener("DOMContentLoaded", async () => {
     let app = new App.Main();

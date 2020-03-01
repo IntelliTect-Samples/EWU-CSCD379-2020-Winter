@@ -1,4 +1,4 @@
-﻿import { GiftClient, Gift, UserClient, User } from './secretsanta-client';
+﻿import { GiftClient, Gift, UserClient, User } from './secretsanta-client.g';
 
 export module App {
     export class Main {
