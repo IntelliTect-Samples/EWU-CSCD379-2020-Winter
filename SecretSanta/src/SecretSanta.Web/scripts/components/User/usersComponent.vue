@@ -30,7 +30,7 @@
 <script lang="ts">
     import { Vue, Component } from 'vue-property-decorator';
     import { User, UserClient } from '../../secretsanta-client.g';
-    import UserDetailsComponent from './usersDetailsComponent.vue';
+    import UserDetailsComponent from './userDetailsComponent.vue';
     @Component({
         components: {
             UserDetailsComponent
