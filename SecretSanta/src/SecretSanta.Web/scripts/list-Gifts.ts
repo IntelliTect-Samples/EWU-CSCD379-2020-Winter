@@ -7,8 +7,11 @@ export class App
         const giftsPage = document.getElementById("giftsPage");
         for (let index = 0; index < gifts.length; index++) {
             const gift = gifts[index];
+            var title = "Title: " + gift.title;
+            var desc = "Description: " + gift.description;
+            var url = "URL: " + gift.url;
             const listItem = document.createElement("li");
-            listItem.textContent = '${gift.title}: ${gift.description}: ${gift.url}';
+            listItem.textContent = title + ",   " + desc + ",   " + url;
             giftsPage.append(listItem);
         } 
     }
