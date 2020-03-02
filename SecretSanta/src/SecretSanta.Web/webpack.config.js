@@ -27,6 +27,9 @@ module.exports = (env, argv) => {
             path: distPath,
             publicPath: '/'
         },
+        resolve: {
+            extensions: [".ts", ".js", ".json"]
+        },
 
         module: {
             rules: [
@@ -50,6 +53,15 @@ module.exports = (env, argv) => {
                     test: /\.tsx?$/,
                     loader: "ts-loader",
                     exclude: /node_modules/
+                },
+                {
+                    loader: "sass-loader",
+                    options: {
+                        implementation: require("sass"),
+                        sassOptions: {
+                            fiber: require("fibers")
+                        }
+                    }
                 }
             ]
         },
