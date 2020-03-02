@@ -1,25 +1,17 @@
 ﻿<template>
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
     <table class="table">
         <thead>
             <tr>
-                <th asp-display-name-for="ToList()[0].Id"></th>
-                <th asp-display-name-for="ToList()[0].Title"></th>
-                <th></th>
+                <th>Id</th>
+                <th>Title</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
             {
-            <tr>
-                <td asp-display-for="@item.Id"></td>
-                <td asp-display-for="@item.Title"></td>
+            <tr v-for="group in groups" :id="group.Id">
+                <td>{{group.Id}}</td>
+                <td>{{group.Title}}</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
                 </td>
             </tr>
             }
@@ -27,5 +19,18 @@
     </table>
 </template>
 <script lang="ts">
+    import { Vue, Component } from 'vue-property-decorator';
+    import { Group, GroupClient } from '../../secretsanta-client';
+    @Component
+    export default class GroupsComponent extends Vue {
+        groups: Group[] = null;
+        async loadGroups() {
+            let groupClient = new GroupClient();
+            this.groups = await groupClient.getAll();
+        }
 
+        async mounted() {
+            await this.loadGroups();
+        }
+    }
 </script>
