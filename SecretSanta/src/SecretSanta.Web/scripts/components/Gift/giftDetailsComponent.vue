@@ -56,10 +56,13 @@
         @Emit('gift-saved')
         async saveGift() {
             let giftClient = new GiftClient();
+
             if (this.clonedGift.id > 0) {
+                this.clonedGift.userId = Number(this.clonedGift.userId);
                 await giftClient.put(this.clonedGift.id, this.clonedGift);
             }
             else {
+                this.clonedGift.userId = Number(this.clonedGift.userId);
                 await giftClient.post(this.clonedGift);
             }
         }
