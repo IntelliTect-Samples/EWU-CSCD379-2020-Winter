@@ -66,7 +66,7 @@ module.exports = (env, argv) => {
                     loader: 'ts-loader',
                     exclude: /node_modules/,
                     options: {
-                        appendTsSuffixto: [/\.vue$/]
+                        appendTsSuffixTo: [/\.vue$/]
                     }
                 }
             ]
@@ -103,10 +103,10 @@ module.exports = (env, argv) => {
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.vue'],
             alias: {
-                'vue$': 'vue/dist/vue.esm/js'
+                'vue$': 'vue/dist/vue.esm.js'
             },
             modules: [
-                path.resolve(__dirname, '.node_modules'),
+                path.resolve(__dirname, './node_modules'),
             ]
         },
         devtool: '#eval-source-map'
