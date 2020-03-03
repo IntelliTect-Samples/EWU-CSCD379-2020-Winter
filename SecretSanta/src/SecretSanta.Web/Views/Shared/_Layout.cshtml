@@ -6,7 +6,7 @@
     <title>@ViewBag.Title</title>
     <!-- Stylesheets -->
     
-    <link href="~/css/main.424f91b1339046680113.css" rel="stylesheet" />
+    <link href="~/css/main.c5d87b06d0b9a7bd1092.css" rel="stylesheet" />
     
     <!-- End Stylesheets -->
     <style>
@@ -16,20 +16,23 @@
     </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Users" asp-action="Index">Users</a></li>
-            <li><a asp-controller="Groups" asp-action="Index">Groups</a></li>
-            <li><a asp-controller="Gifts" asp-action="Index">Gifts</a></li>
-        </ul>
+    <nav class="navbar" role="navigation">
+        <div class="navbar-brand">
+                <a class="navbar-item" asp-controller="Home" asp-action="Index"><b>Home</b></a>
+                <a class="navbar-item" asp-controller="Users" asp-action="Index"><b>Users</b></a>
+                <a class="navbar-item" asp-controller="Groups" asp-action="Index"><b>Groups</b></a>
+                <a class="navbar-item" asp-controller="Gifts" asp-action="Index"><b>Gifts</b></a>
+        </div>
     </nav>
-    <div>
-        @RenderBody()
-    </div>
+    <section class="section">
+        <div class="content">
+            @RenderBody()
+        </div>
+    </section>
+
     <!-- Scripts -->
     
-    <script src="~/js/main.424f91b1339046680113.js"></script>
+    <script src="~/js/main.c5d87b06d0b9a7bd1092.js"></script>
     
     <!-- End Scripts -->
     @RenderSection("scripts", required: false)

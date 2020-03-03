@@ -16,17 +16,20 @@
     </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Users" asp-action="Index">Users</a></li>
-            <li><a asp-controller="Groups" asp-action="Index">Groups</a></li>
-            <li><a asp-controller="Gifts" asp-action="Index">Gifts</a></li>
-        </ul>
+    <nav class="navbar" role="navigation">
+        <div class="navbar-brand">
+                <a class="navbar-item" asp-controller="Home" asp-action="Index"><b>Home</b></a>
+                <a class="navbar-item" asp-controller="Users" asp-action="Index"><b>Users</b></a>
+                <a class="navbar-item" asp-controller="Groups" asp-action="Index"><b>Groups</b></a>
+                <a class="navbar-item" asp-controller="Gifts" asp-action="Index"><b>Gifts</b></a>
+        </div>
     </nav>
-    <div>
-        @RenderBody()
-    </div>
+    <section class="section">
+        <div class="content">
+            @RenderBody()
+        </div>
+    </section>
+
     <!-- Scripts -->
     <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
     <script src="~<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
