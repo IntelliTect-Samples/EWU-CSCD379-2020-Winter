@@ -67,7 +67,7 @@
         }
 
         async deleteGift(gift: Gift) {
-                if (confirm(`Are you sure you want to delete ${gift.title}`)) {
+                if (confirm(`Are you sure you want to delete ${gift.title}?`)) {
                     await new GiftClient().delete(gift.id);
                     await this.refreshGifts();
                 }
