@@ -6,7 +6,7 @@
     <title>@ViewBag.Title</title>
     <!-- Stylesheets -->
     
-    <link href="~/css/main.857b95468e6caf0cc988.css" rel="stylesheet" />
+    <link href="~/css/main.78e27b178b703515cccb.css" rel="stylesheet" />
     
     <!-- End Stylesheets -->
     <style>
@@ -15,21 +15,35 @@
         }
     </style>
 </head>
-<body>
-    <nav>
-        <ul>
-            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Users" asp-action="Index">Users</a></li>
-            <li><a asp-controller="Groups" asp-action="Index">Groups</a></li>
-            <li><a asp-controller="Gifts" asp-action="Index">Gifts</a></li>
-        </ul>
+<body class="has-background-grey">
+    <nav class="navbar is-dark" role="navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" asp-controller="Home" asp-action="Index">Secret Santa</a>
+        </div>
+        <div class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" asp-controller="Gifts" asp-action="Index">Gifts</a>
+                <a class="navbar-item" asp-controller="Users" asp-action="Index">Users</a>
+                <a class="navbar-item" asp-controller="Groups" asp-action="Index">Groups</a>
+            </div>
+        </div>
     </nav>
-    <div>
-        @RenderBody()
+    
+    <div class="section">
+        <div class="content">
+            @RenderBody()
+        </div>
     </div>
+
+    <footer class="footer has-background-grey">
+        <div class="container">
+            <p>CSCD 379 Assignment 8 - David Sergio</p>
+        </div>
+    </footer>
+
     <!-- Scripts -->
     
-    <script src="~/js/main.857b95468e6caf0cc988.js"></script>
+    <script src="~/js/main.78e27b178b703515cccb.js"></script>
     
     <!-- End Scripts -->
     @RenderSection("scripts", required: false)

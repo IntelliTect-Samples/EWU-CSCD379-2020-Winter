@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<Group>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="button is-text" asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table has-background-grey">
     <thead>
         <tr>
             <th asp-display-name-for="ToList()[0].Id"></th>
@@ -18,8 +18,8 @@
                 <td asp-display-for="@item.Id"></td>
                 <td asp-display-for="@item.Title"></td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="button is-primary" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="button is-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
