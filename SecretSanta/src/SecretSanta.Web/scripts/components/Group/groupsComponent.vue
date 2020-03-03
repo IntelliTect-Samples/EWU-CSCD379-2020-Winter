@@ -7,14 +7,10 @@
             </tr>
         </thead>
         <tbody>
-            {
-            <tr v-for="group in groups" :id="group.Id">
-                <td>{{group.Id}}</td>
-                <td>{{group.Title}}</td>
-                <td>
-                </td>
+            <tr v-for="group in groups" :id="group.id">
+                <td>{{group.id}}</td>
+                <td>{{group.title}}</td>
             </tr>
-            }
         </tbody>
     </table>
 </template>

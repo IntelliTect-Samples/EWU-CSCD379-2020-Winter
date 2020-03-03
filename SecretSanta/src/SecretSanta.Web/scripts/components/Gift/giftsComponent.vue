@@ -10,16 +10,14 @@
             </tr>
         </thead>
         <tbody>
-            {
-            <tr v-for"gift in gifts" :id="gift.Id">
-                <td>{{gift.Id}}</td>
-                <td>{{gift.Title}}</td>
-                <td>{{gift.Description}}</td>
-                <td>{{gift.Url}}</td>
+            <tr v-for="gift in gifts" :id="gift.id">
+                <td>{{gift.id}}</td>
+                <td>{{gift.title}}</td>
+                <td>{{gift.description}}</td>
+                <td>{{gift.url}}</td>
                 <td>
                 </td>
             </tr>
-            }
         </tbody>
     </table>
 </template>

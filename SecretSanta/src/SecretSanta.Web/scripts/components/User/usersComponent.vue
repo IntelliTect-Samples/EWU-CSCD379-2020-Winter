@@ -9,15 +9,11 @@
             </tr>
         </thead>
         <tbody>
-            {
-            <tr v-for="user in users" :id="user.Id">
-                <td>{{user.Id}}</td>
-                <td>{{user.FirstName}}</td>
-                <td>{{user.LastName}}</td>
-                <td>
-                </td>
+            <tr v-for="user in users" :id="user.id">
+                <td>{{user.id}}</td>
+                <td>{{user.firstName}}</td>
+                <td>{{user.lastName}}</td>
             </tr>
-            }
         </tbody>
     </table>
 </template>

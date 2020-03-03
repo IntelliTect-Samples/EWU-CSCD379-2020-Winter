@@ -1,14 +1,16 @@
-﻿import { GiftClient, Gift, UserClient, User } from './secretsanta-client';
+﻿import { GiftClient, Gift, UserClient, User, GroupClient, Group } from './secretsanta-client';
 
 export module App {
     export class Main {
         giftClient: GiftClient;
         userClient: UserClient;
+        groupClient: GroupClient;
         createdUser: User;
 
         constructor() {
-            this.giftClient = new GiftClient('https://localhost:44388');
-            this.userClient = new UserClient('https://localhost:44388');
+            this.giftClient = new GiftClient('https://localhost:44394');
+            this.userClient = new UserClient('https://localhost:44394');
+            this.groupClient = new GroupClient('https://localhost:44394');
         }
         async deleteGifts() {
             var gifts = await this.getGifts();
@@ -31,13 +33,13 @@ export module App {
         }
 
         async getGifts(): Promise<Gift[]> {
-            var gifts = await this.giftClient.getAll();
+            let gifts = await this.giftClient.getAll();
 
             return gifts;
         }
 
         async createUser() {
-            var users = await this.userClient.getAll();
+            let users = await this.userClient.getAll();
 
             if (users.length > 0) {
                 this.createdUser = users[0];
