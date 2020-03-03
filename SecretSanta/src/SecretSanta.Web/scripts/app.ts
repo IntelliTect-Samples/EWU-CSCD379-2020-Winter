@@ -11,33 +11,30 @@ export module App {
             this.userClient = new UserClient('https://localhost:44388');
         }
         async deleteGifts() {
-            var gifts = await this.getGifts();
+            const gifts = await this.getGifts();
 
-            for (let gift of gifts) {
-                await this.giftClient.delete(gift.id);
-            }
+            await Promise.all(gifts.map(gift => this.giftClient.delete(gift.id)));
         }
 
         async createGifts() {
-            for (let i = 0; i < 5; i++) {
-                let gift = new Gift();
+            const gifts = [1,2,3,4,5].map(i => {
+                const gift = new Gift();
                 gift.title = `Title ${i}`;
                 gift.description = `Description ${i}`;
                 gift.url = `Url ${i}`;
                 gift.userId = this.createdUser.id;
+                return this.giftClient.post(gift);
+            });
 
-                await this.giftClient.post(gift);
-            }
+            await Promise.all(gifts);
         }
 
         async getGifts(): Promise<Gift[]> {
-            var gifts = await this.giftClient.getAll();
-
-            return gifts;
+            return await this.giftClient.getAll();
         }
 
         async createUser() {
-            var users = await this.userClient.getAll();
+            const users = await this.userClient.getAll();
 
             if (users.length > 0) {
                 this.createdUser = users[0];
