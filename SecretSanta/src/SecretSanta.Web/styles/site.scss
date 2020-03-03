@@ -1,3 +1,28 @@
 ﻿@charset "utf-8";
 
+// Import a Google Font
+@import url('https://fonts.googleapis.com/css?family=Spartan:400,700');
+
+// Set your brand colors
+$blue: #1E90FF;
+$orange: #FFA500;
+$brown: #757763;
+$beige-light: #D0D1CD;
+$beige-lighter: #EFF0EB;
+
+// Update Bulma's global variables
+$family-sans-serif: "Spartan", normal;
+$grey-dark: $brown;
+$grey-light: $beige-light;
+$primary: $blue;
+$link: $orange;
+
+// Update some of Bulma's component variables
+$control-border-width: 2px;
+$input-background-color: $beige-lighter;
+$input-border-color: transparent;
+$input-shadow: none;
+
+$navbar-item-color: orange;
+
 @import "~bulma/bulma";

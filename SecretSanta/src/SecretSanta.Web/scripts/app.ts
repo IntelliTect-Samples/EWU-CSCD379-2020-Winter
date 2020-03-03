@@ -30,14 +30,14 @@ export module App {
             }
         }
 
-        async getGifts(): Promise<Gift[]> {
-            var gifts = await this.giftClient.getAll();
+        async getGifts() {
+            let gifts = await this.giftClient.getAll();
 
             return gifts;
         }
 
         async createUser() {
-            var users = await this.userClient.getAll();
+            let users = await this.userClient.getAll();
 
             if (users.length > 0) {
                 this.createdUser = users[0];
