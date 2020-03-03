@@ -2,11 +2,11 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width"/>
     <title>@ViewBag.Title</title>
     <!-- Stylesheets -->
     
-    <link href="~/css/main.857b95468e6caf0cc988.css" rel="stylesheet" />
+    <link href="~/css/main.f6cd832a9b9dbc732922.css" rel="stylesheet"/>
     
     <!-- End Stylesheets -->
     <style>
@@ -16,22 +16,28 @@
     </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Users" asp-action="Index">Users</a></li>
-            <li><a asp-controller="Groups" asp-action="Index">Groups</a></li>
-            <li><a asp-controller="Gifts" asp-action="Index">Gifts</a></li>
-        </ul>
-    </nav>
-    <div>
+<nav class="navbar" role="navigation">
+    <div class="navbar-brand" style="margin: 0 10px">
+        <a class="navbar-item" asp-controller="Home" asp-action="Index">Secret Santa</a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" asp-controller="Users" asp-action="Index">Users</a>
+            <a class="navbar-item" asp-controller="Gifts" asp-action="Index">Gifts</a>
+            <a class="navbar-item" asp-controller="Groups" asp-action="Index">Groups</a>
+        </div>
+    </div>
+</nav>
+<section class="section">
+    <div class="content">
         @RenderBody()
     </div>
-    <!-- Scripts -->
-    
-    <script src="~/js/main.857b95468e6caf0cc988.js"></script>
-    
-    <!-- End Scripts -->
-    @RenderSection("scripts", required: false)
+</section>
+<!-- Scripts -->
+
+<script src="~/js/main.f6cd832a9b9dbc732922.js"></script>
+
+<!-- End Scripts -->
+@RenderSection("scripts", false)
 </body>
 </html>

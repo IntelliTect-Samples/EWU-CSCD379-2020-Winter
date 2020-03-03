@@ -1,4 +1,4 @@
-﻿// lib
+﻿﻿// lib
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -8,6 +8,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 module.exports = (env, argv) => {
     const isProd = argv.mode === 'production';
@@ -27,11 +28,6 @@ module.exports = (env, argv) => {
             path: distPath,
             publicPath: '/'
         },
-
-        resolve: {
-            extensions: ['.ts', '.js', '.json']
-        },
-
         module: {
             rules: [
                 {
@@ -51,14 +47,31 @@ module.exports = (env, argv) => {
                     }
                 },
                 {
+                    test: /\.vue$/,
+                    loader: 'vue-loader',
+                    options: {
+                        loaders: {
+                            // Since sass-loader (weirdly) has SCSS as its default parse mode, we map
+                            // the "scss" and "sass" values for the lang attribute to the right configs here.
+                            // other preprocessors should work out of the box, no loader config like this necessary.
+                            'scss': 'vue-style-loader!css-loader!sass-loader',
+                            'sass': 'vue-style-loader!css-loader!sass-loader?indentedSyntax'
+                        }
+                    }
+                },
+                {
                     test: /\.tsx?$/,
                     loader: 'ts-loader',
-                    exclude: /node_modules/
-                },
+                    exclude: /node_modules/,
+                    options: {
+                        appendTsSuffixTo: [/\.vue$/]
+                    }
+                }
             ]
         },
         plugins: [
             new CleanWebpackPlugin(),
+            new VueLoaderPlugin(),
 
             // copy src images to wwwroot
             new CopyWebpackPlugin(
@@ -85,6 +98,16 @@ module.exports = (env, argv) => {
                 template: path.resolve(templatePath, './_Layout_Template.cshtml')
             })
         ],
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.vue'],
+            alias: {
+                'vue$': 'vue/dist/vue.esm.js'
+            },
+            modules: [
+                path.resolve(__dirname, './node_modules'),
+                srcPath
+            ]
+        },
         devtool: '#eval-source-map'
     };
 };

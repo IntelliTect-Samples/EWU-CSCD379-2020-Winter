@@ -7,8 +7,10 @@
     "build:prod": "webpack --mode production"
   },
   "dependencies": {
+    "axios": "0.19.2",
     "bulma": "0.8.0",
-    "axios": "0.19.2"
+    "vue": "^2.6.11",
+    "vue-property-decorator": "latest"
   },
   "devDependencies": {
     "autoprefixer": "9.7.3",
@@ -31,6 +33,8 @@
     "stylelint-scss": "3.13.0",
     "ts-loader": "6.2.1",
     "typescript": "3.8.2",
+    "vue-loader": "15.9.0",
+    "vue-template-compiler": "2.6.11",
     "webpack": "4.41.2",
     "webpack-cli": "3.3.10"
   }

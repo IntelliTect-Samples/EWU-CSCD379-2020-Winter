@@ -1,23 +1,26 @@
 ﻿import '../styles/site.scss';
-import { App } from './app';
-import { Gift } from './secretsanta-client';
+import Vue from 'vue'
+
+import Users from './components/User/usersComponent.vue';
+import Gifts from './components/Gift/giftsComponent.vue';
+import Groups from './components/Group/groupsComponent.vue';
 
 document.addEventListener("DOMContentLoaded", async () => {
-    let app = new App.Main();
+   if (document.getElementById('users')) {
+      new Vue({
+         render: h => h(Users)
+      }).$mount('#users');
+   }
+   
+   if (document.getElementById('gifts')) {
+      new Vue({
+         render: h => h(Gifts)
+      }).$mount('#gifts');
+   }
 
-    await app.deleteGifts();
-
-    await app.createUser();
-
-    await app.createGifts();
-
-    let gifts = await app.getGifts();
-
-    let element = document.getElementById('giftList');
-
-    for (let gift of gifts) {
-        let liElement = element.appendChild(document.createElement('li'));
-        liElement.textContent = `${gift.id} ${gift.title} ${gift.description} ${gift.url}`;
-    }
-    
+   if (document.getElementById('groups')) {
+      new Vue({
+         render: h => h(Groups)
+      }).$mount('#groups');
+   }
 });

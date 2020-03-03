@@ -2,11 +2,11 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width"/>
     <title>@ViewBag.Title</title>
     <!-- Stylesheets -->
     <% for (var filename in htmlWebpackPlugin.files.css) { %>
-    <link href="~<%= htmlWebpackPlugin.files.css[filename] %>" rel="stylesheet" />
+    <link href="~<%= htmlWebpackPlugin.files.css[filename] %>" rel="stylesheet"/>
     <% } %>
     <!-- End Stylesheets -->
     <style>
@@ -16,22 +16,28 @@
     </style>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-controller="Users" asp-action="Index">Users</a></li>
-            <li><a asp-controller="Groups" asp-action="Index">Groups</a></li>
-            <li><a asp-controller="Gifts" asp-action="Index">Gifts</a></li>
-        </ul>
-    </nav>
-    <div>
+<nav class="navbar" role="navigation">
+    <div class="navbar-brand" style="margin: 0 10px">
+        <a class="navbar-item" asp-controller="Home" asp-action="Index">Secret Santa</a>
+    </div>
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" asp-controller="Users" asp-action="Index">Users</a>
+            <a class="navbar-item" asp-controller="Gifts" asp-action="Index">Gifts</a>
+            <a class="navbar-item" asp-controller="Groups" asp-action="Index">Groups</a>
+        </div>
+    </div>
+</nav>
+<section class="section">
+    <div class="content">
         @RenderBody()
     </div>
-    <!-- Scripts -->
-    <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
-    <script src="~<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
-    <% } %>
-    <!-- End Scripts -->
-    @RenderSection("scripts", required: false)
+</section>
+<!-- Scripts -->
+<% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+<script src="~<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+<% } %>
+<!-- End Scripts -->
+@RenderSection("scripts", false)
 </body>
 </html>
