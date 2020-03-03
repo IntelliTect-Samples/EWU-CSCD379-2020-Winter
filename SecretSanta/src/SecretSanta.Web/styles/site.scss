@@ -1,3 +1,13 @@
 ﻿@charset "utf-8";
 
+@import "~bulmaswatch/Darkly/_variables";
+
+$ugly-green: rgb(0, 126, 48);
+$ugly-red: rgb(182, 34, 34);
+
+$button-background-color: $ugly-green;
+$navbar-background-color: $ugly-red;
+$navbar-item-hover-color: $ugly-green;
+
 @import "~bulma/bulma";
+@import "~bulmaswatch/Darkly/_overrides";
