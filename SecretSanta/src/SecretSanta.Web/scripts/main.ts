@@ -3,6 +3,11 @@
 import Vue from 'vue';
 
 import GiftsComponent from './components/Gift/giftsComponent.vue';
+import GroupsComponent from './components/Group/groupsComponent.vue';
+import UsersComponent from './components/User/usersComponent.vue';
+import { App } from './app';
+
+//import { Gift } from './secretsanta-client';
 
 document.addEventListener("DOMContentLoaded", async () => {
 
@@ -11,13 +16,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             render: h => h(GiftsComponent)
         }).$mount('#giftList');
     }
+
+    if (document.getElementById('groupList')) {
+        new Vue({
+            render: h => h(GroupsComponent)
+        }).$mount('#groupList');
+    }
+
+    if (document.getElementById('userList')) {
+        new Vue({
+            render: h => h(UsersComponent)
+        }).$mount('#userList');
+    }
 });
 
 
 
-//import '../styles/site.scss';
-import { App } from './app';
-//import { Gift } from './secretsanta-client';
+
 
 document.addEventListener("DOMContentLoaded", async () => {
 
