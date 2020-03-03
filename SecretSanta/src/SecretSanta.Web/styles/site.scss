@@ -1,8 +1,11 @@
 ﻿@charset "utf-8";
 
+
+$pink: #ff6ee3;
 $green: #00ff21;
 
 $link: green;
 $primary: green;
+$table-background-color: $pink;
 
 @import "~bulma/bulma";
