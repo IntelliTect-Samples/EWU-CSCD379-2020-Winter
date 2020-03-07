@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Support.UI;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
@@ -19,9 +20,23 @@ namespace SecretSanta.Web.Tests
         private IWebDriver? Driver;
 
         [TestMethod]
-        public void MyTestMethod()
+        [TestCategory("Chrome")]
+        public void Add_Selenium_Success()
         {
+            //Arrange
+            Driver.Navigate().GoToUrl(AppUrl + "/Gift");
+            Driver.FindElement(By.Id("CreateButton")).Click();
+            Driver.FindElement(By.Id("TitleInput")).SendKeys("MONEY MONEY MONEY");
+            Driver.FindElement(By.Id("DescriptionInput")).SendKeys("A five letter word for happiness");
+            Driver.FindElement(By.Id("UrlInput")).SendKeys("https://en.wikipedia.org/wiki/Mr._Krabs");
+            IWebElement userDropDown = Driver.FindElement(By.Id("UserDropdown"));
+            SelectElement selectUserDropdown = new SelectElement(userDropDown);
+            selectUserDropdown.SelectByText("Inigo Montoya");
 
+            //Act
+            ITakesScreenshot scrShot = ((ITakesScreenshot)Driver);
+            Driver.FindElement(By.Id("submit")).Click();
+            //Assert
         }
         //[TestMethod]
         //[TestCategory("Chrome")]
@@ -65,7 +80,6 @@ namespace SecretSanta.Web.Tests
                     break;
             }
             Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 10);
-
         }
 
         [TestCleanup()]
@@ -79,25 +93,25 @@ namespace SecretSanta.Web.Tests
         string AppUrl { get; } = "https://localhost:44388";
         static string WebUrl { get; } = "https://localhost:44394";
 
-        [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
-        {
-            string ApiProjectPath = "../../../../../src/SecretSanta.Api";
-            ApiHostProcess = Process.Start(
-                "dotnet.exe",
-                "ApiProjectPath");
+        //[ClassInitialize]
+        //public static void ClassInitialize(TestContext testContext)
+        //{
+        //    string ApiProjectPath = "../../../../../src/SecretSanta.Api";
+        //    ApiHostProcess = Process.Start(
+        //        "dotnet.exe",
+        //        "ApiProjectPath");
 
-            string WebProjectPath = "../../../../../src/SecretSanta.Web";
-            WebHostProcess = Process.Start(
-                "dotnet.exe",
-                "WebProjectPath");
-        }
+        //    string WebProjectPath = "../../../../../src/SecretSanta.Web";
+        //    WebHostProcess = Process.Start(
+        //        "dotnet.exe",
+        //        "WebProjectPath");
+        //}
 
-        [ClassCleanup]
-        public static void ClassCleanup()
-        {
-            ApiHostProcess?.Close();
-            WebHostProcess?.Close();
-        }
+        //[ClassCleanup]
+        //public static void ClassCleanup()
+        //{
+        //    ApiHostProcess?.Close();
+        //    WebHostProcess?.Close();
+        //}
     }
 }

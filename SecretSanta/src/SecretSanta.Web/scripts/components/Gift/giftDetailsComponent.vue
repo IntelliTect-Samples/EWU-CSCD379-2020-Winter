@@ -5,25 +5,25 @@
             <div class="field">
                 <label class="label has-text-white">Title</label>
                 <div class="control">
-                    <input class="input" type="text" v-model="clonedGift.title" />
+                    <input class="input" id="TitleInput" type="text" v-model="clonedGift.title" />
                 </div>
             </div>
             <div class="field">
                 <label class="label has-text-white">Description</label>
                 <div class="control">
-                    <input class="input" type="text" v-model="clonedGift.description" />
+                    <input class="input" id="DescriptionInput" type="text" v-model="clonedGift.description" />
                 </div>
             </div>
             <div class="field">
                 <label class="label has-text-white">Url</label>
                 <div class="control">
-                    <input class="input" type="text" v-model="clonedGift.url" />
+                    <input class="input" id="UrlInput" type="text" v-model="clonedGift.url" />
                 </div>
             </div>
             <div class="field">
                 <label class="label has-text-white">User</label>
                 <div class="select">
-                    <select v-model="clonedGift.userId">
+                    <select id="UserDropdown" v-model="clonedGift.userId">
                         <option v-for="user in users" :value="user.id">
                             {{user.firstName}} {{user.lastName}}
                         </option>
