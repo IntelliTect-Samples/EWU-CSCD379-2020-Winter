@@ -14,12 +14,15 @@ namespace SecretSanta.Web.Tests
     public class GiftTests
     {
         [NotNull]
-        private TestContext? testContextInstance;
+        private TestContext? TestContextInstance;
         [NotNull]
-        private IWebDriver? driver;
+        private IWebDriver? Driver;
 
-        private string appURL;
+        [TestMethod]
+        public void MyTestMethod()
+        {
 
+        }
         //[TestMethod]
         //[TestCategory("Chrome")]
         //public void TheBingSearchTest()
@@ -39,65 +42,62 @@ namespace SecretSanta.Web.Tests
         {
             get
             {
-                return testContextInstance;
+                return TestContextInstance;
             }
             set
             {
-                testContextInstance = value;
+                TestContextInstance = value;
             }
         }
 
         [TestInitialize()]
         public void SetupTest()
         {
-            appURL = "http://www.bing.com/";
 
             string browser = "Chrome";
             switch (browser)
             {
                 case "Chrome":
-                    driver = new ChromeDriver();
-                    break;
-                case "Firefox":
-                    driver = new FirefoxDriver();
-                    break;
-                case "IE":
-                    driver = new InternetExplorerDriver();
+                    Driver = new ChromeDriver();
                     break;
                 default:
-                    driver = new ChromeDriver();
+                    Driver = new ChromeDriver();
                     break;
             }
+            Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 10);
 
         }
 
         [TestCleanup()]
         public void MyTestCleanup()
         {
-            driver.Quit();
+            Driver.Quit();
         }
 
-        static string WebUrl { get; } = "https://localhost:5011";
         static Process? ApiHostProcess { get; set; }
         static Process? WebHostProcess { get; set; }
-
-
-        string AppUrl { get; } = "https://localhost:44394";
+        string AppUrl { get; } = "https://localhost:44388";
+        static string WebUrl { get; } = "https://localhost:44394";
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            string ApiProjectPath = "";
+            string ApiProjectPath = "../../../../../src/SecretSanta.Api";
             ApiHostProcess = Process.Start(
                 "dotnet.exe",
                 "ApiProjectPath");
+
+            string WebProjectPath = "../../../../../src/SecretSanta.Web";
+            WebHostProcess = Process.Start(
+                "dotnet.exe",
+                "WebProjectPath");
         }
 
         [ClassCleanup]
-        public void ClassCleanup()
+        public static void ClassCleanup()
         {
             ApiHostProcess?.Close();
-            ApiHostProcess?.CloseMainWindow();
+            WebHostProcess?.Close();
         }
     }
 }
