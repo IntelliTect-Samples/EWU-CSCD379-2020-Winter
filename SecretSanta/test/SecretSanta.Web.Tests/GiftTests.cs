@@ -14,18 +14,32 @@ namespace SecretSanta.Web.Tests
     [TestClass]
     public class GiftTests
     {
+        static Process? ApiHostProcess { get; set; }
+        static Process? WebHostProcess { get; set; }
+        string AppUrl { get; } = "https://localhost:44388";
+        static string WebUrl { get; } = "https://localhost:44394";
         [NotNull]
         private TestContext? TestContextInstance;
         [NotNull]
         private IWebDriver? Driver;
+
+        private void AddUser()
+        {
+           
+        }
+
+        private void ClearGifts()
+        {
+
+        }
 
         [TestMethod]
         [TestCategory("Chrome")]
         public void Add_Selenium_Success()
         {
             //Arrange
-            Driver.Navigate().GoToUrl(AppUrl + "/Gift");
-            Driver.FindElement(By.Id("CreateButton")).Click();
+            Driver.Navigate().GoToUrl(WebUrl + "/Gifts");
+            Driver.FindElement(By.CssSelector("#CreateButton")).Click();
             Driver.FindElement(By.Id("TitleInput")).SendKeys("MONEY MONEY MONEY");
             Driver.FindElement(By.Id("DescriptionInput")).SendKeys("A five letter word for happiness");
             Driver.FindElement(By.Id("UrlInput")).SendKeys("https://en.wikipedia.org/wiki/Mr._Krabs");
@@ -34,9 +48,13 @@ namespace SecretSanta.Web.Tests
             selectUserDropdown.SelectByText("Inigo Montoya");
 
             //Act
-            ITakesScreenshot scrShot = ((ITakesScreenshot)Driver);
             Driver.FindElement(By.Id("submit")).Click();
+            Screenshot ss = ((ITakesScreenshot)Driver).GetScreenshot();
+            string path = "../../../" + "UpdatedGiftsScreenshot.png";
+            ss.SaveAsFile(path);
             //Assert
+            String moneyGift = Driver.FindElement(By.XPath(".//*[@id='GiftTable']//td[contains(.,'MONEY MONEY MONEY')]")).Text;
+            Assert.IsNotNull(moneyGift);
         }
         //[TestMethod]
         //[TestCategory("Chrome")]
@@ -68,7 +86,8 @@ namespace SecretSanta.Web.Tests
         [TestInitialize()]
         public void SetupTest()
         {
-
+            ClearGifts();
+            AddUser();
             string browser = "Chrome";
             switch (browser)
             {
@@ -88,10 +107,7 @@ namespace SecretSanta.Web.Tests
             Driver.Quit();
         }
 
-        static Process? ApiHostProcess { get; set; }
-        static Process? WebHostProcess { get; set; }
-        string AppUrl { get; } = "https://localhost:44388";
-        static string WebUrl { get; } = "https://localhost:44394";
+   
 
         //[ClassInitialize]
         //public static void ClassInitialize(TestContext testContext)
