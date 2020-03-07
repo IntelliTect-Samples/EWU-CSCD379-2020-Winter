@@ -8,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System.Linq;
+using System.Text;
 
 namespace BlogEngine.Api
 {
@@ -48,15 +51,19 @@ namespace BlogEngine.Api
              });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Reliability", "CA2007:Consider calling ConfigureAwait on the awaited task", Justification = "<Pending>")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "<Pending>")]
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            StringBuilder message = new StringBuilder("Configuration:\n");
+            foreach(var configItem in configuration.AsEnumerable().OrderBy(item=>item.Key))
+            {
+                message.AppendLine( $"\t{configItem.Key}={configItem.Value}");
+            }
+            logger.LogInformation(message.ToString());
 
             app.UseRouting();
 

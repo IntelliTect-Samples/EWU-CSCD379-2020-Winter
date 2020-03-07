@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -28,9 +30,9 @@
     <TypeScriptCompile Include="scripts\vue-shim.d.ts" />
   </ItemGroup>
 
-  <!--<Target Condition="!Exists('.\Views\Shared\_Layouts.cshtml')" Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Condition="!Exists('Views\Shared\_Layout.cshtml')" Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec WorkingDirectory="$(MSBuildProjectDirectory)" Command="npm run build:prod" />
-  </Target>-->
+  </Target>
 
 
 </Project>
