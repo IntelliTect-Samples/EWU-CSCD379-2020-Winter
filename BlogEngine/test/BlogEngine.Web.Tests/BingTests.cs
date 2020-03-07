@@ -7,7 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace BlogEngine.Web.Tests
 {
     [TestClass]
-    public class AuthorTests
+    public class BingTests
     {
         [NotNull]
         public TestContext? TestContext { get; set; }
@@ -32,7 +32,6 @@ namespace BlogEngine.Web.Tests
                     break;
             }
             Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 10);
-
         }
 
         public void EnterBingSearchText(string text)
