@@ -5,9 +5,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using SecretSanta.Business;
 using SecretSanta.Business.Services;
 using SecretSanta.Data;
+using System.Linq;
+using System.Text;
 
 namespace SecretSanta.Api
 {
@@ -47,23 +50,47 @@ namespace SecretSanta.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration, ILogger<Startup> logger)
         {
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}
+
+            //app.UseRouting();
+
+            //app.UseOpenApi();
+            //app.UseSwaggerUi3();
+
+            //app.UseCors();
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapDefaultControllerRoute();
+            //});
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            StringBuilder message = new StringBuilder("Configuration:\n");
+            foreach (var configItem in configuration.AsEnumerable().OrderBy(item => item.Key))
+            {
+                message.AppendLine($"\t{configItem.Key}={configItem.Value}");
+            }
+            logger.LogInformation(message.ToString());
+
             app.UseRouting();
 
             app.UseOpenApi();
+            //http://localhost/swagger
             app.UseSwaggerUi3();
 
             app.UseCors();
 
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoint =>
             {
-                endpoints.MapDefaultControllerRoute();
+                endpoint.MapDefaultControllerRoute();
             });
         }
     }

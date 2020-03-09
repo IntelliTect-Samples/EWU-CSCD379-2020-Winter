@@ -22,3 +22,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         }).$mount('#groupList');
     }
 });
+
+import { App } from './app';
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    let app = new App.Main();
+    if (app.createdUser == null) {
+        await app.createUser();
+    }
+    
+
+});
