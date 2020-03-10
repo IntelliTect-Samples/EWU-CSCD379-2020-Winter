@@ -10,6 +10,7 @@ using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Support.Extensions;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace SecretSanta.Data.Tests
 {
@@ -62,6 +63,7 @@ namespace SecretSanta.Data.Tests
         public void VerifySiteIsRunning()
         {
             Driver.Navigate().GoToUrl(new Uri(AppURL));
+            Thread.Sleep(5000);
             string text = Driver.FindElement(By.XPath("/html/body/section/div/p")).Text;
             Assert.IsTrue(text.Contains("Welcome to your secret santa app"));
         }
@@ -74,9 +76,9 @@ namespace SecretSanta.Data.Tests
             string testDescription = "TestDescription";
             string testUrl = "www.Test.com";
             Driver.Navigate().GoToUrl(new Uri(AppURL + "Gifts"));
-
+            Thread.Sleep(5000);
             Driver.FindElement(By.CssSelector("button[class='button is-secondary']")).Click();
-
+            Thread.Sleep(5000);
 #pragma warning disable CA1303 // Passing literals as localized parameters
             Driver.FindElements(By.CssSelector(".input"))[0].SendKeys(testTitle);
             Driver.FindElements(By.CssSelector(".input"))[1].SendKeys(testDescription);
@@ -87,10 +89,13 @@ namespace SecretSanta.Data.Tests
             Driver.FindElement(By.Id("submit")).Click();
 
             Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 5);
+            Thread.Sleep(5000);
             var table = Driver.FindElement(By.TagName("table"));
+            Thread.Sleep(5000);
             var rows = table.FindElements(By.TagName("tr"));
+            Thread.Sleep(5000);
             var testRow = rows[rows.Count - 1];
-
+            Thread.Sleep(5000);
             Assert.AreEqual(("TestTitle", "TestDescription", "www.Test.com"),
                 (testRow.FindElements(By.TagName("td"))[1].Text,
                 testRow.FindElements(By.TagName("td"))[2].Text,
