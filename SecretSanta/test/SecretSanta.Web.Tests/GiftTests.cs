@@ -62,8 +62,9 @@ namespace SecretSanta.Data.Tests
         [TestMethod]
         public void VerifySiteIsRunning()
         {
+            Thread.Sleep(10000);
             Driver.Navigate().GoToUrl(new Uri(AppURL));
-            Thread.Sleep(5000);
+            Thread.Sleep(10000);
             string text = Driver.FindElement(By.XPath("/html/body/section/div/p")).Text;
             Assert.IsTrue(text.Contains("Welcome to your secret santa app"));
         }
