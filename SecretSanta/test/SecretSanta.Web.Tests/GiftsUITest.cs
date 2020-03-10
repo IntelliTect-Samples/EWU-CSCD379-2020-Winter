@@ -43,7 +43,7 @@ namespace SecretSanta.Web.Tests
                     FirstName = "Inigo",
                     LastName = "Montoya"
                 };
-                client.PostAsync(user);
+                await client.PostAsync(user);
             }
         }
 
@@ -77,7 +77,7 @@ namespace SecretSanta.Web.Tests
             string GiftTitle = "test gift";
             Driver.Navigate().GoToUrl(new Uri(AppURL));
             Driver.FindElement(By.XPath("/html/body/nav/div[2]/div/a[4]")).Click();
-            Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 10);
+            Thread.Sleep(500);
             Driver.FindElement(By.CssSelector("button[class='button is-secondary']")).Click();
             IWebElement title = Driver.FindElement(By.CssSelector("body > section > div > div > div > div.modal-content > div:nth-child(1) > div > input"));
             title.SendKeys(GiftTitle);
@@ -90,8 +90,7 @@ namespace SecretSanta.Web.Tests
             Driver.FindElement(By.CssSelector("#submit")).Click();
             //IWebElement table = Driver.FindElement(By.CssSelector("body > section > div > div > table > tbody > tr"));
 
-            Driver.Navigate().Refresh();
-            Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 10);
+            Thread.Sleep(500);
             var table = Driver.FindElement(By.TagName("table"));
             var rows = table.FindElements(By.TagName("tr"));
             Boolean foundTest = false;
