@@ -1,8 +1,8 @@
 ﻿<template>
     <div>
         <h2>Gifts</h2>
-        <button class="button is-secondary" @click="create()">Create New</button>
-        <table class="table">
+        <button id="create-button" class="button is-secondary" @click="create()">Create New</button>
+        <table id="gift-table" class="table">
             <thead>
                 <tr>
                     <th>Id</th>
