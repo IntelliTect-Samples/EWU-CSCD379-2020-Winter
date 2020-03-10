@@ -107,7 +107,12 @@ namespace SecretSanta.Web.Tests
             Thread.Sleep(5000);
 
             Screenshot screenshot = ((ITakesScreenshot)WebDriver).GetScreenshot();
-            screenshot.SaveAsFile("dsergio_Assignment9_CreateGift_Screenshot.png", ScreenshotImageFormat.Png);
+
+            //screenshot.SaveAsFile("dsergio_Assignment9_CreateGift_Screenshot.png", ScreenshotImageFormat.Png);
+
+            string path = Directory.GetCurrentDirectory() + "SearchTestScreenshot.png";
+            screenshot.SaveAsFile(path, ScreenshotImageFormat.Png);
+            TestContext.AddResultFile(path);
 
         }
     }
