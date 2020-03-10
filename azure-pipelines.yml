@@ -14,6 +14,7 @@ variables:
 
 
 steps:
+- script: npm install
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
