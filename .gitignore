@@ -276,3 +276,4 @@ __pycache__/
 
 *.db
 *.sqlite
+BlogEngine/src/BlogEngine.Web/Views/Shared/_Layout.cshtml
