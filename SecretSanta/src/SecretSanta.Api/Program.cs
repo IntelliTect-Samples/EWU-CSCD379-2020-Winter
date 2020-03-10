@@ -42,7 +42,9 @@ namespace SecretSanta.Api
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder
+                    .UseUrls("https://localhost:44388")
+                    .UseStartup<Startup>();
                 });
     }
 }
