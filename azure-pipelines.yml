@@ -14,7 +14,10 @@ variables:
 
 
 steps:
-- script: npm install
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: '$(System.DefaultWorkingDirectory)\SecretSanta\src\SecretSanta.Web'
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
