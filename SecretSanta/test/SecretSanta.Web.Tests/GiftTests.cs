@@ -8,6 +8,9 @@ using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Support.UI;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
+using SecretSanta.Web.Api;
+using System.Collections.Generic;
 
 namespace SecretSanta.Web.Tests
 {
@@ -16,21 +19,29 @@ namespace SecretSanta.Web.Tests
     {
         static Process? ApiHostProcess { get; set; }
         static Process? WebHostProcess { get; set; }
-        string AppUrl { get; } = "https://localhost:44388";
+        static string AppUrl { get; } = "https://localhost:44388";
         static string WebUrl { get; } = "https://localhost:44394";
         [NotNull]
         private TestContext? TestContextInstance;
         [NotNull]
         private IWebDriver? Driver;
 
-        private void AddUser()
+        private static async void AddUser()
         {
-           
-        }
-
-        private void ClearGifts()
-        {
-
+            using HttpClient http = new HttpClient();
+            http.BaseAddress = new Uri(AppUrl);
+            UserClient client = new UserClient(http);
+            ICollection<User> users = await client.GetAllAsync();
+            if (users.Count <= 0)
+            {
+                UserInput spongebob = new UserInput
+                {
+                    FirstName = "Spongebob",
+                    LastName = "Squarepants",
+                    SantaId = 1
+                };
+                client.PostAsync(spongebob);
+            }
         }
 
         [TestMethod]
@@ -45,7 +56,7 @@ namespace SecretSanta.Web.Tests
             Driver.FindElement(By.Id("UrlInput")).SendKeys("https://en.wikipedia.org/wiki/Mr._Krabs");
             IWebElement userDropDown = Driver.FindElement(By.Id("UserDropdown"));
             SelectElement selectUserDropdown = new SelectElement(userDropDown);
-            selectUserDropdown.SelectByText("Inigo Montoya");
+            selectUserDropdown.SelectByText("Spongebob Squarepants");
 
             //Act
             Driver.FindElement(By.Id("submit")).Click();
@@ -56,21 +67,7 @@ namespace SecretSanta.Web.Tests
             String moneyGift = Driver.FindElement(By.XPath(".//*[@id='GiftTable']//td[contains(.,'MONEY MONEY MONEY')]")).Text;
             Assert.IsNotNull(moneyGift);
         }
-        //[TestMethod]
-        //[TestCategory("Chrome")]
-        //public void TheBingSearchTest()
-        //{
-        //    driver.Navigate().GoToUrl(appURL + "/");
-        //    driver.FindElement(By.Id("sb_form_q")).SendKeys("Azure Pipelines");
-        //    driver.FindElement(By.Id("sb_form_go")).Click();
-        //    driver.FindElement(By.XPath("//ol[@id='b_results']/li/h2/a/strong[3]")).Click();
-        //    Assert.IsTrue(driver.Title.Contains("Azure Pipelines"), "Verified title of the page");
-        //}
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+    
         public TestContext TestContext
         {
             get
@@ -86,8 +83,6 @@ namespace SecretSanta.Web.Tests
         [TestInitialize()]
         public void SetupTest()
         {
-            ClearGifts();
-            AddUser();
             string browser = "Chrome";
             switch (browser)
             {
@@ -107,27 +102,27 @@ namespace SecretSanta.Web.Tests
             Driver.Quit();
         }
 
-   
 
-        //[ClassInitialize]
-        //public static void ClassInitialize(TestContext testContext)
-        //{
-        //    string ApiProjectPath = "../../../../../src/SecretSanta.Api";
-        //    ApiHostProcess = Process.Start(
-        //        "dotnet.exe",
-        //        "ApiProjectPath");
 
-        //    string WebProjectPath = "../../../../../src/SecretSanta.Web";
-        //    WebHostProcess = Process.Start(
-        //        "dotnet.exe",
-        //        "WebProjectPath");
-        //}
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext testContext)
+        {
+            AddUser();
+            ApiHostProcess = Process.Start(
+                "dotnet.exe",
+                "run -p ..//..//..//..//..//src//SecretSanta.Api//SecretSanta.Api.csproj");
 
-        //[ClassCleanup]
-        //public static void ClassCleanup()
-        //{
-        //    ApiHostProcess?.Close();
-        //    WebHostProcess?.Close();
-        //}
+            WebHostProcess = Process.Start(
+                "dotnet.exe",
+                "run -p ..//..//..//..//..//src//SecretSanta.Web//SecretSanta.Web.csproj");
+            ApiHostProcess.WaitForExit(6000);
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+            ApiHostProcess?.Kill();
+            WebHostProcess?.Kill();
+        }
     }
 }
