@@ -83,6 +83,7 @@ namespace SecretSanta.Web.Tests
         [TestInitialize()]
         public void SetupTest()
         {
+            AddUser();
             string browser = "Chrome";
             switch (browser)
             {
@@ -107,14 +108,13 @@ namespace SecretSanta.Web.Tests
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            AddUser();
             ApiHostProcess = Process.Start(
                 "dotnet.exe",
-                "run -p ..//..//..//..//..//src//SecretSanta.Api//SecretSanta.Api.csproj");
+                "run -p ..\\..\\..\\..\\..\\src\\SecretSanta.Api\\");
 
             WebHostProcess = Process.Start(
                 "dotnet.exe",
-                "run -p ..//..//..//..//..//src//SecretSanta.Web//SecretSanta.Web.csproj");
+                "run -p ..\\..\\..\\..\\..\\src\\SecretSanta.Web\\");
             ApiHostProcess.WaitForExit(6000);
         }
 
@@ -122,7 +122,9 @@ namespace SecretSanta.Web.Tests
         public static void ClassCleanup()
         {
             ApiHostProcess?.Kill();
+            ApiHostProcess?.Close();
             WebHostProcess?.Kill();
+            WebHostProcess?.Close();
         }
     }
 }
