@@ -8,6 +8,8 @@ using SecretSanta.Web.Api;
 using System.Net.Http;
 using OpenQA.Selenium.Support.UI;
 using OpenQA.Selenium.Support.Extensions;
+using System.Diagnostics;
+using System.IO;
 
 namespace SecretSanta.Data.Tests
 {
@@ -20,19 +22,39 @@ namespace SecretSanta.Data.Tests
         [NotNull]
         private IWebDriver? Driver { get; set; }
 
-        string ApiURL { get; } = "https://localhost:44388/";
-        string AppURL { get; } = "https://localhost:44394/Gifts";
+        private static Process? ApiHostProcess { get; set; }
+        private static Process? WebHostProcess { get; set; }
 
-        //[ClassInitialize]
-        //public static async Task ClassInitialize()
-        //{
-            
-        //}
+        string ApiURL { get; } = "https://localhost:44388/";
+        string AppURL { get; } = "https://localhost:44394/";
+
+        [ClassInitialize]
+        public static void ClassInitialize(TestContext testContext)
+        {
+            _ = testContext ?? throw new ArgumentNullException(nameof(testContext));
+
+            ApiHostProcess = Process.Start("dotnet.exe", "run -p ..\\..\\..\\..\\..\\src\\SecretSanta.Api\\SecretSanta.Api.csproj");
+            WebHostProcess = Process.Start("dotnet.exe", "run -p ..\\..\\..\\..\\..\\src\\SecretSanta.Web\\SecretSanta.Web.csproj");
+            ApiHostProcess.WaitForExit(10000);
+        }
+
+        [ClassCleanup]
+        public static void ClassCleanup()
+        {
+            ApiHostProcess?.Kill();
+            ApiHostProcess?.CloseMainWindow();
+            ApiHostProcess?.Close();
+            WebHostProcess?.Kill();
+            WebHostProcess?.CloseMainWindow();
+            WebHostProcess?.Close();
+        }
 
         [TestInitialize]
         public void TestInitialize()
         {
-            Driver = new ChromeDriver();
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("ignore-certificate-errors");
+            Driver = new ChromeDriver(options);
             Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 10);
         }
 
@@ -51,7 +73,7 @@ namespace SecretSanta.Data.Tests
             string testTitle = "TestTitle";
             string testDescription = "TestDescription";
             string testUrl = "www.Test.com";
-            Driver.Navigate().GoToUrl(new Uri(AppURL));
+            Driver.Navigate().GoToUrl(new Uri(AppURL + "Gifts"));
 
             Driver.FindElement(By.CssSelector("button[class='button is-secondary']")).Click();
 
@@ -74,12 +96,17 @@ namespace SecretSanta.Data.Tests
                 testRow.FindElements(By.TagName("td"))[2].Text,
                 testRow.FindElements(By.TagName("td"))[3].Text));
 
-            Driver.TakeScreenshot().SaveAsFile("TestScreenshot.png", ScreenshotImageFormat.Png);
+            string path = Directory.GetCurrentDirectory() + "TestScreenshot.png";
+            ((ITakesScreenshot)Driver).GetScreenshot().SaveAsFile(path, ScreenshotImageFormat.Png);
+            TestContext.AddResultFile(path);
         }
 
         private async Task CreateUser()
         {
-            using HttpClient httpClient = new HttpClient();
+            using HttpClientHandler clientHandler = new HttpClientHandler();
+            clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+
+            using HttpClient httpClient = new HttpClient(clientHandler);
             httpClient.BaseAddress = new Uri(ApiURL);
             IUserClient userClient = new UserClient(httpClient);
 
