@@ -14,7 +14,7 @@ namespace SecretSanta.Web
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("https://localhost:44394").UseStartup<Startup>();
                 });
     }
 }
