@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace SecretSanta.Web.Tests
 {
@@ -87,7 +88,7 @@ namespace SecretSanta.Web.Tests
         }
 
         [TestMethod]
-        public void GoToGiftsPage_CreateGift()
+        public async Task GoToGiftsPage_CreateGiftAsync()
         {
             WebDriver.Navigate().GoToUrl(new Uri("https://localhost:44394/Gifts"));
             Thread.Sleep(5000);
@@ -106,11 +107,16 @@ namespace SecretSanta.Web.Tests
             buttonSubmit.Click();
             Thread.Sleep(5000);
 
+            System.Collections.ObjectModel.ReadOnlyCollection<IWebElement> list = WebDriver.FindElements(By.XPath("/html/body/section/div/div/table/tbody/tr"));
+            int lastGiftIndex = list.Count;
+
+            Assert.AreEqual(WebDriver.FindElement(By.XPath("/html/body/section/div/div/table/tbody/tr[" + lastGiftIndex + "]/ td[2]")).Text, "Cylon Detector");
+
             Screenshot screenshot = ((ITakesScreenshot)WebDriver).GetScreenshot();
 
             //screenshot.SaveAsFile("dsergio_Assignment9_CreateGift_Screenshot.png", ScreenshotImageFormat.Png);
 
-            string path = Directory.GetCurrentDirectory() + "SearchTestScreenshot.png";
+            string path = Directory.GetCurrentDirectory() + "dsergio_Assignment9_CreateGift_Screenshot.png";
             screenshot.SaveAsFile(path, ScreenshotImageFormat.Png);
             TestContext.AddResultFile(path);
 
