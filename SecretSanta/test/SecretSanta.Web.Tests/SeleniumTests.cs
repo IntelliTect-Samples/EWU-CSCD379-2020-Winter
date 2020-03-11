@@ -81,7 +81,8 @@ namespace SecretSanta.Web.Tests
             Thread.Sleep(5000);
             Driver.Navigate().GoToUrl(AppURL + "Gifts");
             Thread.Sleep(5000);
-            Driver.Navigate().GoToUrl(AppURL + "Users");
+            IWebElement createGift = Driver.FindElement(By.CssSelector(".is-secondary"));
+            createGift.Click();
             Thread.Sleep(5000);
         }
 
