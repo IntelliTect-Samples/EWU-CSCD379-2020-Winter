@@ -78,12 +78,28 @@ namespace SecretSanta.Web.Tests
         public void NavigateToHome_Success()
         {
             Driver.Navigate().GoToUrl(new Uri(AppURL));
-            Thread.Sleep(5000);
+            Thread.Sleep(3000);
             Driver.Navigate().GoToUrl(AppURL + "Gifts");
             Thread.Sleep(5000);
             IWebElement createGift = Driver.FindElement(By.CssSelector(".is-secondary"));
             createGift.Click();
-            Thread.Sleep(5000);
+            Thread.Sleep(3000);
+
+            IWebElement titleInput = Driver.FindElement(By.CssSelector("input[id='titleInput']"));
+            titleInput.SendKeys("Test Title");
+
+            IWebElement descriptionInput = Driver.FindElement(By.CssSelector("input[id='descriptionInput']"));
+            descriptionInput.SendKeys("Test Description");
+
+            IWebElement urlInput = Driver.FindElement(By.CssSelector("input[id='urlInput']"));
+            urlInput.SendKeys("www.url.com");
+
+            IWebElement userInput = Driver.FindElement(By.CssSelector("select[id='userInput']"));
+            userInput.Click();
+
+            Driver.FindElement(By.CssSelector("option")).Click();
+            Driver.FindElement(By.CssSelector("button[id='submit']")).Click();
+            Thread.Sleep(3000);
         }
 
 
