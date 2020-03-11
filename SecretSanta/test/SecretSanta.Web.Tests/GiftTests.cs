@@ -82,7 +82,7 @@ namespace SecretSanta.Web.Tests
         public void Create_Gift_Success()
         {
             Driver = new ChromeDriver();
-            Driver.Navigate().GoToUrl(WebUrl + "/Gifts");
+            Driver.Navigate().GoToUrl(WebUrl + "Gifts");
             Driver.FindElement(By.CssSelector("create-button")).Click();
             Driver.FindElement(By.Id("gift-title")).SendKeys("Test Title");
             Driver.FindElement(By.Id("gift-description")).SendKeys("Test Description");
