@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,7 +34,7 @@ namespace SecretSanta.Web.Tests
 
 
         [ClassInitialize]
-        public static void ClassInitialize(TestContext testContext)
+        public static async Task ClassInitialize(TestContext testContext)
         {
             if (testContext is null)
                 throw new ArgumentNullException(nameof(testContext));
@@ -42,6 +43,25 @@ namespace SecretSanta.Web.Tests
             WebHostProcess = Process.Start("dotnet.exe", $@"run -p ..\..\src\SecretSanta.Web\SecretSanta.Web.csproj --urls={AppURL}");
 
             ApiHostProcess.WaitForExit(8000);
+
+            
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(ApiURL);
+
+            UserClient userClient = new UserClient(httpClient);
+
+            ICollection<User> users = await userClient.GetAllAsync();
+            if (users.Count <= 0)
+            {
+                UserInput userInput = new UserInput
+                {
+                    FirstName = "Caleb",
+                    LastName = "Walsh"
+                };
+
+                await userClient.PostAsync(userInput);
+            }
+            httpClient.Dispose();
         }
 
         [ClassCleanup]
@@ -52,25 +72,6 @@ namespace SecretSanta.Web.Tests
             WebHostProcess?.CloseMainWindow();
             WebHostProcess?.Close();
         }
-
-        //public async void CreateUser()
-        //{
-        //    HttpClient httpClient = new HttpClient();
-        //    httpClient.BaseAddress = new Uri(AppURL);
-        //    UserClient userClient = new UserClient(httpClient);
-
-        //    ICollection<User> users = await userClient.GetAllAsync();
-        //    if (users.Count < 1)
-        //    {
-        //        UserInput userInput = new UserInput
-        //        {
-        //            FirstName = "Inigo",
-        //            LastName = "Montoya"
-        //        };
-        //        await userClient.PostAsync(userInput);
-        //    }
-        //    httpClient.Dispose();
-        //}
 
         [TestMethod]
         [TestCategory("Chrome")]
