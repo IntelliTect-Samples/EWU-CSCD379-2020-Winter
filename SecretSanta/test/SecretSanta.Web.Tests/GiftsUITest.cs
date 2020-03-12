@@ -87,7 +87,7 @@ namespace SecretSanta.Web.Tests
             url.SendKeys("http://www.test.com");
             SelectElement user = new SelectElement(Driver.FindElement(By.CssSelector("body > section > div > div > div > div.modal-content > div:nth-child(4) > div > select")));
             user.SelectByIndex(0);
-            Driver.FindElement(By.CssSelector("#submit")).Click();
+            Driver.FindElement(By.Id("submit")).Click();
             //IWebElement table = Driver.FindElement(By.CssSelector("body > section > div > div > table > tbody > tr"));
 
             Thread.Sleep(500);
