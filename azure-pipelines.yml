@@ -1,6 +1,6 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
@@ -10,19 +10,47 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
-
+  BuildConfiguration: 'Release'
 
 steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
     version: '3.1.x'
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'SecretSanta/src/SecretSanta.Web'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: 'SecretSanta/src/SecretSanta.Web'
+    customCommand: 'run build:prod'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
     projects: '**/*.csproj'
+
 - task: DotNetCoreCLI@2
+  displayName: 'Test'
   inputs:
     command: 'test'
-    projects: '**/test/**/*.csproj'
+    projects: '**/*.Tests.csproj'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: |
+      **/SecretSanta.Api.csproj
+      **/SecretSanta.Web.csproj
+    arguments: '--configuration $(BuildConfiguration) --output "$(Build.ArtifactStagingDirectory)"'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
