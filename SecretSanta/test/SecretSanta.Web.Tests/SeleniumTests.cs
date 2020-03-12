@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -19,6 +20,8 @@ namespace SecretSanta.Web.Tests
     [TestClass]
     public class SeleniumTests
     {
+        private HttpClient httpClient;
+
         [NotNull]
         public TestContext? TestContext { get; set; }
 
@@ -30,7 +33,7 @@ namespace SecretSanta.Web.Tests
         private static Process? WebHostProcess { get; set; }
         static string AppURL { get; } = "https://localhost:44394/";
         static string ApiURL { get; } = "https://localhost:44388";
-
+       // HttpClient httpClient = new HttpClient();
 
 
         [ClassInitialize]
@@ -61,7 +64,7 @@ namespace SecretSanta.Web.Tests
 
                 await userClient.PostAsync(userInput);
             }
-            httpClient.Dispose();
+           // httpClient.Dispose();
         }
 
         [ClassCleanup]
@@ -71,12 +74,14 @@ namespace SecretSanta.Web.Tests
             ApiHostProcess?.Close();
             WebHostProcess?.CloseMainWindow();
             WebHostProcess?.Close();
+            
         }
 
         [TestMethod]
         [TestCategory("Chrome")]
-        public void NavigateToHome_Success()
+        public async Task NavigateToHome_Success()
         {
+
             Driver.Navigate().GoToUrl(new Uri(AppURL));
             Thread.Sleep(3000);
             Driver.Navigate().GoToUrl(AppURL + "Gifts");
@@ -97,9 +102,14 @@ namespace SecretSanta.Web.Tests
             IWebElement userInput = Driver.FindElement(By.CssSelector("select[id='userInput']"));
             userInput.Click();
 
-            Driver.FindElement(By.CssSelector("option")).Click();
-            Driver.FindElement(By.CssSelector("button[id='submit']")).Click();
-            Thread.Sleep(3000);
+            IWebElement userSelect = Driver.FindElement(By.CssSelector("option"));
+            userSelect.Click();
+
+            IWebElement submitButton = Driver.FindElement(By.CssSelector("button[id='submit']"));
+            submitButton.Click();
+          
+            Screenshot screenShot = ((ITakesScreenshot)Driver).GetScreenshot();
+            screenShot.SaveAsFile("../../../screenshotGiftAdded.png", ScreenshotImageFormat.Png);
         }
 
 
