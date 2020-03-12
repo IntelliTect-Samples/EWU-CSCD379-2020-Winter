@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using SecretSanta.Data;
 using System;
+using System.Collections.Generic;
 
 namespace SecretSanta.Api
 {
@@ -25,6 +28,14 @@ namespace SecretSanta.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .ConfigureAppConfiguration(config =>
+                    config.AddInMemoryCollection(
+                        new Dictionary<string, string> { { "ConnectionStrings:DefaultConnection", "Data Source=Blog.db" } })
+                )
+                .ConfigureLogging(logging =>
+                {
+                    logging.AddConsole();
+                })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
