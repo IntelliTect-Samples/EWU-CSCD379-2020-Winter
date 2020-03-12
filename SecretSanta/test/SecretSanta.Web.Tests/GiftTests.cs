@@ -24,8 +24,8 @@ namespace SecretSanta.Web.Tests
         [NotNull]
         private IWebDriver? Driver { get; set; }
 
-        private static string AppUrl { get; } = "http://localhost:5000/";
-        private static string ApiUrl { get; } = "http://locahost:5002/";
+        private static string AppUrl { get; } = "https://localhost:5001/";
+        private static string ApiUrl { get; } = "https://locahost:5003/";
 
         private static Process Api { get; set; }
         private static Process Web { get; set; }
@@ -34,9 +34,11 @@ namespace SecretSanta.Web.Tests
         public void TestInitialize()
         {
             const string browser = "Firefox";
+            var          options = new FirefoxOptions {AcceptInsecureCertificates = true};
+
             Driver = browser switch
             {
-                "Firefox" => new FirefoxDriver(),
+                "Firefox" => new FirefoxDriver(options),
                 _         => new InternetExplorerDriver()
             };
 
@@ -76,25 +78,29 @@ namespace SecretSanta.Web.Tests
             new SelectElement(Driver.FindElement(By.Id("selectUser"))).SelectByIndex(0);
             Driver.FindElement(By.Id("submit")).Click();
 
-            Assert.AreEqual(1, Driver.FindElements(By.TagName("tr")).Count);
+            // 2 because of the table head
+            Assert.AreEqual(2, Driver.FindElements(By.TagName("tr")).Count);
+
+            var screenShot = ((ITakesScreenshot) Driver).GetScreenshot();
+            screenShot.SaveAsFile("../../../screenshotGiftAdded.png", ScreenshotImageFormat.Png);
         }
 
         private static async Task<User> AddUser()
         {
-            using HttpClient httpClient = new HttpClient {BaseAddress = new Uri(ApiUrl)};
-            var client = new UserClient(httpClient);
-            var user = new UserInput
-            {
-                FirstName = "John",
-                LastName  = "Madden"
-            };
+            using var httpClient = new HttpClient {BaseAddress = new Uri("https://localhost:5003")};
+            var       client     = new UserClient(httpClient);
+            var       user       = new UserInput {FirstName = "John", LastName = "Madden"};
 
             return await client.PostAsync(user);
         }
-        
+
         [TestCleanup]
         public void TestCleanup()
         {
+            using var httpClient = new HttpClient {BaseAddress = new Uri("https://localhost:5003")};
+            var       client     = new UserClient(httpClient);
+
+            client.DeleteAsync(0);
             Driver.Quit();
         }
 
