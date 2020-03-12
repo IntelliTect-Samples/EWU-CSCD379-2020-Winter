@@ -20,8 +20,6 @@ namespace SecretSanta.Web.Tests
     [TestClass]
     public class SeleniumTests
     {
-        private HttpClient httpClient;
-
         [NotNull]
         public TestContext? TestContext { get; set; }
 
@@ -33,7 +31,7 @@ namespace SecretSanta.Web.Tests
         private static Process? WebHostProcess { get; set; }
         static string AppURL { get; } = "https://localhost:44394/";
         static string ApiURL { get; } = "https://localhost:44388";
-       // HttpClient httpClient = new HttpClient();
+       
 
 
         [ClassInitialize]
@@ -47,7 +45,6 @@ namespace SecretSanta.Web.Tests
 
             ApiHostProcess.WaitForExit(8000);
 
-            
             HttpClient httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri(ApiURL);
 
@@ -64,7 +61,7 @@ namespace SecretSanta.Web.Tests
 
                 await userClient.PostAsync(userInput);
             }
-           // httpClient.Dispose();
+            httpClient.Dispose();
         }
 
         [ClassCleanup]
@@ -74,17 +71,21 @@ namespace SecretSanta.Web.Tests
             ApiHostProcess?.Close();
             WebHostProcess?.CloseMainWindow();
             WebHostProcess?.Close();
-            
         }
 
         [TestMethod]
         [TestCategory("Chrome")]
         public async Task NavigateToHome_Success()
         {
+            HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(ApiURL);
+            GiftClient giftClient = new GiftClient(httpClient);
+            ICollection<Gift> giftsBeforeInsert = await giftClient.GetAllAsync();
+            
 
             Driver.Navigate().GoToUrl(new Uri(AppURL));
             Thread.Sleep(3000);
-            Driver.Navigate().GoToUrl(AppURL + "Gifts");
+            Driver.Navigate().GoToUrl(new Uri(AppURL + "Gifts"));
             Thread.Sleep(5000);
             IWebElement createGift = Driver.FindElement(By.CssSelector(".is-secondary"));
             createGift.Click();
@@ -110,6 +111,12 @@ namespace SecretSanta.Web.Tests
           
             Screenshot screenShot = ((ITakesScreenshot)Driver).GetScreenshot();
             screenShot.SaveAsFile("../../../screenshotGiftAdded.png", ScreenshotImageFormat.Png);
+
+
+            ICollection<Gift> giftsAfterInsert = await giftClient.GetAllAsync();
+            Assert.IsTrue(giftsBeforeInsert.Count < giftsAfterInsert.Count);
+
+            httpClient.Dispose();
         }
 
 
