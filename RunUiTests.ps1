@@ -8,9 +8,9 @@ function Start-WebServer() {
         -ArgumentList "Urls=https://localhost:$port $args" -NoNewWindow -PassThru
 }
 
-$BlogEngineApiServer = Start-WebServer -ProjectName 'BlogEngine.Api' -Port 5000 -args " ConnectionStrings:DefaultConnection='Data Source=Blog.db'"
-$BlogEngineWebServer = Start-WebServer -ProjectName 'BlogEngine.Web' -Port 5001 -args " ApiUrl=https://localhost:5000"
+$SecretSantaEngineApiServer = Start-WebServer -ProjectName 'SecretSanta.Api' -Port 44388 -args " ConnectionStrings:DefaultConnection='Data Source=SecretSanta.db'"
+$SecretSantaEngineWebServer = Start-WebServer -ProjectName 'SecretSanta.Web' -Port 44394 -args " ApiUrl=https://localhost:44388"
 
-dotnet test "$PSScriptRoot\test\BlogEngine.Web.Tests\"
+dotnet test "$PSScriptRoot\test\SecretSanta.Web.Tests\"
 
-$BlogEngineApiServer, $BlogEngineWebServer | Stop-Process
+$SecretSantaEngineApiServer, $SecretSantaEngineWebServer | Stop-Process

@@ -30,7 +30,7 @@ namespace SecretSanta.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(config =>
                     config.AddInMemoryCollection(
-                        new Dictionary<string, string> { { "ConnectionStrings:DefaultConnection", "Data Source=Blog.db" } })
+                        new Dictionary<string, string> { { "ConnectionStrings:DefaultConnection", "Data Source=SecretSanta.db" } })
                 )
                 .ConfigureLogging(logging =>
                 {
