@@ -10,7 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  buildConfiguration: 'Release'
+  BuildConfiguration: 'Release'
 
 
 steps:
@@ -23,6 +23,12 @@ steps:
   inputs:
     command: 'install'
     workingDir: 'SecretSanta/src/SecretSanta.Web'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: 'SecretSanta/src/SecretSanta.Web'
+    customCommand: 'run build:prod'
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -41,7 +47,7 @@ steps:
     projects: |
       **/SecretSanta.Api.csproj
       **/SecretSanta.Web.csproj
-    arguments: '--configuration $(BuildConfiguration) --output "$(build.artifactstagingdirectory)"'
+    arguments: '--configuration $(BuildConfiguration) --output "$(Build.ArtifactStagingDirectory)"'
 
 - task: PublishBuildArtifacts@1
   inputs:
