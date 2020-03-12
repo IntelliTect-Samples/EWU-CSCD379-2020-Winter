@@ -45,8 +45,8 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: |
-      **/SecretSanta.Api
-      **/SecretSanta.Web
+      **/SecretSanta.Api.csproj
+      **/SecretSanta.Web.csproj
     arguments: '--configuration $(BuildConfiguration) --output "$(Build.ArtifactStagingDirectory)"'
 
 - task: PublishBuildArtifacts@1
