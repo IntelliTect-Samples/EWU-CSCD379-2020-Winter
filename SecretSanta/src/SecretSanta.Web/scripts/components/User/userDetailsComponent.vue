@@ -47,6 +47,7 @@
 
         @Emit('user-saved')
         async save() {
+            console.log("saving user...");
             let userClient = new UserClient(apiUrl);
             if (this.clonedUser.id > 0) {
                 await userClient.put(this.clonedUser.id, this.clonedUser);
