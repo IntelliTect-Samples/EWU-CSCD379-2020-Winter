@@ -37,6 +37,8 @@ namespace SecretSanta.Web.Tests
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
+            ApiHostProcess = Process.Start("dotnet.exe", @"run -p ..\..\..\..\..\src\SecretSanta.Api\SecretSanta.Api.csproj");
+            WebHostProcess = Process.Start("dotnet.exe", @"run -p ..\..\..\..\..\src\SecretSanta.App\SecretSanta.App.csproj");
             /*using WebClient webClient = new WebClient();
             
             ApiHostProcess = StartWebHost("SecretSanta.Api", ApiPort, "Swagger", new string[] { "ConnectionStrings:DefaultConnection='Data Source=SecretSanta.db'" });
@@ -112,12 +114,12 @@ namespace SecretSanta.Web.Tests
             CreateUser();
         }
 
-/*        [ClassCleanup]
+        [ClassCleanup]
         public static void ClassCleanup()
         {
             ApiHostProcess?.Kill();
             WebHostProcess?.Kill();
-        }*/
+        }
 
         private static async void CreateUser()
         {
