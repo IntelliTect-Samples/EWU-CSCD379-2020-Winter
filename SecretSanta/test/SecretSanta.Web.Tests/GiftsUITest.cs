@@ -145,9 +145,11 @@ namespace SecretSanta.Web.Tests
             switch (browser)
             {
                 case "Chrome":
-                    ChromeOptions option = new ChromeOptions();
-                    option.AddArgument("--headless");
-                    Driver = new ChromeDriver(option);
+                    ChromeOptions options = new ChromeOptions();
+                    options.AddArgument("--headless");
+                    options.AddArgument("--window-size=1920,1080");
+                    options.AddArgument("--start-maximized");
+                    Driver = new ChromeDriver(options);
                     break;
                 default:
                     Driver = new ChromeDriver();
