@@ -40,7 +40,10 @@ namespace SecretSanta.Web.Tests
             WebHostProcess = Process.Start("dotnet.exe", "run -p ..\\..\\..\\..\\..\\src\\SecretSanta.Web\\SecretSanta.Web.csproj");
             ApiHostProcess.WaitForExit(8000);
 
-            HttpClient httpClient = new HttpClient();
+            using HttpClientHandler handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+
+            using HttpClient httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri("https://localhost:44388");
 
             IUserClient userClient = new UserClient(httpClient);
