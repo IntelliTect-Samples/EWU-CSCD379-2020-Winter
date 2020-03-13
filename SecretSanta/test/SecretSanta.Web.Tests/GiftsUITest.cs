@@ -37,8 +37,8 @@ namespace SecretSanta.Web.Tests
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            /*using WebClient webClient = new WebClient();
-            
+            using WebClient webClient = new WebClient();
+
             ApiHostProcess = StartWebHost("SecretSanta.Api", ApiPort, "Swagger", new string[] { "ConnectionStrings:DefaultConnection='Data Source=SecretSanta.db'" });
             WebHostProcess = StartWebHost("SecretSanta.Web", AppPort, "", $" ApiUrl={ApiUrl}");
 
@@ -107,17 +107,17 @@ namespace SecretSanta.Web.Tests
                 host.WaitForExit();
                 throw new InvalidOperationException($"Unable to execute process successfully: {stdErr}") { Data = { { "StandardOut", stdOut } } };
 
-            }*/
+            }
 
             CreateUser();
         }
 
-/*        [ClassCleanup]
+        [ClassCleanup]
         public static void ClassCleanup()
         {
             ApiHostProcess?.Kill();
             WebHostProcess?.Kill();
-        }*/
+        }
 
         private static async void CreateUser()
         {
@@ -143,7 +143,9 @@ namespace SecretSanta.Web.Tests
             switch (browser)
             {
                 case "Chrome":
-                    Driver = new ChromeDriver();
+                    ChromeOptions option = new ChromeOptions();
+                    option.AddArgument("--headless");
+                    Driver = new ChromeDriver(option);
                     break;
                 default:
                     Driver = new ChromeDriver();
