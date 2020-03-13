@@ -73,6 +73,9 @@ namespace SecretSanta.Web.Tests
             handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
 
             Driver.Navigate().GoToUrl(new Uri("https://localhost:44394"));
+            Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 10);
+            Thread.Sleep(5000);
+
             string text = Driver.FindElement(By.XPath("/html/body/section/div/p")).Text;
 
             Assert.IsTrue(text.Contains("Welcome to your secret santa app"));
@@ -85,7 +88,7 @@ namespace SecretSanta.Web.Tests
             using HttpClientHandler handler = new HttpClientHandler();
             handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
 
-            using HttpClient httpClient = new HttpClient();
+            using HttpClient httpClient = new HttpClient(handler);
             httpClient.BaseAddress = new Uri("https://localhost:44388");
 
             IUserClient userClient = new UserClient(httpClient);
