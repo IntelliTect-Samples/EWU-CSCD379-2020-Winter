@@ -21,4 +21,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             render: h => h(GroupsComponent)
         }).$mount('#groupList');
     }
+
+    console.log("test1");
 });
