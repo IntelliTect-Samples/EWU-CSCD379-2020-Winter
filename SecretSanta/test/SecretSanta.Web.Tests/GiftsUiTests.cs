@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SecretSanta.Web.Tests
@@ -53,7 +54,7 @@ namespace SecretSanta.Web.Tests
                     LastName = "Montoya"
                 };
 
-                userClient.PostAsync(user);
+                await userClient.PostAsync(user);
             }
         }
 
@@ -105,14 +106,18 @@ namespace SecretSanta.Web.Tests
             int userIndex = 0;
 
             // Act
+            Thread.Sleep(5000);
             EnterGiftDetails(title, desc, url, userIndex);
 
             Driver.FindElement(By.Id("submit")).Click();
+            Thread.Sleep(5000);
 
             List<string> gifts = Driver.FindElement(By.Id("gift-table"))
                 .FindElements(By.TagName("td"))
                 .Select(element => element.Text)
                 .ToList();
+
+            Thread.Sleep(5000);
             int indexOfTitle = gifts.IndexOf(title);
 
             // Assert
