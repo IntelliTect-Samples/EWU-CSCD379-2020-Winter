@@ -29,7 +29,7 @@ namespace SecretSanta.Web.Tests
         private static Process? WebHostProcess { get; set; }
 
         [ClassInitialize]
-        public static async Task ClassInitialize(TestContext testContext)
+        public static void ClassInitialize(TestContext testContext)
         {
             if(testContext is null)
             {
@@ -74,7 +74,7 @@ namespace SecretSanta.Web.Tests
 
             Driver.Navigate().GoToUrl(new Uri("https://localhost:44394"));
             Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 10);
-            Thread.Sleep(5000);
+            Thread.Sleep(20000);
 
             string text = Driver.FindElement(By.XPath("/html/body/section/div/p")).Text;
 
@@ -106,7 +106,7 @@ namespace SecretSanta.Web.Tests
             }
 
             Driver.Navigate().GoToUrl(new Uri("https://localhost:44394/Gifts"));
-            Thread.Sleep(5000);
+            Thread.Sleep(20000);
 
             Driver.FindElement(By.CssSelector("button[class='button is-secondary']")).Click();
             Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 10);
