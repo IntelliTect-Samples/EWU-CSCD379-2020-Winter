@@ -39,26 +39,6 @@ namespace SecretSanta.Web.Tests
             ApiHostProcess = Process.Start("dotnet.exe", "run -p ..\\..\\..\\..\\..\\src\\SecretSanta.Api\\SecretSanta.Api.csproj");
             WebHostProcess = Process.Start("dotnet.exe", "run -p ..\\..\\..\\..\\..\\src\\SecretSanta.Web\\SecretSanta.Web.csproj");
             ApiHostProcess.WaitForExit(8000);
-
-            using HttpClientHandler handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
-
-            using HttpClient httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri("https://localhost:44388");
-
-            IUserClient userClient = new UserClient(httpClient);
-            ICollection<User> users = await userClient.GetAllAsync();
-
-            if(users.Count == 0)
-            {
-                UserInput user = new User
-                {
-                    FirstName = "Inigo",
-                    LastName = "Montoya"
-                };
-
-                await userClient.PostAsync(user);
-            }
         }
 
         [ClassCleanup]
@@ -89,6 +69,9 @@ namespace SecretSanta.Web.Tests
         [TestMethod]
         public void LaunchSite_Success()
         {
+            using HttpClientHandler handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+
             Driver.Navigate().GoToUrl(new Uri("https://localhost:44394"));
             string text = Driver.FindElement(By.XPath("/html/body/section/div/p")).Text;
 
@@ -96,10 +79,30 @@ namespace SecretSanta.Web.Tests
         }
 
         [TestMethod]
-        public void CreateGift_Success()
+        public async Task CreateGift_Success()
         {
             // Arrange
-            Driver.Navigate().GoToUrl(new Uri("https://localhost:44394/gifts"));
+            using HttpClientHandler handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+
+            using HttpClient httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri("https://localhost:44388");
+
+            IUserClient userClient = new UserClient(httpClient);
+            ICollection<User> users = await userClient.GetAllAsync();
+
+            if (users.Count == 0)
+            {
+                UserInput user = new User
+                {
+                    FirstName = "Inigo",
+                    LastName = "Montoya"
+                };
+
+                await userClient.PostAsync(user);
+            }
+
+            Driver.Navigate().GoToUrl(new Uri("https://localhost:44394/Gifts"));
             Thread.Sleep(5000);
 
             Driver.FindElement(By.CssSelector("button[class='button is-secondary']")).Click();
