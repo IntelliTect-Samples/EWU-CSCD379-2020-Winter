@@ -28,6 +28,8 @@
 <script lang="ts">
     import { Vue, Component, Prop, Emit } from 'vue-property-decorator'
     import { User, UserClient } from '../../secretsanta-client';
+    declare var apiUrl: string;
+
     @Component
     export default class UserDetailsComponent extends Vue {
         @Prop()
@@ -45,7 +47,7 @@
 
         @Emit('user-saved')
         async save() {
-            let userClient = new UserClient();
+            let userClient = new UserClient(apiUrl);
             if (this.clonedUser.id > 0) {
                 await userClient.put(this.clonedUser.id, this.clonedUser);
             }
