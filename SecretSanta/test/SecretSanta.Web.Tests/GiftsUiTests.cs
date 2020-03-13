@@ -97,6 +97,8 @@ namespace SecretSanta.Web.Tests
         {
             // Arrange
             Driver.Navigate().GoToUrl(new Uri("https://localhost:44394/gifts"));
+            Thread.Sleep(5000);
+
             Driver.FindElement(By.CssSelector("button[class='button is-secondary']")).Click();
             Driver.Manage().Timeouts().ImplicitWait = new System.TimeSpan(0, 0, 10);
 
