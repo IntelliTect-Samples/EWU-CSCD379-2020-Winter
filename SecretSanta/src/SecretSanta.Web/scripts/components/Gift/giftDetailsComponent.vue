@@ -68,7 +68,7 @@
 
         @Emit('gift-saved')
         async save() {
-            let giftClient = new GiftClient();
+            let giftClient = new GiftClient(apiUrl);
             if (this.clonedGift.id > 0) {
                 await giftClient.put(this.clonedGift.id, this.clonedGift);
             }
