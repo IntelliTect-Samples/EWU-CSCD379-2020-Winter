@@ -22,9 +22,13 @@ For this assignment we will be publishing our web application out to Azure.
 ## To submit in PR
 In the pull request include the following:
 - A link to your published API swagger page.
+  - [Api Swagger Link](https://cscd379jrossapi.azurewebsites.net/swagger/index.html)
 - A link to your published web site.
+  - [Home Page](https://cscd379jross.azurewebsites.net/)
 - A screenshot showing the Azure Resource Group with all resources.
+![Resources](https://github.com/kenny2892/EWU-CSCD379-2020-Winter/blob/Assignment10/SecretSanta/AzureResources.png?raw=true)
 - A screenshot showing the release pipeline that did the deployment.
+![Resources](https://github.com/kenny2892/EWU-CSCD379-2020-Winter/blob/Assignment10/SecretSanta/PiplineRelease.png?raw=true)
 - Updated build pipeline yaml file.
 
 ## Documentation 
