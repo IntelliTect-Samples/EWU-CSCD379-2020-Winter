@@ -22,10 +22,15 @@ For this assignment we will be publishing our web application out to Azure.
 ## To submit in PR
 In the pull request include the following:
 - A link to your published API swagger page.
+https://apiasauther.azurewebsites.net/swagger/index.html
 - A link to your published web site.
+https://webasauther.azurewebsites.net/
 - A screenshot showing the Azure Resource Group with all resources.
+See my headline comment on the pull request
 - A screenshot showing the release pipeline that did the deployment.
+See my headline comment on the pull request
 - Updated build pipeline yaml file.
+See [azure-pipelines.yml](azure-pipelines.yml)
 
 ## Documentation 
 - [https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/azure-apps/?view=aspnetcore-3.1&tabs=visual-studio](Deploy ASP.NET Core apps to Azure App Service)
