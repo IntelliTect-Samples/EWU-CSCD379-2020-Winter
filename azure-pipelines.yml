@@ -24,7 +24,7 @@ steps:
     command: 'install'
     workingDir: 'SecretSanta/src/SecretSanta.Web'
 
-- task: Npm@2
+- task: Npm@1
   inputs:
     command: 'custom'
     workingDir: 'SecretSanta/src/SecretSanta.Web'
