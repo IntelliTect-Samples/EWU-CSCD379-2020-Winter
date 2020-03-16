@@ -22,6 +22,8 @@
 <script lang="ts">
     import { Vue, Component, Prop, Emit } from 'vue-property-decorator'
     import { Group, GroupClient } from '../../secretsanta-client';
+    declare var apiUrl: string;
+
     @Component
     export default class GroupDetailsComponent extends Vue {
         @Prop()
@@ -39,7 +41,7 @@
 
         @Emit('group-saved')
         async save() {
-            let groupClient = new GroupClient();
+            let groupClient = new GroupClient(apiUrl);
             if (this.clonedGroup.id > 0) {
                 await groupClient.put(this.clonedGroup.id, this.clonedGroup);
             }

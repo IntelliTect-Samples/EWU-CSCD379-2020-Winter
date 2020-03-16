@@ -45,6 +45,8 @@
 <script lang="ts">
     import { Vue, Component, Prop, Emit } from 'vue-property-decorator'
     import { Gift, GiftClient, UserClient, User } from '../../secretsanta-client';
+    declare var apiUrl: string;
+
     @Component
     export default class GiftDetailsComponent extends Vue {
         @Prop()
@@ -58,7 +60,7 @@
 
         async mounted() {
             // get list of users for dropdown
-            let userClient = new UserClient();
+            let userClient = new UserClient(apiUrl);
             this.users = await userClient.getAll();
             let tempGift = { ...this.gift };
             this.clonedGift = <Gift>tempGift;
@@ -66,7 +68,7 @@
 
         @Emit('gift-saved')
         async save() {
-            let giftClient = new GiftClient();
+            let giftClient = new GiftClient(apiUrl);
             if (this.clonedGift.id > 0) {
                 await giftClient.put(this.clonedGift.id, this.clonedGift);
             }
