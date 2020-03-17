@@ -24,8 +24,9 @@ steps:
     workingDir: 'SecretSanta/src/SecretSanta.Web'
 - task: Npm@1
   inputs:
-    command: 'run build:prod'
-    workingDir: 'SecretSanta/src/SecretSanta.Web'    
+    command: 'custom'
+    workingDir: 'SecretSanta/src/SecretSanta.Web'
+    customCommand: 'run build:prod'       
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
