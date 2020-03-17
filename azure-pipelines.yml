@@ -39,7 +39,9 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: '**/SecretSanta.Api.csproj **/SecretSanta.Web.csproj'
+    projects: |
+      **/SecretSanta.Api.csproj
+      **/SecretSanta.Web.csproj
     arguments: '--configuration $(BuildConfiguration) --output "$(Build.ArtifactStagingDirectory)"'
 - task: PublishBuildArtifacts@1
   inputs:
